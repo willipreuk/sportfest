@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/react-hooks';
+import { Redirect } from 'react-router-dom';
 import {
   makeStyles, Avatar, Button, Container, TextField, Typography,
 } from '@material-ui/core';
@@ -24,8 +27,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const LOGIN = gql`
+    mutation login($user: String!, $password: String!){
+        login(username: $user, password: $password) {
+            jwt
+        }
+    }
+`;
+
 export default function SignIn() {
   const classes = useStyles();
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [login, { error, data }] = useMutation(LOGIN, { onError: () => null });
+
+  if (data) {
+    localStorage.setItem('jwt', data.login.jwt);
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -47,6 +67,9 @@ export default function SignIn() {
             name="user"
             autoComplete="user"
             autoFocus
+            error={!!error}
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -58,13 +81,16 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            error={!!error}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => login({ variables: { user, password } })}
           >
             Einloggen
           </Button>
