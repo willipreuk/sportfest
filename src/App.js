@@ -3,6 +3,7 @@ import { CssBaseline, makeStyles } from '@material-ui/core';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 import Login from './routes/Login';
 import Home from './routes/Home';
 import Disziplinen from './routes/Disziplinen';
@@ -34,30 +35,14 @@ function App() {
             <Route path="/login">
               <Login />
             </Route>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/disziplinen">
-              <Disziplinen />
-            </Route>
-            <Route path="/ergebnisse">
-              <Ergebnisse />
-            </Route>
-            <Route path="/klassen">
-              <Klassen />
-            </Route>
-            <Route path="/massstaebe">
-              <Massstaebe />
-            </Route>
-            <Route path="/profil">
-              <Profil />
-            </Route>
-            <Route path="/schueler">
-              <Schueler />
-            </Route>
-            <Route path="/user">
-              <User />
-            </Route>
+            <PrivateRoute Component={Home} path="/" exact />
+            <PrivateRoute Component={Disziplinen} path="/disziplinen" />
+            <PrivateRoute Component={Ergebnisse} path="/ergebnisse" />
+            <PrivateRoute Component={Klassen} path="/klassen" />
+            <PrivateRoute Component={Massstaebe} path="/massstaebe" />
+            <PrivateRoute Component={Profil} path="/profil" />
+            <PrivateRoute Component={Schueler} path="/schueler" />
+            <PrivateRoute Component={User} path="/user" />
           </Switch>
         </BrowserRouter>
       </ApolloProvider>
