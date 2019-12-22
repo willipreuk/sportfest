@@ -5,6 +5,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import Filter from './Filter';
+import useSchuelerData from './useSchuelerData';
 
 const ALL_SCHUELER = gql`
     query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
@@ -28,19 +29,14 @@ const columns = [
   { id: 'klasse', label: 'Klasse', minWidth: 170 },
 ];
 
-const createData = (s) => {
-  const schueler = { ...s };
-  schueler.klasse = `${s.klasse.stufe}/${s.klasse.name}`;
-  return schueler;
-};
-
 export default function StickyHeadTable() {
   const [klasse, setKlasse] = useState(0);
   const {
     page, rowsPerPage, onChangeRows, onChangePage,
-  } = usePagination([]);
+  } = usePagination([klasse]);
+  const { rows, total, setData } = useSchuelerData();
 
-  const { data, loading } = useQuery(
+  const { loading } = useQuery(
     ALL_SCHUELER,
     {
       variables: {
@@ -48,11 +44,10 @@ export default function StickyHeadTable() {
         offset: page * rowsPerPage,
         limit: rowsPerPage,
       },
+      onCompleted: (res) => setData(res),
     },
   );
   if (loading) return <LoadingSpinner />;
-
-  const rows = data.allSchueler.schueler.map((s) => createData(s));
 
   return (
     <DataTable
@@ -65,7 +60,7 @@ export default function StickyHeadTable() {
       page={page}
       onChangeRows={onChangeRows}
       onChangePage={onChangePage}
-      total={data.allSchueler.total}
+      total={total}
       filter={<Filter klasse={klasse} setKlasse={setKlasse} />}
     />
   );
