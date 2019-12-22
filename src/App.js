@@ -16,6 +16,14 @@ import User from './routes/User';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
+  request: (operation) => {
+    const token = localStorage.getItem('jwt');
+    operation.setContext({
+      headers: {
+        authorization: token || '',
+      },
+    });
+  },
 });
 
 const useStyles = makeStyles(() => ({
