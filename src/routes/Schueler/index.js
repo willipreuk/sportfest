@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  TablePagination,
 } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -17,13 +18,16 @@ const useStyles = makeStyles({
 });
 
 const ALL_SCHUELER = gql`
-    query Schueler($klasse: Int) { 
-        allSchueler(idklasse: $klasse) {
-            vorname
-            nachname
-            klasse {
-                stufe
-                name
+    query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
+        allSchueler(idklasse: $klasse, offset: $offset, limit: $limit) {
+            total
+            schueler {
+              vorname
+              nachname
+              klasse {
+                  stufe
+                  name
+              }
             }
         }
     }
@@ -44,14 +48,26 @@ const createData = (s) => {
 export default function StickyHeadTable() {
   const classes = useStyles();
   const [klasse, setKlasse] = useState(0);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  useEffect(() => {
+    setPage(0);
+    setRowsPerPage(10);
+  }, [klasse]);
 
   const { data, loading } = useQuery(
     ALL_SCHUELER,
-    { variables: klasse !== 0 ? { klasse } : undefined },
+    {
+      variables: {
+        klasse: klasse !== 0 ? klasse : undefined,
+        offset: page * rowsPerPage,
+        limit: rowsPerPage,
+      },
+    },
   );
   if (loading) return <LoadingSpinner />;
 
-  const rows = data.allSchueler.map((s) => createData(s));
+  const rows = data.allSchueler.schueler.map((s) => createData(s));
 
   return (
     <Paper className={classes.root}>
@@ -87,6 +103,19 @@ export default function StickyHeadTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        count={data.allSchueler.total}
+        rowsPerPageOptions={[10, 30, 90]}
+        component="div"
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={(e, newPage) => setPage(newPage)}
+        onChangeRowsPerPage={(e) => {
+          setRowsPerPage(parseInt(e.target.value, 10));
+          setPage(0);
+        }}
+        labelRowsPerPage="Schüler pro Seite:"
+      />
     </Paper>
   );
 }
