@@ -29,9 +29,9 @@ const DataTable = ({
   total,
   rowsPerPageOptions,
   page,
-  setPage,
+  onChangePage,
   rowsPerPage,
-  setRowsPerPage,
+  onChangeRows,
   labelRowsPerPage,
 }) => {
   const classes = useStyles();
@@ -76,11 +76,8 @@ const DataTable = ({
         component="div"
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={(e, newPage) => setPage(newPage)}
-        onChangeRowsPerPage={(e) => {
-          setRowsPerPage(parseInt(e.target.value, 10));
-          setPage(0);
-        }}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRows}
         labelRowsPerPage={labelRowsPerPage}
       />
     </Paper>
@@ -102,9 +99,9 @@ DataTable.propTypes = {
   total: PropTypes.number.isRequired,
   rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
   page: PropTypes.number.isRequired,
-  setPage: PropTypes.func.isRequired,
+  onChangePage: PropTypes.func.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  setRowsPerPage: PropTypes.func.isRequired,
+  onChangeRows: PropTypes.func.isRequired,
   labelRowsPerPage: PropTypes.string.isRequired,
 };
 DataTable.defaultProps = {

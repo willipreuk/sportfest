@@ -7,7 +7,7 @@ export default (deps) => {
   useEffect(() => {
     setPage(0);
     setRowsPerPage(10);
-  }, deps);
+  }, deps); // eslint-disable-line
 
   const onChangePage = useCallback((e, newPage) => setPage(newPage), []);
   const onChangeRows = useCallback((e) => {
