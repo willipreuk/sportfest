@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     width: '100%',
   },
   container: {
-    maxHeight: 650,
+    maxHeight: 585,
   },
 });
 
@@ -73,7 +73,7 @@ export default function StickyHeadTable() {
     <Paper className={classes.root}>
       <EnhancedToolbar title="Schülerliste" klasse={klasse} setKlasse={setKlasse} />
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="sticky table">
+        <Table stickyHeader aria-label="Schülerliste">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -94,7 +94,7 @@ export default function StickyHeadTable() {
                   const value = row[column.id];
                   return (
                     <TableCell key={column.id} align={column.align}>
-                      {column.format && typeof value === 'number' ? column.format(value) : value}
+                      {value}
                     </TableCell>
                   );
                 })}
