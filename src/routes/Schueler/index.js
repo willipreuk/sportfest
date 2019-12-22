@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
+import Filter from './Filter';
 
 const ALL_SCHUELER = gql`
     query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
@@ -65,6 +66,7 @@ export default function StickyHeadTable() {
       onChangeRows={onChangeRows}
       onChangePage={onChangePage}
       total={data.allSchueler.total}
+      filter={<Filter klasse={klasse} setKlasse={setKlasse} />}
     />
   );
 }
