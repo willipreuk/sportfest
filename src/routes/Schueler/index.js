@@ -1,16 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import LoadingSpinner from '../../components/LoadingSpinner';
-
-const columns = [
-  { id: 'vorname', label: 'Vorname', minWidth: 170 },
-  { id: 'nachname', label: 'Nachname', minWidth: 100 },
-  { id: 'klasse', label: 'Klasse', minWidth: 170 },
-];
+import EnhancedToolbar from './EnhancedToolbar';
 
 const useStyles = makeStyles({
   root: {
@@ -22,8 +17,8 @@ const useStyles = makeStyles({
 });
 
 const ALL_SCHUELER = gql`
-    { 
-        allSchueler {
+    query Schueler($klasse: Int) { 
+        allSchueler(idklasse: $klasse) {
             vorname
             nachname
             klasse {
@@ -34,6 +29,12 @@ const ALL_SCHUELER = gql`
     }
 `;
 
+const columns = [
+  { id: 'vorname', label: 'Vorname', minWidth: 170 },
+  { id: 'nachname', label: 'Nachname', minWidth: 100 },
+  { id: 'klasse', label: 'Klasse', minWidth: 170 },
+];
+
 const createData = (s) => {
   const schueler = { ...s };
   schueler.klasse = `${s.klasse.stufe}/${s.klasse.name}`;
@@ -42,14 +43,19 @@ const createData = (s) => {
 
 export default function StickyHeadTable() {
   const classes = useStyles();
-  const { data, loading, error } = useQuery(ALL_SCHUELER);
+  const [klasse, setKlasse] = useState(0);
 
+  const { data, loading } = useQuery(
+    ALL_SCHUELER,
+    { variables: klasse !== 0 ? { klasse } : undefined },
+  );
   if (loading) return <LoadingSpinner />;
 
   const rows = data.allSchueler.map((s) => createData(s));
 
   return (
     <Paper className={classes.root}>
+      <EnhancedToolbar title="Schülerliste" klasse={klasse} setKlasse={setKlasse} />
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
