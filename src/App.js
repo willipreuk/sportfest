@@ -1,6 +1,5 @@
 import React from 'react';
 import { CssBaseline, makeStyles } from '@material-ui/core';
-import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
@@ -13,18 +12,7 @@ import Massstaebe from './routes/Massstaebe';
 import Profil from './routes/Profil';
 import Schueler from './routes/Schueler';
 import User from './routes/User';
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-  request: (operation) => {
-    const token = localStorage.getItem('jwt');
-    operation.setContext({
-      headers: {
-        authorization: token || '',
-      },
-    });
-  },
-});
+import ApolloClient from './ApolloClient';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -37,7 +25,7 @@ function App() {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <ApolloProvider client={client}>
+      <ApolloProvider client={ApolloClient}>
         <BrowserRouter>
           <Switch>
             <Route path="/login">
