@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -6,6 +6,7 @@ import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import Filter from './Filter';
 import useSchuelerData from './useSchuelerData';
+import useLoading from '../../hooks/useLoading';
 
 const ALL_SCHUELER = gql`
     query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
@@ -36,7 +37,7 @@ export default function StickyHeadTable() {
   } = usePagination([klasse]);
   const { rows, total, setData } = useSchuelerData();
 
-  const { loading } = useQuery(
+  const { loading: tmpLoading } = useQuery(
     ALL_SCHUELER,
     {
       variables: {
@@ -47,6 +48,9 @@ export default function StickyHeadTable() {
       onCompleted: (res) => setData(res),
     },
   );
+  const { loading, setLoading } = useLoading();
+  useEffect(() => setLoading(tmpLoading), [tmpLoading]);
+
   if (loading) return <LoadingSpinner />;
 
   return (

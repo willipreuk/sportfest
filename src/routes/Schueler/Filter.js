@@ -15,10 +15,12 @@ const useStyles = makeStyles((theme) => ({
 
 const ALL_KLASSEN = gql`
   {
-    allklassen {
-      id
-      stufe
-      name
+    allKlassen {
+      klassen {
+        id
+        stufe
+        name
+       }
      }
   }
 `;
@@ -29,7 +31,7 @@ const Filter = ({ klasse, setKlasse }) => {
 
   if (loading) return null;
 
-  const klassen = data.allklassen.sort((a, b) => a.stufe - b.stufe);
+  const klassen = data.allKlassen.klassen.sort((a, b) => a.stufe - b.stufe);
 
   return (
     <FormControl className={classes.formControl}>
