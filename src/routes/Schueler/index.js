@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import {
-  makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  TablePagination,
-} from '@material-ui/core';
+import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import LoadingSpinner from '../../components/LoadingSpinner';
-import EnhancedToolbar from './EnhancedToolbar';
-
-const useStyles = makeStyles({
-  root: {
-    width: '100%',
-  },
-  container: {
-    maxHeight: 585,
-  },
-});
+import DataTable from '../../components/DataTable';
+import usePagination from '../../hooks/usePagination';
+import Filter from './Filter';
+import useSchuelerData from './useSchuelerData';
 
 const ALL_SCHUELER = gql`
     query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
@@ -39,23 +29,14 @@ const columns = [
   { id: 'klasse', label: 'Klasse', minWidth: 170 },
 ];
 
-const createData = (s) => {
-  const schueler = { ...s };
-  schueler.klasse = `${s.klasse.stufe}/${s.klasse.name}`;
-  return schueler;
-};
-
 export default function StickyHeadTable() {
-  const classes = useStyles();
   const [klasse, setKlasse] = useState(0);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  useEffect(() => {
-    setPage(0);
-    setRowsPerPage(10);
-  }, [klasse]);
+  const {
+    page, rowsPerPage, onChangeRows, onChangePage,
+  } = usePagination([klasse]);
+  const { rows, total, setData } = useSchuelerData();
 
-  const { data, loading } = useQuery(
+  const { loading } = useQuery(
     ALL_SCHUELER,
     {
       variables: {
@@ -63,59 +44,24 @@ export default function StickyHeadTable() {
         offset: page * rowsPerPage,
         limit: rowsPerPage,
       },
+      onCompleted: (res) => setData(res),
     },
   );
   if (loading) return <LoadingSpinner />;
 
-  const rows = data.allSchueler.schueler.map((s) => createData(s));
-
   return (
-    <Paper className={classes.root}>
-      <EnhancedToolbar title="Schülerliste" klasse={klasse} setKlasse={setKlasse} />
-      <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="Schülerliste">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                {columns.map((column) => {
-                  const value = row[column.id];
-                  return (
-                    <TableCell key={column.id} align={column.align}>
-                      {value}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        count={data.allSchueler.total}
-        rowsPerPageOptions={[10, 30, 90]}
-        component="div"
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={(e, newPage) => setPage(newPage)}
-        onChangeRowsPerPage={(e) => {
-          setRowsPerPage(parseInt(e.target.value, 10));
-          setPage(0);
-        }}
-        labelRowsPerPage="Schüler pro Seite:"
-      />
-    </Paper>
+    <DataTable
+      labelRowsPerPage="Schueler pro Seite:"
+      title="Schülerliste"
+      rowsPerPageOptions={[10, 30, 90]}
+      rows={rows}
+      rowsPerPage={rowsPerPage}
+      columns={columns}
+      page={page}
+      onChangeRows={onChangeRows}
+      onChangePage={onChangePage}
+      total={total}
+      filter={<Filter klasse={klasse} setKlasse={setKlasse} />}
+    />
   );
 }
