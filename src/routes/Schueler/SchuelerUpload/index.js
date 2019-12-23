@@ -1,10 +1,11 @@
+import React, { useRef, useState } from 'react';
 import {
   Button, makeStyles, Typography,
 } from '@material-ui/core';
-import React, { useRef } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
+import AlertDialog from './AlertDialog';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -28,6 +29,8 @@ const UPLOAD_SCHUELER = gql`
 
 export default () => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [csv, setCsv] = useState(undefined);
 
   const [uploadSchueler, { loading }] = useMutation(UPLOAD_SCHUELER);
 
@@ -37,26 +40,32 @@ export default () => {
       validity,
       files: [file],
     },
-  }) => validity.valid && uploadSchueler({ variables: { file } });
+  }) => {
+    if (!validity.valid) return;
+    setCsv(file);
+    setOpen(true);
+  };
+
+  const submit = () => {
+    uploadSchueler({ variables: { file: csv } }).then(() => setOpen(false));
+  };
 
   if (loading) return <LoadingSpinner />;
 
   return (
     <>
       <Typography variant="h6" className={classes.title}>Schülerupload</Typography>
-      <Typography color="error">
-        Achtung: Wenn eine neue Tabelle mit Schülern hochgeladen wird, werden alle Ergebnisse,
-        welche mit den alten Schülern verknüpft waren ebenfalls gelöscht.
-      </Typography>
+      <Typography color="error">Achtung: Dabei gehen alle Schülerdaten verloren!</Typography>
       <Button
         className={classes.uploadButton}
         component="label"
         variant="contained"
         color="primary"
       >
-        Schülerdaten auswählen
+        Schülerdaten hochladen
         <input type="file" onChange={onChange} accept="text/csv" className={classes.input} ref={fileInput} />
       </Button>
+      <AlertDialog setOpen={setOpen} submit={submit} open={open} />
     </>
   );
 };
