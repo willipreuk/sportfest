@@ -25,12 +25,12 @@ const ALL_SCHUELER = gql`
 `;
 
 const columns = [
-  { id: 'vorname', label: 'Vorname', minWidth: 170 },
+  { id: 'vorname', label: 'Vorname', minWidth: 100 },
   { id: 'nachname', label: 'Nachname', minWidth: 100 },
-  { id: 'klasse', label: 'Klasse', minWidth: 170 },
+  { id: 'klasse', label: 'Klasse', minWidth: 50 },
 ];
 
-export default function StickyHeadTable() {
+export default () => {
   const [klasse, setKlasse] = useState(0);
   const {
     page, rowsPerPage, onChangeRows, onChangePage,
@@ -68,4 +68,4 @@ export default function StickyHeadTable() {
       filter={<Filter klasse={klasse} setKlasse={setKlasse} />}
     />
   );
-}
+};
