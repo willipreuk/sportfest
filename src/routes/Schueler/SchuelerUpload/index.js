@@ -1,7 +1,10 @@
 import {
   Button, makeStyles, Typography,
 } from '@material-ui/core';
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/react-hooks';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -15,13 +18,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const UPLOAD_SCHUELER = gql`
+  mutation UploadSchueler($file: Upload!) {
+    uploadSchueler(file: $file) {
+      schuelerCount
+    }
+  }
+`;
+
 export default () => {
   const classes = useStyles();
+
+  const [uploadSchueler, { loading }] = useMutation(UPLOAD_SCHUELER);
+
   const fileInput = useRef();
+  const onChange = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) => validity.valid && uploadSchueler({ variables: { file } });
 
-  const submit = useCallback((e) => {
-
-  }, [fileInput]);
+  if (loading) return <LoadingSpinner />;
 
   return (
     <>
@@ -37,7 +55,7 @@ export default () => {
         color="primary"
       >
         Schülerdaten auswählen
-        <input type="file" onChange={submit} accept="text/csv" className={classes.input} ref={fileInput} />
+        <input type="file" onChange={onChange} accept="text/csv" className={classes.input} ref={fileInput} />
       </Button>
     </>
   );
