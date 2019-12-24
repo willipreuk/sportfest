@@ -35,7 +35,7 @@ const StatusCheckbox = ({ status, id }) => {
 };
 StatusCheckbox.propTypes = {
   status: PropTypes.string,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
 StatusCheckbox.defaultProps = {
   status: null,
