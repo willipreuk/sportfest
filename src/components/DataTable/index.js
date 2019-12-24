@@ -40,7 +40,7 @@ const DataTable = ({
     <Paper className={classes.root}>
       <EnhancedToolbar filter={filter} title={title} />
       <TableContainer className={classes.container}>
-        <Table stickyHeader aria-label="Schülerliste">
+        <Table stickyHeader aria-label={title}>
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -56,7 +56,7 @@ const DataTable = ({
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+              <TableRow hover tabIndex={-1} key={row.id}>
                 {columns.map((column) => {
                   const value = row[column.id];
                   return (
