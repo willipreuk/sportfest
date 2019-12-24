@@ -11,15 +11,17 @@ const createData = (s) => {
 export default () => {
   const [data, setData] = useState();
   const [rows, setRows] = useState([]);
+  const [total, setTotal] = useState(0);
 
 
   useEffect(() => {
     if (data) {
       setRows(data.allSchueler.schueler.map((d) => createData(d)));
+      setTotal(data.allSchueler.total);
     }
   }, [data]);
 
   return {
-    rows, setData, total: data && data.allSchueler.total,
+    rows, setData, total,
   };
 };
