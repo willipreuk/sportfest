@@ -4,17 +4,9 @@ import {
   makeStyles, Toolbar, Typography,
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
+const useStyles = makeStyles(() => ({
   title: {
     flex: '1 1 100%',
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
   },
 }));
 
