@@ -41,7 +41,7 @@ export default () => {
       files: [file],
     },
   }) => {
-    if (!validity.vlid) return;
+    if (!validity.valid) return;
     setCsv(file);
     setOpen(true);
   };
