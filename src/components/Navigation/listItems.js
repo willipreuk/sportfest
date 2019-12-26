@@ -21,7 +21,7 @@ const mainItems = [
 export const mainListItems = (
   <div>
     {mainItems.map((i) => (
-      <ListItem button component={Link} to={i.to}>
+      <ListItem button component={Link} to={i.to} key={i.to}>
         <ListItemIcon>
           {i.icon}
         </ListItemIcon>
@@ -41,7 +41,7 @@ export const secondaryListItems = (
   <div>
     <ListSubheader inset>Einstellungen</ListSubheader>
     {secondItems.map((i) => (
-      <ListItem button component={Link} to={i.to}>
+      <ListItem button component={Link} to={i.to} key={i.to}>
         <ListItemIcon>
           {i.icon}
         </ListItemIcon>
