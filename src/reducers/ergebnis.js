@@ -12,8 +12,8 @@ export default (s = initialState, action) => {
   const state = cloneDeep(s);
   switch (action.type) {
     case ERGEBNIS_SET_RANGE: {
-      if (action.payload.von) state.filter.von = action.von;
-      if (action.payload.bis) state.filter.bis = action.bis;
+      if (action.payload.von) state.filter.von = action.payload.von;
+      if (action.payload.bis) state.filter.bis = action.payload.bis;
       break;
     }
     default: return state;
