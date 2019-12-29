@@ -16,7 +16,7 @@ export default (s = initialState, action) => {
       state.jwt = null;
       break;
     }
-    default: return state;
+    default: return s;
   }
   return state;
 };

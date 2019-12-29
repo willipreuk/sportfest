@@ -29,10 +29,10 @@ const store = configureStore();
 function App() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Provider store={store.store}>
-        <PersistGate loading={<LoadingSpinner />} persistor={store.persistor}>
+    <Provider store={store.store}>
+      <PersistGate loading={<LoadingSpinner />} persistor={store.persistor}>
+        <div className={classes.root}>
+          <CssBaseline />
           <ApolloProvider client={ApolloClient}>
             <BrowserRouter>
               <Switch>
@@ -50,9 +50,9 @@ function App() {
               </Switch>
             </BrowserRouter>
           </ApolloProvider>
-        </PersistGate>
-      </Provider>
-    </div>
+        </div>
+      </PersistGate>
+    </Provider>
   );
 }
 
