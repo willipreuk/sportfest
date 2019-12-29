@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   makeStyles, Avatar, Button, Container, TextField, Typography,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { useDispatch } from 'react-redux';
+import { setJWT } from '../../actions/user';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,15 +39,22 @@ const LOGIN = gql`
 
 export default function SignIn() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
-  const [login, { error, data }] = useMutation(LOGIN, { onError: () => null });
+  const [login, { error }] = useMutation(LOGIN, { onError: () => null });
 
-  if (data) {
-    localStorage.setItem('jwt', data.login.jwt);
-    return <Redirect to="/" />;
-  }
+  const submit = useCallback(() => {
+    login({ variables: { user, password } })
+      .then((res) => {
+        if (res) {
+          dispatch(setJWT({ jwt: res.data.login.jwt }));
+          history.push('/');
+        }
+      });
+  }, [login, history, dispatch, user, password]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -90,7 +99,7 @@ export default function SignIn() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={() => login({ variables: { user, password } })}
+            onClick={submit}
           >
             Einloggen
           </Button>
