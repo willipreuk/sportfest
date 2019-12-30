@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, makeStyles, Paper } from '@material-ui/core';
 import Filter from './Filter';
+import Best from './Best';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,6 +20,16 @@ export default () => {
       <Grid item xs={12}>
         <Paper className={classes.paper}>
           <Filter />
+        </Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>
+          <Best geschlecht="bestM" />
+        </Paper>
+      </Grid>
+      <Grid item xs={6}>
+        <Paper className={classes.paper}>
+          <Best geschlecht="bestW" />
         </Paper>
       </Grid>
     </Grid>
