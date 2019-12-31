@@ -86,7 +86,7 @@ export default () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const pageName = useSelector((state) => state.navigation.page);
+  const pageName = useSelector((state) => state.navigation.name);
 
   return (
     <>

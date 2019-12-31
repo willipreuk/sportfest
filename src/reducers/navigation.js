@@ -7,7 +7,7 @@ const initialState = {
 
 export default (s = initialState, action) => {
   const state = cloneDeep(s);
-  switch (action) {
+  switch (action.type) {
     case NAVIGATION_SET_PAGE: state.name = action.payload; break;
     default: return s;
   }
