@@ -1,16 +1,18 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, drop } from 'lodash';
 import { LOCATION_CHANGE } from 'connected-react-router';
 
 const initialState = {
   name: '',
+  history: [],
 };
 
 export default (s = initialState, action) => {
   const state = cloneDeep(s);
   switch (action.type) {
     case LOCATION_CHANGE: {
+      const { pathname } = action.payload.location;
       let name;
-      switch (action.payload.location.pathname) {
+      switch (pathname) {
         case '/disziplinen': name = 'Disziplinen'; break;
         case '/ergebnisse': name = 'Ergebnisse'; break;
         case '/klassen': name = 'Klassen'; break;
@@ -20,6 +22,11 @@ export default (s = initialState, action) => {
         default: name = 'Dashboard';
       }
       state.name = name;
+
+      if (state.history.length >= 10) {
+        state.history = drop(s.history, 1);
+      }
+      state.history = [...state.history, pathname];
       break;
     }
     default: return s;
