@@ -7,7 +7,9 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
+import { useSelector } from 'react-redux';
 import { mainListItems, secondaryListItems } from './listItems';
+import logo from '../../assets/logo.jpg';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +87,7 @@ export default () => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const pageName = useSelector((state) => state.navigation.name);
 
   return (
     <>
@@ -100,7 +103,7 @@ export default () => {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-          Dashboard
+            {pageName}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -112,6 +115,7 @@ export default () => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <img alt="Logo" src={logo} />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
