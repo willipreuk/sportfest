@@ -1,9 +1,10 @@
 import React from 'react';
 import { CssBaseline, makeStyles } from '@material-ui/core';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ConnectedRouter } from 'connected-react-router';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './routes/Login';
 import Home from './routes/Home';
@@ -34,7 +35,7 @@ function App() {
         <div className={classes.root}>
           <CssBaseline />
           <ApolloProvider client={ApolloClient}>
-            <BrowserRouter>
+            <ConnectedRouter history={store.history}>
               <Switch>
                 <Route path="/login">
                   <Login />
@@ -48,7 +49,7 @@ function App() {
                 <PrivateRoute Component={Schueler} path="/schueler" />
                 <PrivateRoute Component={User} path="/user" />
               </Switch>
-            </BrowserRouter>
+            </ConnectedRouter>
           </ApolloProvider>
         </div>
       </PersistGate>

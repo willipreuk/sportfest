@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from './Layout';
-import usePageName from '../hooks/usePageName';
 import { logout } from '../actions/user';
 
 const PrivateRoute = ({
   path, Component, exact, reqRole,
 }) => {
-  usePageName(path);
   const dispatch = useDispatch();
   const { jwt, rolle } = useSelector((state) => state.user);
   return (
