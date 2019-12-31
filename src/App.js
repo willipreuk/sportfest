@@ -44,7 +44,7 @@ function App() {
                 <PrivateRoute Component={Ergebnisse} path="/ergebnisse" />
                 <PrivateRoute Component={Klassen} path="/klassen" />
                 <PrivateRoute Component={Massstaebe} path="/massstaebe" />
-                <PrivateRoute Component={Profil} path="/profil" />
+                <PrivateRoute Component={Profil} path="/profil" reqRole="none" />
                 <PrivateRoute Component={Schueler} path="/schueler" />
                 <PrivateRoute Component={User} path="/user" />
               </Switch>
