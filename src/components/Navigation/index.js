@@ -9,6 +9,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import { useSelector } from 'react-redux';
 import { mainListItems, secondaryListItems } from './listItems';
+import logo from '../../assets/logo.jpg';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -114,6 +115,7 @@ export default () => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <img alt="Logo" src={logo} />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
