@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-dom';
 import {
   makeStyles, Avatar, Button, Container, TextField, Typography,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { setJWT } from '../../actions/user';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,6 @@ const LOGIN = gql`
 export default function SignIn() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
@@ -56,10 +55,10 @@ export default function SignIn() {
       .then((res) => {
         if (res) {
           dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
-          history.push('/');
+          dispatch(push('/'));
         }
       });
-  }, [login, history, dispatch, user, password]);
+  }, [login, dispatch, user, password]);
 
   return (
     <Container component="main" maxWidth="xs">
