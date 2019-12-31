@@ -33,6 +33,11 @@ const LOGIN = gql`
     mutation login($user: String!, $password: String!){
         login(username: $user, password: $password) {
             jwt
+            user {
+              username
+              rolle
+              id
+            }
         }
     }
 `;
@@ -50,7 +55,7 @@ export default function SignIn() {
     login({ variables: { user, password } })
       .then((res) => {
         if (res) {
-          dispatch(setJWT({ jwt: res.data.login.jwt }));
+          dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
           history.push('/');
         }
       });
