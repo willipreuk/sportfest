@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, makeStyles, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import Init from './Init';
+import Eintragen from './Eintragen';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,7 +33,7 @@ export default () => {
             </Typography>
             <Init />
           </>
-        ) : null}
+        ) : <Eintragen />}
       </div>
     </Container>
   );
