@@ -16,16 +16,15 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history));
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export default () => {
   const store = createStore(
     persistedReducer,
-    compose(
+    composeEnhancers(
       applyMiddleware(
         routerMiddleware(history),
       ),
-      /* eslint-disable no-underscore-dangle */
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-      /* eslint-enable */
     ),
   );
   const persistor = persistStore(store);
