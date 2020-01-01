@@ -65,7 +65,13 @@ export default function SignIn() {
       .then((res) => {
         if (res) {
           dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
-          dispatch(push(referer));
+
+          // schreiber direkt auf ihre Seite weiterleiten
+          if (res.data.login.user.rolle === 'schreiber') {
+            dispatch(push('/profil'));
+          } else {
+            dispatch(push(referer));
+          }
         }
       });
   }, [login, dispatch, user, password, referer]);
