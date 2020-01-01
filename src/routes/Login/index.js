@@ -68,7 +68,7 @@ export default function SignIn() {
 
           // schreiber direkt auf ihre Seite weiterleiten
           if (res.data.login.user.rolle === 'schreiber') {
-            dispatch(push('/profil'));
+            dispatch(push('/ergebnisse/schreiber'));
           } else {
             dispatch(push(referer));
           }

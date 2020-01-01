@@ -6,7 +6,7 @@ import Layout from './Layout';
 import { logout } from '../actions/user';
 
 const PrivateRoute = ({
-  path, Component, exact, reqRole,
+  path, Component, exact, reqRole, layout,
 }) => {
   const dispatch = useDispatch();
   const { jwt, rolle } = useSelector((state) => state.user);
@@ -19,9 +19,11 @@ const PrivateRoute = ({
           dispatch(logout());
           return <Redirect to="/login" />;
         }
-        return (
-          <Layout><Component /></Layout>
-        );
+        return layout ? (
+          <Layout>
+            <Component />
+          </Layout>
+        ) : <Component />;
       }}
     />
   );
@@ -31,10 +33,12 @@ PrivateRoute.propTypes = {
   Component: PropTypes.func.isRequired,
   exact: PropTypes.bool,
   reqRole: PropTypes.string,
+  layout: PropTypes.bool,
 };
 PrivateRoute.defaultProps = {
   exact: false,
   reqRole: 'admin',
+  layout: true,
 };
 
 export default PrivateRoute;

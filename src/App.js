@@ -15,6 +15,7 @@ import Massstaebe from './routes/Massstaebe';
 import Profil from './routes/Profil';
 import Schueler from './routes/Schueler';
 import User from './routes/User';
+import Schreiber from './routes/Schreiber';
 import ApolloClient from './ApolloClient';
 import configureStore from './store';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -42,12 +43,13 @@ function App() {
                 </Route>
                 <PrivateRoute Component={Home} path="/" exact />
                 <PrivateRoute Component={Disziplinen} path="/disziplinen" />
-                <PrivateRoute Component={Ergebnisse} path="/ergebnisse" />
+                <PrivateRoute Component={Ergebnisse} path="/ergebnisse" exact />
                 <PrivateRoute Component={Klassen} path="/klassen" />
                 <PrivateRoute Component={Massstaebe} path="/massstaebe" />
-                <PrivateRoute Component={Profil} path="/profil" reqRole="none" />
+                <PrivateRoute Component={Profil} path="/profil" />
                 <PrivateRoute Component={Schueler} path="/schueler" />
                 <PrivateRoute Component={User} path="/user" />
+                <PrivateRoute Component={Schreiber} path="/ergebnisse/schreiber" layout={false} reqRole="none" />
               </Switch>
             </ConnectedRouter>
           </ApolloProvider>
