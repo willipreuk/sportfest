@@ -1,12 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { useHistory } from 'react-router-dom';
 import {
   makeStyles, Avatar, Button, Container, TextField, Typography,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { push } from 'connected-react-router';
+import { last } from 'lodash';
 import { setJWT } from '../../actions/user';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +34,11 @@ const LOGIN = gql`
     mutation login($user: String!, $password: String!){
         login(username: $user, password: $password) {
             jwt
+            user {
+              username
+              rolle
+              id
+            }
         }
     }
 `;
@@ -40,7 +46,15 @@ const LOGIN = gql`
 export default function SignIn() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+
+  // get referer, exclude all redirects to /login - if no history use home (/)
+  const referer = useSelector(
+    (state) => {
+      const tmp = state.navigation.history.filter((l) => l !== '/login');
+      return last(tmp);
+    },
+  ) || '/';
+
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
 
@@ -50,11 +64,17 @@ export default function SignIn() {
     login({ variables: { user, password } })
       .then((res) => {
         if (res) {
-          dispatch(setJWT({ jwt: res.data.login.jwt }));
-          history.push('/');
+          dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
+
+          // schreiber direkt auf ihre Seite weiterleiten
+          if (res.data.login.user.rolle === 'schreiber') {
+            dispatch(push('/ergebnisse/schreiber'));
+          } else {
+            dispatch(push(referer));
+          }
         }
       });
-  }, [login, history, dispatch, user, password]);
+  }, [login, dispatch, user, password, referer]);
 
   return (
     <Container component="main" maxWidth="xs">
