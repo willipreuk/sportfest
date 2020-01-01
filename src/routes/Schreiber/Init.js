@@ -4,7 +4,9 @@ import { useQuery } from '@apollo/react-hooks';
 import {
   Select, MenuItem, makeStyles, Typography, Container, Button,
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { setDisziplin as dispatchDisziplin, setKlasse as dispatchKlasse } from '../../actions/schreiber';
 
 const GET_KLASSEN_DISZIPLINEN = gql`
   query {
@@ -43,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const { data, loading } = useQuery(GET_KLASSEN_DISZIPLINEN);
+  const dispatch = useDispatch();
   const [klasse, setKlasse] = useState(1);
   const [disziplin, setDisziplin] = useState(1);
 
@@ -74,7 +77,14 @@ export default () => {
           <MenuItem key={k.id} value={k.id}>{`${k.stufe}/${k.name}`}</MenuItem>
         ))}
       </Select>
-      <Button variant="contained" color="primary">
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          dispatch(dispatchDisziplin(disziplin));
+          dispatch(dispatchKlasse(klasse));
+        }}
+      >
         Bestätigen
       </Button>
     </Container>

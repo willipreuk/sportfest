@@ -5,7 +5,7 @@ import Init from './Init';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -25,10 +25,14 @@ export default () => {
         <Typography component="h1" variant="h4">
           {`Sportfest ${new Date().getFullYear()}`}
         </Typography>
-        <Typography variant="h5" className={classes.heading}>
-          Giebichenstein-Gymnasium &quot;Thomas Müntzer&quot;
-        </Typography>
-        {!disziplin && !klasse ? <Init /> : null}
+        {!disziplin || !klasse ? (
+          <>
+            <Typography variant="h5" className={classes.heading}>
+            Giebichenstein-Gymnasium &quot;Thomas Müntzer&quot;
+            </Typography>
+            <Init />
+          </>
+        ) : null}
       </div>
     </Container>
   );
