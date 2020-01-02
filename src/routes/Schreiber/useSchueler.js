@@ -28,6 +28,7 @@ const GET_SCHUELER = gql`
     disziplin(id: $disziplin) {
       name
       best
+      einheit
     }
   }
 `;

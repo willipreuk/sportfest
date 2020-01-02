@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Container, makeStyles, Paper, TextField, Typography, Button,
+  Container, makeStyles, Paper, Typography, Button, List, ListItem, InputAdornment, OutlinedInput,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
   backButton: {
     marginRight: theme.spacing(2),
   },
+  list: {
+    width: '100%',
+    textAlign: 'center',
+  },
 }));
 
 export default () => {
@@ -36,7 +40,6 @@ export default () => {
   } = useSchueler();
 
   if (loading || schueler.length === 0) return <LoadingSpinner />;
-
   const currentSchueler = schueler[counter];
   return (
     <>
@@ -47,11 +50,16 @@ export default () => {
         <Paper className={classes.paper}>
           <Typography className={classes.heading} variant="h6">Wert eintragen</Typography>
           <Typography>{`${currentSchueler.vorname} ${currentSchueler.nachname}`}</Typography>
-          <TextField
+          <OutlinedInput
             className={classes.input}
-            type="number"
             value={value}
+            type="number"
             onChange={(e) => setValue(e.target.value)}
+            endAdornment={<InputAdornment position="end">{disziplin.einheit}</InputAdornment>}
+            inputProps={{
+              'aria-label': disziplin.einheit,
+            }}
+            labelWidth={0}
           />
           <br />
           <Button
@@ -71,8 +79,20 @@ export default () => {
               setValue('0');
             }}
           >
-            Nächster
+            Weiter
           </Button>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Typography variant="h6">Bisherige Versuche</Typography>
+          <List>
+            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography> : null}
+            {currentSchueler.ergebnisseSchueler.map((e, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <ListItem key={`${e}+${i}`}>
+                <Typography>{`${i + 1}. Versuch ${e} ${disziplin.einheit}`}</Typography>
+              </ListItem>
+            ))}
+          </List>
         </Paper>
       </Container>
     </>

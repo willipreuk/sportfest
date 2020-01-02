@@ -12,6 +12,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: autoMergeLevel2,
+  blacklist: ['schreiber'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(history));

@@ -28,7 +28,7 @@ export default (s = initialState, action) => {
       break;
     }
     case SCHREIBER_DEC_COUNTER: {
-      if ((s.counter - 1) <= 0) {
+      if ((s.counter - 1) < 0) {
         state.counter = s.schueler.length - 1;
       } else {
         state.counter = s.counter - 1;
