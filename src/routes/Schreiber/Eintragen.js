@@ -1,31 +1,9 @@
 import React, { useState } from 'react';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
-import { useSelector } from 'react-redux';
 import {
   Container, makeStyles, Paper, TextField, Typography, Button,
 } from '@material-ui/core';
 import LoadingSpinner from '../../components/LoadingSpinner';
-
-const GET_SCHUELER = gql`
-  query($klasse: Int!, $disziplin: Int!) {
-     allSchueler(idklasse: $klasse) {
-        schueler {
-          vorname
-          nachname
-          id
-          status
-        }
-     }
-     disziplin(id: $disziplin) {
-        name
-     }
-     klasse(id: $klasse) {
-        stufe
-        name
-     }
-  }
-`;
+import useSchueler from './useSchueler';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,21 +26,23 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { klasse, disziplin } = useSelector((state) => state.schreiber);
-  const { data, loading } = useQuery(GET_SCHUELER, { variables: { klasse, disziplin } });
-  const [counter, setCounter] = useState(0);
   const [value, setValue] = useState('0');
+  const {
+    counter, setCounter, loading, schueler, setErgebnis, disziplin,
+  } = useSchueler();
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || schueler.length === 0) return <LoadingSpinner />;
 
+  const currentSchueler = schueler[counter];
   return (
     <>
-      <Typography>{`Disziplin: ${data.disziplin.name}`}</Typography>
-      <Typography>{`Klasse: ${data.klasse.stufe}/${data.klasse.name}`}</Typography>
+      <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
+      <Typography>{`Klasse: ${currentSchueler.klasse.stufe}/${currentSchueler.klasse.name}`}</Typography>
+      <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
       <Container maxWidth="xs">
         <Paper className={classes.paper}>
           <Typography className={classes.heading} variant="h6">Wert eintragen</Typography>
-          <Typography>{`${data.allSchueler.schueler[counter].vorname} ${data.allSchueler.schueler[counter].nachname}`}</Typography>
+          <Typography>{`${currentSchueler.vorname} ${currentSchueler.nachname}`}</Typography>
           <TextField
             className={classes.input}
             type="number"
@@ -81,7 +61,10 @@ export default () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => setCounter((prevState) => prevState + 1)}
+            onClick={() => {
+              setErgebnis(currentSchueler.id, value);
+              setValue('0');
+            }}
           >
             Nächster
           </Button>
