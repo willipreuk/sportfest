@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import {
   Container, makeStyles, Paper, TextField, Typography, Button,
 } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
+import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,9 +28,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const { schueler, counter } = useSelector((state) => state.schreiber);
+  const dispatch = useDispatch();
   const [value, setValue] = useState('0');
   const {
-    counter, setCounter, loading, schueler, setErgebnis, disziplin,
+    loading, disziplin,
   } = useSchueler();
 
   if (loading || schueler.length === 0) return <LoadingSpinner />;
@@ -54,7 +58,7 @@ export default () => {
             variant="outlined"
             className={classes.backButton}
             disabled={counter < 1}
-            onClick={() => setCounter((prevState) => prevState - 1)}
+            onClick={() => dispatch(decCounter())}
           >
             Zurück
           </Button>
@@ -62,7 +66,8 @@ export default () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              setErgebnis(currentSchueler.id, value);
+              dispatch(setErgebnis(currentSchueler.id, value));
+              dispatch(incCounter());
               setValue('0');
             }}
           >
