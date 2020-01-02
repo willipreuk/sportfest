@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import {
-  Container, makeStyles, Paper, Typography, Button, List, ListItem, InputAdornment, OutlinedInput,
+  Container,
+  makeStyles,
+  Paper,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  InputAdornment,
+  OutlinedInput,
+  Grid,
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -18,11 +27,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(4),
   },
   input: {
-    marginBottom: theme.spacing(8),
+    marginBottom: theme.spacing(6),
     textAlign: 'center',
-  },
-  backButton: {
-    marginRight: theme.spacing(2),
   },
   list: {
     width: '100%',
@@ -46,7 +52,7 @@ export default () => {
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
       <Typography>{`Klasse: ${currentSchueler.klasse.stufe}/${currentSchueler.klasse.name}`}</Typography>
       <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
-      <Container maxWidth="xs">
+      <Container>
         <Paper className={classes.paper}>
           <Typography className={classes.heading} variant="h6">Wert eintragen</Typography>
           <Typography>{`${currentSchueler.vorname} ${currentSchueler.nachname}`}</Typography>
@@ -61,26 +67,38 @@ export default () => {
             }}
             labelWidth={0}
           />
-          <br />
-          <Button
-            variant="outlined"
-            className={classes.backButton}
-            disabled={counter < 1}
-            onClick={() => dispatch(decCounter())}
-          >
-            Zurück
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              dispatch(setErgebnis(currentSchueler.id, value));
-              dispatch(incCounter());
-              setValue('0');
-            }}
-          >
-            Weiter
-          </Button>
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={4}>
+              <Button
+                variant="outlined"
+                disabled={counter < 1}
+                onClick={() => dispatch(decCounter())}
+              >
+                Zurück
+              </Button>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Button
+                variant="outlined"
+                onClick={() => dispatch(incCounter())}
+              >
+                Überspringen
+              </Button>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  dispatch(setErgebnis(currentSchueler.id, value));
+                  dispatch(incCounter());
+                  setValue('0');
+                }}
+              >
+                Eintragen
+              </Button>
+            </Grid>
+          </Grid>
         </Paper>
         <Paper className={classes.paper}>
           <Typography variant="h6">Bisherige Versuche</Typography>

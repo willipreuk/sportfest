@@ -52,7 +52,7 @@ export default () => {
   if (loading) return <LoadingSpinner />;
 
   return (
-    <Container className={classes.container}>
+    <Container maxWidth="xs" className={classes.container}>
       <Typography>
         Wähle zuerst deine Station aus.
       </Typography>

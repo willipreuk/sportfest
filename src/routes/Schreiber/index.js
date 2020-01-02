@@ -21,7 +21,7 @@ export default () => {
   const { disziplin, klasse } = useSelector((state) => state.schreiber);
 
   return (
-    <Container maxWidth="xs" component="main">
+    <Container maxWidth="sm" component="main">
       <div className={classes.paper}>
         <Typography component="h1" variant="h4">
           {`Sportfest ${new Date().getFullYear()}`}
