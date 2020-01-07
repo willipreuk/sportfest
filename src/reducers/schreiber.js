@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import {
   SCHREIBER_DEC_COUNTER,
-  SCHREIBER_INC_COUNTER,
+  SCHREIBER_INC_COUNTER, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN,
   SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
@@ -43,6 +43,11 @@ export default (s = initialState, action) => {
         action.payload.ergebnis,
       ];
       state.schueler[i].versuch = state.schueler[i].ergebnisseSchueler.length;
+      break;
+    }
+    case SCHREIBER_SET_CURRENT_SCHUELER: {
+      const index = s.schueler.findIndex((schueler) => schueler.id === action.payload);
+      state.counter = index || 0;
       break;
     }
     default: return s;

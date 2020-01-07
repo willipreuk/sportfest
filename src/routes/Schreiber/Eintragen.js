@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
 import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
+import SchuelerSelect from './SchuelerSelect';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -68,7 +69,10 @@ export default () => {
             labelWidth={0}
           />
           <Grid container spacing={2}>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={5}>
+              <SchuelerSelect />
+            </Grid>
+            <Grid item xs={12} md={2}>
               <Button
                 variant="outlined"
                 disabled={counter < 1}
@@ -77,7 +81,7 @@ export default () => {
                 Zurück
               </Button>
             </Grid>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={3}>
               <Button
                 variant="outlined"
                 onClick={() => dispatch(incCounter())}
@@ -85,7 +89,7 @@ export default () => {
                 Überspringen
               </Button>
             </Grid>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={2}>
               <Button
                 variant="contained"
                 color="primary"
