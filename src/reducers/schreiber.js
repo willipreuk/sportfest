@@ -13,6 +13,35 @@ const initialState = {
   counter: 0,
 };
 
+const increment = (state) => {
+  if ((state.counter + 1) >= state.schueler.length) {
+    return 0;
+  }
+  return state.counter + 1;
+};
+
+const decrement = (state) => {
+  if ((state.counter - 1) <= 0) {
+    return state.schueler.length - 1;
+  }
+  return state.counter - 1;
+};
+
+const checkSchueler = (state, countUp) => {
+  let { counter } = state;
+  let check = true;
+
+  while (check) {
+    const newSchueler = state.schueler[counter];
+    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E') {
+      check = false;
+    } else {
+      counter = countUp ? increment(state) : decrement(state);
+    }
+  }
+  return counter;
+};
+
 export default (s = initialState, action) => {
   const state = cloneDeep(s);
 
@@ -20,19 +49,13 @@ export default (s = initialState, action) => {
     case SCHREIBER_SET_KLASSE: state.klasse = action.payload; break;
     case SCHREIBER_SET_DISZIPLIN: state.disziplin = action.payload; break;
     case SCHREIBER_INC_COUNTER: {
-      if ((s.counter + 1) >= s.schueler.length) {
-        state.counter = 0;
-      } else {
-        state.counter = s.counter + 1;
-      }
+      state.counter = increment(state);
+      state.counter = checkSchueler(state, true);
       break;
     }
     case SCHREIBER_DEC_COUNTER: {
-      if ((s.counter - 1) < 0) {
-        state.counter = s.schueler.length - 1;
-      } else {
-        state.counter = s.counter - 1;
-      }
+      state.counter = decrement(state);
+      state.counter = checkSchueler(state, false);
       break;
     }
     case SCHREIBER_SET_SCHUELER: state.schueler = action.payload; break;

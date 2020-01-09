@@ -56,7 +56,15 @@ export default () => {
       <Container>
         <Paper className={classes.paper}>
           <Typography className={classes.heading} variant="h6">Wert eintragen</Typography>
-          <Typography>{`${currentSchueler.vorname} ${currentSchueler.nachname}`}</Typography>
+          <Typography>
+            {`${currentSchueler.vorname} ${currentSchueler.nachname}`}
+            {currentSchueler.status !== null ? (
+              <span>
+                {' - '}
+                <b>KRANK</b>
+              </span>
+            ) : null}
+          </Typography>
           <OutlinedInput
             className={classes.input}
             value={value}
@@ -69,9 +77,10 @@ export default () => {
             labelWidth={0}
           />
           <Grid container spacing={2}>
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={4}>
               <SchuelerSelect />
             </Grid>
+            <Grid item xs={12} md={1} />
             <Grid item xs={12} md={2}>
               <Button
                 variant="outlined"

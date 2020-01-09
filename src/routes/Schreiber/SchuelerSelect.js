@@ -47,7 +47,7 @@ export default () => {
         onClose={() => setAnchorEl(null)}
       >
         {data.allSchueler.schueler.map((s) => (
-          <MenuItem onClick={handleClick(s.id)}>{`${s.vorname} ${s.nachname}`}</MenuItem>
+          <MenuItem key={s.id} onClick={handleClick(s.id)}>{`${s.vorname} ${s.nachname}`}</MenuItem>
         ))}
       </Menu>
     </>
