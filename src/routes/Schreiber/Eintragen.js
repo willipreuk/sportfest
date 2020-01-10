@@ -48,6 +48,7 @@ export default () => {
 
   if (loading || schueler.length === 0) return <LoadingSpinner />;
   const currentSchueler = schueler[counter];
+  // TODO: falls erster Schüler krank, ausblenden
   return (
     <>
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
