@@ -13,30 +13,33 @@ const initialState = {
   counter: 0,
 };
 
-const increment = (state) => {
-  if ((state.counter + 1) >= state.schueler.length) {
+const increment = (length) => (counter) => {
+  if ((counter + 1) >= length) {
     return 0;
   }
-  return state.counter + 1;
+  return counter + 1;
 };
 
-const decrement = (state) => {
-  if ((state.counter - 1) <= 0) {
-    return state.schueler.length - 1;
+const decrement = (length) => (counter) => {
+  if ((counter - 1) < 0) {
+    return length - 1;
   }
-  return state.counter - 1;
+  return counter - 1;
 };
 
-const checkSchueler = (state, countUp) => {
-  let { counter } = state;
+const checkSchueler = (s, count) => {
+  const state = cloneDeep(s);
   let check = true;
+
+  state.counter = count(s.counter);
+  let { counter } = state;
 
   while (check) {
     const newSchueler = state.schueler[counter];
     if (newSchueler.versuch !== 3 && newSchueler.status !== 'E') {
       check = false;
     } else {
-      counter = countUp ? increment(state) : decrement(state);
+      counter = count(counter);
     }
   }
   return counter;
@@ -49,13 +52,11 @@ export default (s = initialState, action) => {
     case SCHREIBER_SET_KLASSE: state.klasse = action.payload; break;
     case SCHREIBER_SET_DISZIPLIN: state.disziplin = action.payload; break;
     case SCHREIBER_INC_COUNTER: {
-      state.counter = increment(state);
-      state.counter = checkSchueler(state, true);
+      state.counter = checkSchueler(state, increment(state.schueler.length));
       break;
     }
     case SCHREIBER_DEC_COUNTER: {
-      state.counter = decrement(state);
-      state.counter = checkSchueler(state, false);
+      state.counter = checkSchueler(state, decrement(state.schueler.length));
       break;
     }
     case SCHREIBER_SET_SCHUELER: state.schueler = action.payload; break;
@@ -70,7 +71,7 @@ export default (s = initialState, action) => {
     }
     case SCHREIBER_SET_CURRENT_SCHUELER: {
       const index = s.schueler.findIndex((schueler) => schueler.id === action.payload);
-      state.counter = index || 0;
+      state.counter = index === -1 ? 0 : index;
       break;
     }
     default: return s;
