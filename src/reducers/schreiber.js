@@ -77,7 +77,19 @@ export default (s = initialState, action) => {
       state.counter = checkSchueler(state, decrement(state.schueler.length));
       break;
     }
-    case SCHREIBER_SET_SCHUELER: state.schueler = action.payload; break;
+    case SCHREIBER_SET_SCHUELER: {
+      state.schueler = action.payload;
+
+      let check = true;
+      while (check) {
+        if (state.schueler[state.counter].status === 'E') {
+          state.counter += 1;
+        } else {
+          check = false;
+        }
+      }
+      break;
+    }
     case SCHREIBER_UPDATE_ERGEBNIS: {
       const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
       state.schueler[i].ergebnisseSchueler = [

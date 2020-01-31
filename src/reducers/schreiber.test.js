@@ -182,6 +182,24 @@ describe('schreiber resolver', () => {
         finished: false,
       });
     });
+    it('should inc counter if first schueler status = E', () => {
+      expect.assertions(1);
+      const schueler2 = [{
+        status: 'E', versuch: 0, id: 1, ergebnisseSchueler: [],
+      }, {
+        status: null, versuch: 0, id: 2, ergebnisseSchueler: [],
+      }];
+      expect(schreiber(
+        undefined,
+        { type: SCHREIBER_SET_SCHUELER, payload: schueler2 },
+      )).toStrictEqual({
+        klasse: null,
+        disziplin: null,
+        schueler: schueler2,
+        counter: 1,
+        finished: false,
+      });
+    });
   });
   describe('action SCHREIBER_INC_COUNTER', () => {
     it('should increment counter', () => {
