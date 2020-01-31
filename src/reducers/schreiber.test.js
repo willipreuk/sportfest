@@ -16,6 +16,7 @@ describe('schreiber resolver', () => {
       disziplin: null,
       schueler: [],
       counter: 0,
+      finished: false,
     });
   });
   describe('utils', () => {
@@ -45,8 +46,35 @@ describe('schreiber resolver', () => {
         expect(counter).toStrictEqual(3);
       });
     });
+    describe('checkFinished', () => {
+      const checkFinished = __get__('checkFinished');
+      it('should return false on versuch < 3', () => {
+        expect.assertions(1);
+        const schueler = [{ status: null, versuch: 1 }, { status: null, versuch: 2 }];
+        expect(checkFinished(schueler)).toBe(false);
+      });
+      it('should return true on versuch = 3', () => {
+        expect.assertions(1);
+        const schueler = [{ status: null, versuch: 3 }, { status: null, versuch: 3 }];
+        expect(checkFinished(schueler)).toBe(true);
+      });
+      it('should exclude status E', () => {
+        expect.assertions(1);
+        const schueler = [{ status: 'E', versuch: 3 }, { status: 'E', versuch: 2 }];
+        expect(checkFinished(schueler)).toBe(true);
+      });
+    });
     describe('check schueler', () => {
       const checkSchueler = __get__('checkSchueler');
+
+      it('should not iterate more than schueler length', () => {
+        expect.assertions(1);
+        const schueler = [{ status: 'E', versuch: 1 }, { status: 'E', versuch: 1 }];
+        expect(checkSchueler(
+          { counter: 0, schueler },
+          increment(schueler.length),
+        )).toStrictEqual(0);
+      }, 1);
 
       it('should distinguish direction', () => {
         expect.assertions(2);
@@ -115,6 +143,7 @@ describe('schreiber resolver', () => {
           disziplin: null,
           schueler: [],
           counter: 0,
+          finished: false,
         },
       );
     });
@@ -128,6 +157,7 @@ describe('schreiber resolver', () => {
           disziplin: 1,
           schueler: [],
           counter: 0,
+          finished: false,
         },
       );
     });
@@ -149,6 +179,7 @@ describe('schreiber resolver', () => {
         disziplin: null,
         schueler,
         counter: 0,
+        finished: false,
       });
     });
   });
