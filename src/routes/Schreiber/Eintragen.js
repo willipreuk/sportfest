@@ -16,6 +16,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
 import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
+import Finished from './Finished';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { schueler, counter } = useSelector((state) => state.schreiber);
+  const { schueler, counter, finished } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
   const [value, setValue] = useState('0');
   const {
@@ -49,6 +50,9 @@ export default () => {
   if (loading || schueler.length === 0) return <LoadingSpinner />;
   const currentSchueler = schueler[counter];
   // TODO: falls erster Schüler krank, ausblenden
+
+  if (finished) return <Finished />;
+
   return (
     <>
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
