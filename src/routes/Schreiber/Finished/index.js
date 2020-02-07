@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -8,12 +9,28 @@ import {
   TableRow,
   Table,
   TableHead,
-  TableBody,
+  TableBody, DialogActions, makeStyles,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import useSubmit from './useSubmit';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+
+const useStyles = makeStyles((theme) => ({
+  table: {
+    marginBottom: theme.spacing(2),
+  },
+  header: {
+    fontWeight: 700,
+  },
+}));
 
 export default () => {
+  const classes = useStyles();
   const { schueler } = useSelector((state) => state.schreiber);
+  const { submit, loading } = useSubmit();
+
+  if (loading) return <LoadingSpinner />;
+
   return (
     <Dialog open>
       <DialogTitle>Station abgeschlossen</DialogTitle>
@@ -22,9 +39,9 @@ export default () => {
           Alle Schüler, welche nicht krank sind haben jetzt 3 Versuche absolviert.
           Unten werden die einzelnen Werte noch einmal angezeigt.
         </DialogContentText>
-        <Table>
+        <Table className={classes.table}>
           <TableHead>
-            <TableRow>
+            <TableRow className={classes.header}>
               <TableCell>Name</TableCell>
               <TableCell>1. Versuch</TableCell>
               <TableCell>2. Versuch</TableCell>
@@ -48,6 +65,11 @@ export default () => {
           </TableBody>
         </Table>
       </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={() => submit(schueler)}>
+          Abschicken
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

@@ -40,11 +40,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { schueler, counter, finished } = useSelector((state) => state.schreiber);
+  const {
+    schueler, counter, finished, disziplin,
+  } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
   const [value, setValue] = useState('0');
   const {
-    loading, disziplin,
+    loading,
   } = useSchueler();
 
   if (loading || schueler.length === 0) return <LoadingSpinner />;
