@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 import schreiber, { __get__ } from './schreiber';
 import {
   SCHREIBER_DEC_COUNTER,
-  SCHREIBER_INC_COUNTER, SCHREIBER_SET_CURRENT_SCHUELER,
+  SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN,
   SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
@@ -16,6 +16,7 @@ describe('schreiber resolver', () => {
       disziplin: null,
       schueler: [],
       counter: 0,
+      finished: false,
     });
   });
   describe('utils', () => {
@@ -45,8 +46,35 @@ describe('schreiber resolver', () => {
         expect(counter).toStrictEqual(3);
       });
     });
+    describe('checkFinished', () => {
+      const checkFinished = __get__('checkFinished');
+      it('should return false on versuch < 3', () => {
+        expect.assertions(1);
+        const schueler = [{ status: null, versuch: 1 }, { status: null, versuch: 2 }];
+        expect(checkFinished(schueler)).toBe(false);
+      });
+      it('should return true on versuch = 3', () => {
+        expect.assertions(1);
+        const schueler = [{ status: null, versuch: 3 }, { status: null, versuch: 3 }];
+        expect(checkFinished(schueler)).toBe(true);
+      });
+      it('should exclude status E', () => {
+        expect.assertions(1);
+        const schueler = [{ status: 'E', versuch: 3 }, { status: 'E', versuch: 2 }];
+        expect(checkFinished(schueler)).toBe(true);
+      });
+    });
     describe('check schueler', () => {
       const checkSchueler = __get__('checkSchueler');
+
+      it('should not iterate more than schueler length', () => {
+        expect.assertions(1);
+        const schueler = [{ status: 'E', versuch: 1 }, { status: 'E', versuch: 1 }];
+        expect(checkSchueler(
+          { counter: 0, schueler },
+          increment(schueler.length),
+        )).toStrictEqual(0);
+      }, 1);
 
       it('should distinguish direction', () => {
         expect.assertions(2);
@@ -115,6 +143,7 @@ describe('schreiber resolver', () => {
           disziplin: null,
           schueler: [],
           counter: 0,
+          finished: false,
         },
       );
     });
@@ -128,6 +157,7 @@ describe('schreiber resolver', () => {
           disziplin: 1,
           schueler: [],
           counter: 0,
+          finished: false,
         },
       );
     });
@@ -149,6 +179,25 @@ describe('schreiber resolver', () => {
         disziplin: null,
         schueler,
         counter: 0,
+        finished: false,
+      });
+    });
+    it('should inc counter if first schueler status = E', () => {
+      expect.assertions(1);
+      const schueler2 = [{
+        status: 'E', versuch: 0, id: 1, ergebnisseSchueler: [],
+      }, {
+        status: null, versuch: 0, id: 2, ergebnisseSchueler: [],
+      }];
+      expect(schreiber(
+        undefined,
+        { type: SCHREIBER_SET_SCHUELER, payload: schueler2 },
+      )).toStrictEqual({
+        klasse: null,
+        disziplin: null,
+        schueler: schueler2,
+        counter: 1,
+        finished: false,
       });
     });
   });
@@ -221,6 +270,21 @@ describe('schreiber resolver', () => {
         { schueler, counter: 1 },
         { type: SCHREIBER_SET_CURRENT_SCHUELER, payload: 55 },
       )).toStrictEqual({ schueler, counter: 0 });
+    });
+  });
+  describe('action SCHREIBER_RESET', () => {
+    it('should return initial state', () => {
+      expect.assertions(1);
+      expect(schreiber(
+        { schueler, counter: 1, finished: true },
+        { type: SCHREIBER_RESET },
+      )).toStrictEqual({
+        klasse: null,
+        disziplin: null,
+        schueler: [],
+        counter: 0,
+        finished: false,
+      });
     });
   });
 });

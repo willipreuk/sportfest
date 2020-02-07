@@ -20,7 +20,9 @@ const GET_KLASSEN_DISZIPLINEN = gql`
     allDisziplin {
       disziplinen { 
         name
+        einheit
         id
+        best
       }
     }
   }
@@ -81,7 +83,9 @@ export default () => {
         variant="contained"
         color="primary"
         onClick={() => {
-          dispatch(dispatchDisziplin(disziplin));
+          dispatch(dispatchDisziplin(
+            data.allDisziplin.disziplinen.find((d) => d.id === disziplin),
+          ));
           dispatch(dispatchKlasse(klasse));
         }}
       >

@@ -25,21 +25,20 @@ const GET_SCHUELER = gql`
         id
       }
     }
-    disziplin(id: $disziplin) {
-      name
-      best
-      einheit
-    }
   }
 `;
 
 export default () => {
-  const { klasse, disziplin } = useSelector((state) => state.schreiber);
+  const { klasse, disziplin, schueler } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
-  const { data, loading } = useQuery(GET_SCHUELER, { variables: { klasse, disziplin } });
+  const { data, loading } = useQuery(
+    GET_SCHUELER,
+    { variables: { klasse, disziplin: disziplin.id } },
+  );
 
   useEffect(() => {
     if (!data) return;
+    if (schueler.length > 0) return;
 
     const res = data.allSchueler.schueler.map((s) => {
       const tmp = { ...s };
@@ -56,8 +55,7 @@ export default () => {
     dispatch(setSchueler(res));
   }, [data, dispatch]);
 
-  const disziplinData = data && data.disziplin;
   return {
-    loading, disziplin: disziplinData,
+    loading,
   };
 };
