@@ -1,9 +1,10 @@
 import { useCallback } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { max, min } from 'lodash';
 import useLoading from '../../../hooks/useLoading';
+import { resetSchreiber } from '../../../actions/schreiber';
 
 const UPDATE_ERGEBNIS = gql`
   mutation UpdateErgebnis($wert: Float, $idschueler: Int, $iddisziplin: Int, $allWerte: String) {
@@ -17,6 +18,7 @@ export default () => {
   const { disziplin } = useSelector((state) => state.schreiber);
   const { loading, setLoading } = useLoading();
   const [updateErgebnis] = useMutation(UPDATE_ERGEBNIS);
+  const dispatch = useDispatch();
 
   const submit = useCallback((schueler) => {
     setLoading(true);
@@ -34,6 +36,7 @@ export default () => {
         });
       });
       await Promise.all(promises);
+      dispatch(resetSchreiber());
       setLoading(false);
     })();
   }, [disziplin, updateErgebnis, setLoading]);

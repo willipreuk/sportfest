@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash';
 import schreiber, { __get__ } from './schreiber';
 import {
   SCHREIBER_DEC_COUNTER,
-  SCHREIBER_INC_COUNTER, SCHREIBER_SET_CURRENT_SCHUELER,
+  SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN,
   SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
@@ -270,6 +270,21 @@ describe('schreiber resolver', () => {
         { schueler, counter: 1 },
         { type: SCHREIBER_SET_CURRENT_SCHUELER, payload: 55 },
       )).toStrictEqual({ schueler, counter: 0 });
+    });
+  });
+  describe('action SCHREIBER_RESET', () => {
+    it('should return initial state', () => {
+      expect.assertions(1);
+      expect(schreiber(
+        { schueler, counter: 1, finished: true },
+        { type: SCHREIBER_RESET },
+      )).toStrictEqual({
+        klasse: null,
+        disziplin: null,
+        schueler: [],
+        counter: 0,
+        finished: false,
+      });
     });
   });
 });

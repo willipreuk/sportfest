@@ -29,7 +29,7 @@ const GET_SCHUELER = gql`
 `;
 
 export default () => {
-  const { klasse, disziplin } = useSelector((state) => state.schreiber);
+  const { klasse, disziplin, schueler } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
   const { data, loading } = useQuery(
     GET_SCHUELER,
@@ -38,6 +38,7 @@ export default () => {
 
   useEffect(() => {
     if (!data) return;
+    if (schueler.length > 0) return;
 
     const res = data.allSchueler.schueler.map((s) => {
       const tmp = { ...s };
