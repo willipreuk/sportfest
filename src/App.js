@@ -26,17 +26,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const store = configureStore();
+const configuredStore = configureStore();
+export const { store } = configuredStore;
 
 function App() {
   const classes = useStyles();
   return (
-    <Provider store={store.store}>
-      <PersistGate loading={<LoadingSpinner />} persistor={store.persistor}>
+    <Provider store={configuredStore.store}>
+      <PersistGate loading={<LoadingSpinner />} persistor={configuredStore.persistor}>
         <div className={classes.root}>
           <CssBaseline />
           <ApolloProvider client={ApolloClient}>
-            <ConnectedRouter history={store.history}>
+            <ConnectedRouter history={configuredStore.history}>
               <Switch>
                 <Route path="/login">
                   <Login />
