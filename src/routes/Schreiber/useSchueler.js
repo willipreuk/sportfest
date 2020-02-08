@@ -53,7 +53,7 @@ export default () => {
       return tmp;
     });
     dispatch(setSchueler(res));
-  }, [data, dispatch]);
+  }, [data, dispatch, schueler.length]);
 
   return {
     loading,

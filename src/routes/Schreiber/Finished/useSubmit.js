@@ -39,6 +39,6 @@ export default () => {
       dispatch(resetSchreiber());
       setLoading(false);
     })();
-  }, [disziplin, updateErgebnis, setLoading]);
+  }, [disziplin, updateErgebnis, setLoading, dispatch]);
   return { submit, loading };
 };
