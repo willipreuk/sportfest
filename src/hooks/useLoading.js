@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default () => {
-  const [loading, setRealLoading] = useState(false);
+  const [loading, setRealLoading] = useState(true);
   const [tmpLoading, setLoading] = useState(false);
 
   useEffect(() => { // eslint-disable-line consistent-return
