@@ -15,10 +15,11 @@ import {
   Typography,
 } from '@material-ui/core';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { push } from 'connected-react-router';
 import clsx from 'clsx';
 import useLoading from '../../../hooks/useLoading';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -30,6 +31,16 @@ const USER = gql`
       rolle
       id
       username
+    }
+  }
+`;
+
+const UPDATE_USER = gql`
+  mutation UpdateUser($id: Int!, $username: String, $password: String, $role: Rolle) {
+    updateUser(id: $id, username: $username, password: $password, rolle: $role) {
+      id
+      username
+      rolle
     }
   }
 `;
@@ -58,11 +69,12 @@ export default () => {
   useEffect(() => { dispatch(setPageName(`Nutzer ${queryUser} bearbeiten`)); }, [dispatch, queryUser]);
 
   const { data, loading: tmpLoading } = useQuery(USER, { variables: { username: queryUser } });
+  const [updateUser] = useMutation(UPDATE_USER);
   const { loading, setLoading } = useLoading();
   useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
 
   const {
-    handleSubmit, setFieldValue, getFieldProps, errors,
+    handleSubmit, setFieldValue, getFieldProps, errors, isValid,
   } = useFormik({
     initialValues: {
       username: '',
@@ -75,11 +87,26 @@ export default () => {
         .max(32, 'Nutzername muss maximal 32 Zeichen lang sein.')
         .min(4, 'Nutzername muss mindestens 4 Zeichen lang sein.')
         .required('Nutzername muss angegeben sein'),
-      password: Yup.string(),
+      password: Yup.string()
+        .min(8, 'Passwort muss aus mind. 8 Zeichen bestehen.'),
       passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password')], 'Passwörter stimmen nicht überein'),
+        .when('password', {
+          is: (val) => (!!(val && val.length > 0)),
+          then: Yup.string()
+            .required('Bitte wiederholen Sie das Passwort')
+            .oneOf([Yup.ref('password')], 'Passwörter stimmen nicht überein'),
+        }),
     }),
-    onSubmit: (values) => console.log(values),
+    onSubmit: async (values) => {
+      setLoading(true);
+      updateUser({ variables: { id: data.user.id, ...values } })
+        .then((res) => {
+          setLoading(false);
+          setFieldValue('password', '');
+          setFieldValue('passwordConfirmation', '');
+          dispatch(push(res.data.updateUser.username));
+        });
+    },
   });
   useEffect(() => {
     if (!data) return;
@@ -123,25 +150,30 @@ export default () => {
         <Grid item md={6} xs={12}>
           <Paper className={classes.root}>
             <Typography variant="h6">Passwort ändern</Typography>
-            <FormControl className={classes.input}>
+            <FormControl className={classes.input} error={!!errors.password}>
               <InputLabel htmlFor="password">Passwort</InputLabel>
               <Input
                 id="password"
+                type="password"
                 {...getFieldProps('password')}
               />
+              <FormHelperText id="password-helper-text">{errors.password}</FormHelperText>
             </FormControl>
-            <FormControl className={classes.input}>
+            <FormControl className={classes.input} error={!!errors.passwordConfirmation}>
               <InputLabel htmlFor="passwordConfirmation">Passwort wiederholen</InputLabel>
               <Input
                 id="passwordConfirmation"
+                type="password"
+                aria-describedby="passwordConfirmation-helper-text"
                 {...getFieldProps('passwordConfirmation')}
               />
+              <FormHelperText id="passwordConfirmation-helper-text">{errors.passwordConfirmation}</FormHelperText>
             </FormControl>
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={clsx(classes.root, classes.submitBox)}>
-            <Button color="primary" type="submit">Abschicken</Button>
+            <Button color="primary" type="submit" disabled={!isValid}>Abschicken</Button>
           </Paper>
         </Grid>
       </Grid>
