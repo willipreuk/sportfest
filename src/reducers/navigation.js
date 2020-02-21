@@ -1,5 +1,6 @@
 import { cloneDeep, drop } from 'lodash';
 import { LOCATION_CHANGE } from 'connected-react-router';
+import { NAVIGATION_SET_PAGE_NAME } from '../actions/types';
 
 const initialState = {
   name: '',
@@ -27,6 +28,10 @@ export default (s = initialState, action) => {
         state.history = drop(s.history, 1);
       }
       state.history = [...state.history, pathname];
+      break;
+    }
+    case NAVIGATION_SET_PAGE_NAME: {
+      state.name = action.payload;
       break;
     }
     default: return s;

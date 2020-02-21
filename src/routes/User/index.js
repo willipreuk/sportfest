@@ -3,10 +3,13 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { IconButton, makeStyles } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import useLoading from '../../hooks/useLoading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
+
 
 const ALL_USER = gql`
   query User {
@@ -34,6 +37,7 @@ const columns = [
 
 export default () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { loading: tmpLoading, data } = useQuery(ALL_USER);
   const { loading, setLoading } = useLoading();
   useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
@@ -50,7 +54,14 @@ export default () => {
       rowsPerPageOptions={[5, 10, 25]}
       rows={data.allUser.map((u) => {
         const user = { ...u };
-        user.edit = <IconButton className={classes.checkbox}><Edit /></IconButton>;
+        user.edit = (
+          <IconButton
+            className={classes.checkbox}
+            onClick={() => dispatch(push(`/user/${u.username}`))}
+          >
+            <Edit />
+          </IconButton>
+        );
         return user;
       })}
       onChangeRows={onChangeRows}
