@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { IconButton, makeStyles } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import { Edit, Delete } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import Filter from './CreateButton';
@@ -22,6 +22,14 @@ const ALL_USER = gql`
   }
 `;
 
+const DELETE_USER = gql`
+  mutation DeleteUser($id: Int!) {
+    deleteUser(id: $id) {
+      id
+    }
+  } 
+`;
+
 const useStyles = makeStyles(() => ({
   checkbox: {
     paddingTop: 0,
@@ -30,7 +38,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const columns = [
-  { id: 'edit', label: 'Bearbeiten', minWidth: 10 },
+  { id: 'actions', label: '', minWidth: 10 },
   { id: 'id', label: 'ID', minWidth: 100 },
   { id: 'username', label: 'Nutzername', minWidth: 100 },
   { id: 'rolle', label: 'Rolle', minWidth: 100 },
@@ -40,6 +48,7 @@ export default () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { loading: tmpLoading, data } = useQuery(ALL_USER);
+  const [deleteUser] = useMutation(DELETE_USER, { refetchQueries: ['User'] });
   const { loading, setLoading } = useLoading();
   useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
   const {
@@ -55,13 +64,21 @@ export default () => {
       rowsPerPageOptions={[5, 10, 25]}
       rows={data.allUser.map((u) => {
         const user = { ...u };
-        user.edit = (
-          <IconButton
-            className={classes.checkbox}
-            onClick={() => dispatch(push(`/user/${u.username}`))}
-          >
-            <Edit />
-          </IconButton>
+        user.actions = (
+          <>
+            <IconButton
+              className={classes.checkbox}
+              onClick={() => dispatch(push(`/user/${u.username}`))}
+            >
+              <Edit />
+            </IconButton>
+            <IconButton
+              className={classes.checkbox}
+              onClick={() => deleteUser({ variables: { id: user.id } })}
+            >
+              <Delete />
+            </IconButton>
+          </>
         );
         return user;
       })}
