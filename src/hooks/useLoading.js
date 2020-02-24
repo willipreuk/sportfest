@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default () => {
+  // TODO: realLoading initialState false
   const [loading, setRealLoading] = useState(true);
   const [tmpLoading, setLoading] = useState(false);
 

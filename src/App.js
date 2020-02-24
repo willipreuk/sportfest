@@ -16,6 +16,7 @@ import Profil from './routes/Profil';
 import Schueler from './routes/Schueler';
 import User from './routes/User';
 import UserEdit from './routes/User/Edit';
+import UserCreate from './routes/User/Create';
 import Schreiber from './routes/Schreiber';
 import ApolloClient from './ApolloClient';
 import configureStore from './store';
@@ -51,6 +52,7 @@ function App() {
                 <PrivateRoute Component={Profil} path="/profil" />
                 <PrivateRoute Component={Schueler} path="/schueler" />
                 <PrivateRoute Component={User} path="/user" exact />
+                <PrivateRoute Component={UserCreate} path="/user/create" />
                 <PrivateRoute Component={UserEdit} path="/user/:username" />
                 <PrivateRoute Component={Schreiber} path="/ergebnisse/schreiber" layout={false} reqRole="none" />
               </Switch>

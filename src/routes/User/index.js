@@ -5,6 +5,7 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
+import Filter from './CreateButton';
 import useLoading from '../../hooks/useLoading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
@@ -70,6 +71,7 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allUser.length}
+      filter={<Filter />}
     />
   );
 };
