@@ -28,9 +28,9 @@ export default () => {
   const onSubmit = useCallback(async (values) => {
     setLoading(true);
     await addDisziplin({ variables: { ...values } });
-    dispatch(push('/disziplinen'));
     setLoading(false);
-  }, [setLoading, addDisziplin]);
+    dispatch(push('/disziplinen'));
+  }, [setLoading, addDisziplin, dispatch]);
 
   if (loading) return <LoadingSpinner />;
 
