@@ -116,7 +116,14 @@ const UserForm = ({
         </Grid>
         <Grid item xs={12}>
           <Paper className={clsx(classes.root, classes.submitBox)}>
-            <Button color="primary" type="submit" disabled={!isValid}>Abschicken</Button>
+            <Button
+              color="primary"
+              type="submit"
+              variant="contained"
+              disabled={!isValid}
+            >
+              Abschicken
+            </Button>
           </Paper>
         </Grid>
       </Grid>

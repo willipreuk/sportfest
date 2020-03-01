@@ -5,11 +5,11 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
-import Filter from './CreateButton';
 import useLoading from '../../hooks/useLoading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
+import CreateButton from '../../components/CreateButton';
 
 
 const ALL_USER = gql`
@@ -88,7 +88,7 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allUser.length}
-      filter={<Filter />}
+      filter={<CreateButton path="/user/create" />}
     />
   );
 };

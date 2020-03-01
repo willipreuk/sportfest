@@ -5,6 +5,7 @@ import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import useLoading from '../../hooks/useLoading';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import CreateButton from '../../components/CreateButton';
 
 const ALL_DISZIPLINEN = gql`
   query Disziplinen($offset: Int, $limit: Int) {
@@ -49,6 +50,7 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allDisziplin.total}
+      filter={<CreateButton path="/disziplinen/create" />}
     />
   );
 };
