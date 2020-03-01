@@ -21,9 +21,9 @@ const ADD_DISZIPLIN = gql`
 
 export default () => {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(setPageName('Disziplin erstellen')); });
+  useEffect(() => { dispatch(setPageName('Disziplin erstellen')); }, [dispatch]);
   const { loading, setLoading } = useLoading();
-  const [addDisziplin] = useMutation(ADD_DISZIPLIN);
+  const [addDisziplin] = useMutation(ADD_DISZIPLIN, { refetchQueries: ['Disziplinen'] });
 
   const onSubmit = useCallback(async (values) => {
     setLoading(true);
