@@ -1,8 +1,5 @@
 import React from 'react';
-import { CssBaseline, makeStyles } from '@material-ui/core';
-import { ApolloProvider } from '@apollo/react-hooks';
 import { Route, Switch } from 'react-router-dom';
-import { ConnectedRouter } from 'connected-react-router';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './routes/Login';
 import Home from './routes/Home';
@@ -39,7 +36,6 @@ function App() {
       <PrivateRoute Component={UserEdit} path="/user/:username" />
       <PrivateRoute Component={Schreiber} path="/ergebnisse/schreiber" layout={false} reqRole="none" />
     </Switch>
-
   );
 }
 

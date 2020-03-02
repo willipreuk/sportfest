@@ -8,23 +8,20 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ConnectedRouter } from 'connected-react-router';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import configureStore from './store';
+import { store, history, persistor } from './store';
 import LoadingSpinner from './components/LoadingSpinner';
 import ApolloClient from './ApolloClient';
-
-const configuredStore = configureStore();
-export const { store } = configuredStore;
 
 serviceWorker.register();
 
 const render = (Component) => {
   ReactDOM.render(
-    <Provider store={configuredStore.store}>
-      <PersistGate loading={<LoadingSpinner />} persistor={configuredStore.persistor}>
+    <Provider store={store}>
+      <PersistGate loading={<LoadingSpinner />} persistor={persistor}>
         <div style={{ display: 'flex' }}>
           <CssBaseline />
           <ApolloProvider client={ApolloClient}>
-            <ConnectedRouter history={configuredStore.history}>
+            <ConnectedRouter history={history}>
               <Component />
             </ConnectedRouter>
           </ApolloProvider>
@@ -39,6 +36,7 @@ render(App);
 
 if (module.hot) {
   module.hot.accept('./App', () => {
+    // eslint-disable-next-line global-require
     const NextApp = require('./App').default;
     render(NextApp);
   });

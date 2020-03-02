@@ -6,7 +6,7 @@ import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import rootReducer from './reducers';
 
-const history = createBrowserHistory();
+const browserHistory = createBrowserHistory();
 
 const persistConfig = {
   key: 'root',
@@ -14,16 +14,22 @@ const persistConfig = {
   stateReconciler: hardSet,
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer(history));
+const persistedReducer = persistReducer(persistConfig, rootReducer(browserHistory));
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default () => {
-  const store = createStore(
+const exportedValues = {
+  store: null,
+  history: null,
+  persistor: null,
+};
+
+(() => {
+  exportedValues.store = createStore(
     persistedReducer,
     composeEnhancers(
       applyMiddleware(
-        routerMiddleware(history),
+        routerMiddleware(browserHistory),
       ),
     ),
   );
@@ -31,11 +37,15 @@ export default () => {
   if (process.env.NODE_ENV !== 'production') {
     if (module.hot) {
       module.hot.accept('./reducers', () => {
-        store.replaceReducer(persistedReducer);
+        exportedValues.store.replaceReducer(persistedReducer);
       });
     }
   }
 
-  const persistor = persistStore(store);
-  return { store, persistor, history };
-};
+  exportedValues.persistor = persistStore(exportedValues.store);
+  exportedValues.history = browserHistory;
+})();
+
+export const { store } = exportedValues;
+export const { history } = exportedValues;
+export const { persistor } = exportedValues;
