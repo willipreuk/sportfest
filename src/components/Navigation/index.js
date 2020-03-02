@@ -3,13 +3,11 @@ import clsx from 'clsx';
 import {
   makeStyles, AppBar, Drawer, Divider, List, Toolbar, Typography, IconButton,
 } from '@material-ui/core';
-
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { mainListItems, secondaryListItems } from './listItems';
 import logo from '../../assets/logo.jpg';
+import UserMenu from './UserMenu';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -108,6 +106,7 @@ export default () => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {pageName}
           </Typography>
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <Drawer
