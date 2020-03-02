@@ -27,6 +27,15 @@ export default () => {
       ),
     ),
   );
+
+  if (process.env.NODE_ENV !== 'production') {
+    if (module.hot) {
+      module.hot.accept('./reducers', () => {
+        store.replaceReducer(persistedReducer);
+      });
+    }
+  }
+
   const persistor = persistStore(store);
   return { store, persistor, history };
 };
