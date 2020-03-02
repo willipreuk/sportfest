@@ -1,15 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { IconButton, makeStyles } from '@material-ui/core';
-import { Edit, Delete } from '@material-ui/icons';
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import Filter from './CreateButton';
 import useLoading from '../../hooks/useLoading';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
+import CreateButton from '../../components/CreateButton';
+import EditButton from '../../components/EditButton';
+import DeleteButton from '../../components/DeleteButton';
 
 
 const ALL_USER = gql`
@@ -30,13 +28,6 @@ const DELETE_USER = gql`
   } 
 `;
 
-const useStyles = makeStyles(() => ({
-  checkbox: {
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-}));
-
 const columns = [
   { id: 'actions', label: '', minWidth: 10 },
   { id: 'id', label: 'ID', minWidth: 100 },
@@ -45,15 +36,16 @@ const columns = [
 ];
 
 export default () => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
   const { loading: tmpLoading, data } = useQuery(ALL_USER);
-  const [deleteUser] = useMutation(DELETE_USER, { refetchQueries: ['User'] });
+  const [deleteUserMutation] = useMutation(DELETE_USER, { refetchQueries: ['User'] });
   const { loading, setLoading } = useLoading();
   useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
   const {
     page, rowsPerPage, onChangeRows, onChangePage,
   } = usePagination([]);
+
+  const deleteUser = useCallback((id) => () => deleteUserMutation({ variables: { id } }),
+    [deleteUserMutation]);
 
   if (loading) return <LoadingSpinner />;
 
@@ -66,18 +58,8 @@ export default () => {
         const user = { ...u };
         user.actions = (
           <>
-            <IconButton
-              className={classes.checkbox}
-              onClick={() => dispatch(push(`/user/${u.username}`))}
-            >
-              <Edit />
-            </IconButton>
-            <IconButton
-              className={classes.checkbox}
-              onClick={() => deleteUser({ variables: { id: user.id } })}
-            >
-              <Delete />
-            </IconButton>
+            <EditButton path={`/user/${u.username}`} />
+            <DeleteButton action={deleteUser(u.id)} />
           </>
         );
         return user;
@@ -88,7 +70,7 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allUser.length}
-      filter={<Filter />}
+      filter={<CreateButton path="/user/create" />}
     />
   );
 };

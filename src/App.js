@@ -9,6 +9,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './routes/Login';
 import Home from './routes/Home';
 import Disziplinen from './routes/Disziplinen';
+import DisziplinenCreate from './routes/Disziplinen/Create';
+import DisziplinenEdit from './routes/Disziplinen/Edit';
 import Ergebnisse from './routes/Ergebnisse';
 import Klassen from './routes/Klassen';
 import Massstaebe from './routes/Massstaebe';
@@ -45,7 +47,9 @@ function App() {
                   <Login />
                 </Route>
                 <PrivateRoute Component={Home} path="/" exact />
-                <PrivateRoute Component={Disziplinen} path="/disziplinen" />
+                <PrivateRoute Component={Disziplinen} path="/disziplinen" exact />
+                <PrivateRoute Component={DisziplinenCreate} path="/disziplinen/create" />
+                <PrivateRoute Component={DisziplinenEdit} path="/disziplinen/:id" />
                 <PrivateRoute Component={Ergebnisse} path="/ergebnisse" exact />
                 <PrivateRoute Component={Klassen} path="/klassen" />
                 <PrivateRoute Component={Massstaebe} path="/massstaebe" />
