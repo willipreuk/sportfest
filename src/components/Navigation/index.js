@@ -14,7 +14,7 @@ import logo from '../../assets/logo.jpg';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: 'flex',
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  logo: {
+    maxWidth: '80%',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -115,7 +118,7 @@ export default () => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <img alt="Logo" src={logo} />
+          <img alt="Logo" src={logo} className={classes.logo} />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
