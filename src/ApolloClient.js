@@ -4,8 +4,7 @@ import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-// eslint-disable-next-line import/no-cycle
-import { store } from './App';
+import { store } from './store';
 
 const authLink = setContext((_, { headers }) => {
   const token = store.getState().user.jwt;
