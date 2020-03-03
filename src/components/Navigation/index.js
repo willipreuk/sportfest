@@ -3,18 +3,16 @@ import clsx from 'clsx';
 import {
   makeStyles, AppBar, Drawer, Divider, List, Toolbar, Typography, IconButton,
 } from '@material-ui/core';
-
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon } from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 import { mainListItems, secondaryListItems } from './listItems';
 import logo from '../../assets/logo.jpg';
+import UserMenu from './UserMenu';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: 'flex',
@@ -22,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
+  },
+  logo: {
+    maxWidth: '80%',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -105,6 +106,7 @@ export default () => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {pageName}
           </Typography>
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -115,7 +117,7 @@ export default () => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <img alt="Logo" src={logo} />
+          <img alt="Logo" src={logo} className={classes.logo} />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
