@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import useLoading from '../../hooks/useLoading';
+import EditButton from '../../components/EditButton';
+import DeleteButton from '../../components/DeleteButton';
 
 const GET_KLASSEN = gql`
   query GetKlassen($offset: Int, $limit: Int, $stufe: Int) {
@@ -19,10 +21,17 @@ const GET_KLASSEN = gql`
   }
 `;
 
+const DELETE_KLASSE = gql`
+  mutation DeleteKlasse($id: Int) {
+    deleteKlasse(id: $id) {
+      id
+    }
+  }
+`;
+
 const columns = [
   { id: 'actions', label: '', minWidth: 50 },
-  { id: 'stufe', label: 'Stufe', minWidth: 50 },
-  { id: 'name', label: '', minWidth: 50 },
+  { id: 'klasse', label: 'Klasse', minWidth: 50 },
 ];
 
 export default () => {
@@ -42,6 +51,18 @@ export default () => {
   );
   useEffect(() => { setLoading(queryLoading); }, [queryLoading, setLoading]);
 
+  const [deleteKlasse] = useMutation(DELETE_KLASSE);
+  const makeData = useCallback((klasse) => ({
+    ...klasse,
+    klasse: `${klasse.stufe}/${klasse.name}`,
+    actions: (
+      <>
+        <EditButton path={`/klassen/${klasse.id}`} />
+        <DeleteButton action={() => deleteKlasse({ variables: { id: klasse.id } })} />
+      </>
+    ),
+  }), [deleteKlasse]);
+
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -49,7 +70,7 @@ export default () => {
       labelRowsPerPage="Klassen pro Seite"
       title="Klassen"
       rowsPerPageOptions={[5, 10, 20]}
-      rows={data.allKlassen.klassen}
+      rows={data.allKlassen.klassen.map(makeData)}
       onChangeRows={onChangeRows}
       rowsPerPage={rowsPerPage}
       columns={columns}
