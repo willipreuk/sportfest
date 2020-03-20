@@ -4,12 +4,15 @@ import { Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from './Layout';
 import { logout } from '../actions/user';
+import LoadingSpinner from './LoadingSpinner';
 
 const PrivateRoute = ({
   path, Component, exact, reqRole, layout,
 }) => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.uiState.loading);
   const { jwt, rolle } = useSelector((state) => state.user);
+  console.log(loading);
   return (
     <Route
       exact={exact}
@@ -19,11 +22,14 @@ const PrivateRoute = ({
           dispatch(logout());
           return <Redirect to="/login" />;
         }
-        return layout ? (
-          <Layout>
-            <Component />
-          </Layout>
-        ) : <Component />;
+        if (layout) {
+          return (
+            <Layout>
+              {loading ? <LoadingSpinner /> : <Component />}
+            </Layout>
+          );
+        }
+        return loading ? <LoadingSpinner /> : <Component />;
       }}
     />
   );
