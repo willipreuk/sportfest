@@ -45,7 +45,7 @@ describe('navigation reducer', () => {
       expect(
         navigation(
           undefined,
-          { type: NAVIGATION_SET_PAGE_NAME, payload: test },
+          { type: NAVIGATION_SET_PAGE_NAME, payload: 'test' },
         ),
       ).toStrictEqual({
         name: 'test',
