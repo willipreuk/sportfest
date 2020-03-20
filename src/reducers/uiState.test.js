@@ -1,6 +1,6 @@
-import appState from './app-state';
+import appState from './uiState';
 import { APP_STATE_SET_LOADING } from '../actions/types';
-import { setLoading } from '../actions/app-state';
+import { setLoading } from '../actions/uiState';
 
 describe('app-state reducer', () => {
   it('should return initial state', () => {

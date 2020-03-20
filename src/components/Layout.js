@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Container } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import Navigation from './Navigation';
+import LoadingSpinner from './LoadingSpinner';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -17,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Layout = ({ children }) => {
+  const loading = useSelector((state) => state.uiState.loading);
   const classes = useStyles();
   return (
     <>
@@ -24,7 +27,7 @@ const Layout = ({ children }) => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          {children}
+          {loading ? <LoadingSpinner /> : children}
         </Container>
       </main>
     </>
