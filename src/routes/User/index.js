@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import React, { useCallback } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import useLoading from '../../hooks/useLoading';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import CreateButton from '../../components/CreateButton';
 import EditButton from '../../components/EditButton';
 import DeleteButton from '../../components/DeleteButton';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 
 const ALL_USER = gql`
@@ -36,10 +36,9 @@ const columns = [
 ];
 
 export default () => {
-  const { loading: tmpLoading, data } = useQuery(ALL_USER);
+  const loading = useSelector((state) => state.uiState.loading);
+  const { data } = useLoadingQuery(ALL_USER);
   const [deleteUserMutation] = useMutation(DELETE_USER, { refetchQueries: ['User'] });
-  const { loading, setLoading } = useLoading();
-  useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
   const {
     page, rowsPerPage, onChangeRows, onChangePage,
   } = usePagination([]);
@@ -47,7 +46,7 @@ export default () => {
   const deleteUser = useCallback((id) => () => deleteUserMutation({ variables: { id } }),
     [deleteUserMutation]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   return (
     <DataTable

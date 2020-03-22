@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  List, Typography,
-} from '@material-ui/core';
+import { List, Typography } from '@material-ui/core';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
 import { useSelector } from 'react-redux';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 import RankingItem from './RankingItem';
+import useLoadingQuery from '../../../hooks/useLoadingQuery';
 
 const AUSWERTUNG_SCHUELER = gql`
   query($von: Int!, $bis: Int!) {
@@ -42,12 +39,13 @@ const AUSWERTUNG_SCHUELER = gql`
 
 const Best = ({ geschlecht }) => {
   const filter = useSelector((state) => state.ergebnis.filter);
-  const { data, loading } = useQuery(
+  const loading = useSelector((state) => state.uiState.loading);
+  const { data } = useLoadingQuery(
     AUSWERTUNG_SCHUELER,
     { variables: { von: filter.von, bis: filter.bis } },
   );
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   const schueler = data.auswertungStufen[geschlecht].slice(0, 5);
 

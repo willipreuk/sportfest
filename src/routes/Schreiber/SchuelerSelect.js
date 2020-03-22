@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { Menu, MenuItem, Button } from '@material-ui/core';
+import { Button, Menu, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { setCurrentSchueler } from '../../actions/schreiber';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const GET_SCHUELER = gql`
   query($klasse: Int) {
@@ -19,8 +19,9 @@ const GET_SCHUELER = gql`
 
 export default () => {
   const klasse = useSelector((state) => state.schreiber.klasse);
+  const loading = useSelector((state) => state.uiState.loading);
   const dispatch = useDispatch();
-  const { data, loading } = useQuery(GET_SCHUELER, { variables: { klasse } });
+  const { data } = useLoadingQuery(GET_SCHUELER, { variables: { klasse } });
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = useCallback((id) => () => {
@@ -28,7 +29,8 @@ export default () => {
     setAnchorEl(null);
   }, [dispatch, setAnchorEl]);
 
-  if (loading) return null;
+  if (loading || !data) return null;
+
   return (
     <>
       <Button

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
+import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
-import useLoading from '../../hooks/useLoading';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import Filter from './Filter';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const ALL_MASSSTAEBE = gql`
   query Massstaebe($klassenStufe: Int, $disziplin: Int, $offset: Int, $limit: Int) {
@@ -52,10 +51,11 @@ const klassenStufen = [
 export default () => {
   const [disziplin, setDisziplin] = useState(0);
   const [klassenStufe, setKlassenStufe] = useState(0);
+  const loading = useSelector((state) => state.uiState.loading);
   const {
     onChangeRows, rowsPerPage, page, onChangePage,
   } = usePagination([disziplin, klassenStufe]);
-  const { data, loading: tmpLoading } = useQuery(ALL_MASSSTAEBE, {
+  const { data } = useLoadingQuery(ALL_MASSSTAEBE, {
     variables: {
       offset: page * rowsPerPage,
       limit: rowsPerPage,
@@ -63,10 +63,8 @@ export default () => {
       klassenStufe: klassenStufe !== 0 ? klassenStufe : undefined,
     },
   });
-  const { loading, setLoading } = useLoading();
-  useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   return (
     <DataTable

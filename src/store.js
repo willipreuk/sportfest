@@ -12,6 +12,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: hardSet,
+  blacklist: ['uiState'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer(browserHistory));

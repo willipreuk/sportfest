@@ -25,6 +25,7 @@ module.exports = {
   ],
   rules: {
     "react/jsx-filename-extension": "off",
-    "react/forbid-prop-types": "off"
+    "react/forbid-prop-types": "off",
+    "no-void": "off"
   },
 };
