@@ -17,6 +17,7 @@ import useSchueler from './useSchueler';
 import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
 import Finished from './Finished';
+import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -122,14 +123,15 @@ export default () => {
         </Paper>
         <Paper className={classes.paper}>
           <Typography variant="h6">Bisherige Versuche</Typography>
+          <ErgebnisseBearbeiten currentSchueler={currentSchueler} />
           <List>
-            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography> : null}
-            {currentSchueler.ergebnisseSchueler.map((e, i) => (
+            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography>
+              : currentSchueler.ergebnisseSchueler.map((e, i) => (
               // eslint-disable-next-line react/no-array-index-key
-              <ListItem key={`${e}+${i}`}>
-                <Typography>{`${i + 1}. Versuch ${e} ${disziplin.einheit}`}</Typography>
-              </ListItem>
-            ))}
+                <ListItem key={`${e}+${i}`}>
+                  <Typography>{`${i + 1}. Versuch ${e} ${disziplin.einheit}`}</Typography>
+                </ListItem>
+              ))}
           </List>
         </Paper>
       </Container>
