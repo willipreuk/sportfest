@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
 import {
-  Select, MenuItem, makeStyles, Typography, Container, Button,
+  Button, Container, makeStyles, MenuItem, Select, Typography,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { useDispatch, useSelector } from 'react-redux';
 import { setDisziplin as dispatchDisziplin, setKlasse as dispatchKlasse } from '../../actions/schreiber';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const GET_KLASSEN_DISZIPLINEN = gql`
   query {
@@ -46,12 +45,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { data, loading } = useQuery(GET_KLASSEN_DISZIPLINEN);
+  const loading = useSelector((state) => state.uiState.loading);
+  const { data } = useLoadingQuery(GET_KLASSEN_DISZIPLINEN);
   const dispatch = useDispatch();
   const [klasse, setKlasse] = useState(1);
   const [disziplin, setDisziplin] = useState(1);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   return (
     <Container maxWidth="xs" className={classes.container}>

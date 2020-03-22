@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import React, { useCallback } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
-import useLoading from '../../hooks/useLoading';
-import LoadingSpinner from '../../components/LoadingSpinner';
 import CreateButton from '../../components/CreateButton';
 import EditButton from '../../components/EditButton';
 import DeleteButton from '../../components/DeleteButton';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const ALL_DISZIPLINEN = gql`
   query Disziplinen($offset: Int, $limit: Int) {
@@ -39,10 +39,9 @@ const columns = [
 ];
 
 export default () => {
-  const { loading, setLoading } = useLoading();
+  const loading = useSelector((state) => state.uiState.loading);
   const [deleteDisziplinMutation] = useMutation(DELETE_DISZIPLIN, { refetchQueries: ['Disziplinen'] });
-  const { data, loading: queryLoading } = useQuery(ALL_DISZIPLINEN);
-  useEffect(() => setLoading(queryLoading), [setLoading, queryLoading]);
+  const { data } = useLoadingQuery(ALL_DISZIPLINEN);
 
   const {
     onChangePage, onChangeRows, page, rowsPerPage,
@@ -51,7 +50,7 @@ export default () => {
   const deleteDisziplin = useCallback((id) => () => deleteDisziplinMutation({ variables: { id } }),
     [deleteDisziplinMutation]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   return (
     <DataTable

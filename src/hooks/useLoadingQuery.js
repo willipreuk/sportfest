@@ -5,8 +5,7 @@ import { setLoading } from '../actions/uiState';
 
 export default (graphqlQuery, options) => {
   const dispatch = useDispatch();
-  dispatch(setLoading(true));
   const { loading, ...rest } = useQuery(graphqlQuery, options);
-  useEffect(() => dispatch(setLoading(loading)), [loading, dispatch]);
+  useEffect(() => void dispatch(setLoading(loading)), [loading, dispatch]);
   return rest;
 };

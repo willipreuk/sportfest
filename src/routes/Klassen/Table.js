@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { useMutation } from '@apollo/react-hooks';
+import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
-import useLoading from '../../hooks/useLoading';
 import EditButton from '../../components/EditButton';
 import DeleteButton from '../../components/DeleteButton';
+import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const GET_KLASSEN = gql`
   query GetKlassen($offset: Int, $limit: Int, $stufe: Int) {
@@ -22,7 +22,7 @@ const GET_KLASSEN = gql`
 `;
 
 const DELETE_KLASSE = gql`
-  mutation DeleteKlasse($id: Int) {
+  mutation DeleteKlasse($id: Int!) {
     deleteKlasse(id: $id) {
       id
     }
@@ -35,11 +35,11 @@ const columns = [
 ];
 
 export default () => {
-  const { loading, setLoading } = useLoading();
+  const loading = useSelector((state) => state.uiState.loading);
   const {
     onChangeRows, page, onChangePage, rowsPerPage,
   } = usePagination();
-  const { data, loading: queryLoading } = useQuery(
+  const { data } = useLoadingQuery(
     GET_KLASSEN,
     {
       variables:
@@ -49,7 +49,6 @@ export default () => {
         },
     },
   );
-  useEffect(() => { setLoading(queryLoading); }, [queryLoading, setLoading]);
 
   const [deleteKlasse] = useMutation(DELETE_KLASSE);
   const makeData = useCallback((klasse) => ({
@@ -63,7 +62,7 @@ export default () => {
     ),
   }), [deleteKlasse]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || !data) return null;
 
   return (
     <DataTable

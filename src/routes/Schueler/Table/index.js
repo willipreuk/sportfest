@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState } from 'react';
 import gql from 'graphql-tag';
+import { useSelector } from 'react-redux';
 import DataTable from '../../../components/DataTable';
 import usePagination from '../../../hooks/usePagination';
 import Filter from './Filter';
 import useSchuelerData from './useSchuelerData';
-import useLoading from '../../../hooks/useLoading';
-import LoadingSpinner from '../../../components/LoadingSpinner';
+import useLoadingQuery from '../../../hooks/useLoadingQuery';
 
 const ALL_SCHUELER = gql`
     query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
@@ -35,15 +34,15 @@ const columns = [
 
 export default () => {
   const [klasse, setKlasse] = useState(0);
+  const loading = useSelector((state) => state.uiState.loading);
   const {
     page, rowsPerPage, onChangeRows, onChangePage,
   } = usePagination([klasse]);
   const {
     rows, total, setData,
   } = useSchuelerData();
-  const { loading, setLoading } = useLoading();
 
-  const { loading: tmpLoading } = useQuery(
+  useLoadingQuery(
     ALL_SCHUELER,
     {
       variables: {
@@ -55,9 +54,8 @@ export default () => {
     },
   );
 
-  useEffect(() => { setLoading(tmpLoading); }, [tmpLoading, setLoading]);
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return null;
 
   return (
     <DataTable
