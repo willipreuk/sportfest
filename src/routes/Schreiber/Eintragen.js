@@ -123,13 +123,13 @@ export default () => {
         </Paper>
         <Paper className={classes.paper}>
           <Typography variant="h6">Bisherige Versuche</Typography>
-          <ErgebnisseBearbeiten currentSchueler={currentSchueler} />
+          <ErgebnisseBearbeiten currentSchueler={currentSchueler} einheit={disziplin.einheit} />
           <List>
             {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography>
               : currentSchueler.ergebnisseSchueler.map((e, i) => (
               // eslint-disable-next-line react/no-array-index-key
                 <ListItem key={`${e}+${i}`}>
-                  <Typography>{`${i + 1}. Versuch ${e} ${disziplin.einheit}`}</Typography>
+                  <Typography>{`${i + 1}. Versuch ${e}${disziplin.einheit}`}</Typography>
                 </ListItem>
               ))}
           </List>

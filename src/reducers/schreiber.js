@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash';
 import {
   SCHREIBER_DEC_COUNTER,
   SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
-  SCHREIBER_SET_DISZIPLIN,
+  SCHREIBER_SET_DISZIPLIN, SCHREIBER_SET_ERGEBNISSE,
   SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
 
@@ -106,6 +106,11 @@ export default (s = initialState, action) => {
     }
     case SCHREIBER_RESET: {
       return initialState;
+    }
+    case SCHREIBER_SET_ERGEBNISSE: {
+      const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
+      state.schueler[i].ergebnisseSchueler = action.payload.ergebnisse;
+      break;
     }
     default: return s;
   }

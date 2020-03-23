@@ -4,22 +4,29 @@ import {
   Button,
   Dialog, DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogTitle, InputAdornment,
   List,
   ListItem,
   TextField,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { setErgebnisse as dispatchErgebisse } from '../../actions/schreiber';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   bold: {
     fontWeight: 'bold',
+  },
+  input: {
+    paddingLeft: theme.spacing(3),
   },
 }
 ));
 
-const ErgebnisseBearbeiten = ({ currentSchueler }) => {
+const ErgebnisseBearbeiten = ({ currentSchueler, einheit }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [ergebisse, setErgebnisse] = useState([]);
   useEffect(
@@ -32,6 +39,11 @@ const ErgebnisseBearbeiten = ({ currentSchueler }) => {
     setErgebnisse([...currentSchueler.ergebnisseSchueler]);
   }, [setOpen, setErgebnisse, currentSchueler]);
 
+  const onSubmit = useCallback(() => {
+    dispatch(dispatchErgebisse(currentSchueler.id, ergebisse));
+    setOpen(false);
+  }, [currentSchueler, ergebisse, setOpen, dispatch]);
+
   return (
     <>
       <Button onClick={() => setOpen(true)}>bearbeiten</Button>
@@ -41,28 +53,34 @@ const ErgebnisseBearbeiten = ({ currentSchueler }) => {
           <List>
             {ergebisse.map((ergebiss, i) => (
               // eslint-disable-next-line react/no-array-index-key
-              <div key={`${ergebiss}+${i}`}>
-                <ListItem className={classes.bold}>
+              <ListItem key={i} className={classes.bold}>
+                <Typography>
                   {i + 1}
-                . Versuch
-                </ListItem>
-                <ListItem>
-                  <TextField
-                    value={ergebisse[i]}
-                    onChange={(e) => setErgebnisse((prevState) => {
+                    . Versuch
+                </Typography>
+                <TextField
+                  className={classes.input}
+                  value={ergebisse[i]}
+                  type="number"
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setErgebnisse((prevState) => {
                       const newState = [...prevState];
-                      newState[i] = e.target.value;
+                      newState[i] = value;
                       return newState;
-                    })}
-                  />
-                </ListItem>
-              </div>
+                    });
+                  }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">{einheit}</InputAdornment>,
+                  }}
+                />
+              </ListItem>
             ))}
           </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Abbrechen</Button>
-          <Button color="primary" variant="contained">Okay</Button>
+          <Button color="primary" variant="contained" onClick={onSubmit}>Okay</Button>
         </DialogActions>
       </Dialog>
     </>
@@ -70,6 +88,7 @@ const ErgebnisseBearbeiten = ({ currentSchueler }) => {
 };
 ErgebnisseBearbeiten.propTypes = {
   currentSchueler: PropTypes.object.isRequired,
+  einheit: PropTypes.string.isRequired,
 };
 
 export default ErgebnisseBearbeiten;
