@@ -8,13 +8,17 @@ import {
   List,
   ListItem,
   InputAdornment,
+  IconButton,
   OutlinedInput,
   Grid,
 } from '@material-ui/core';
+import { Close as CloseIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
-import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
+import {
+  decCounter, incCounter, resetSchreiber, setErgebnis,
+} from '../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
 import Finished from './Finished';
 import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
@@ -37,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  closeButton: {
+    position: 'absolute',
+    top: theme.spacing(2),
+    left: theme.spacing(2),
+  },
 }));
 
 export default () => {
@@ -58,6 +67,12 @@ export default () => {
 
   return (
     <>
+      <IconButton
+        className={classes.closeButton}
+        onClick={() => dispatch(resetSchreiber())}
+      >
+        <CloseIcon />
+      </IconButton>
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
       <Typography>{`Klasse: ${currentSchueler.klasse.stufe}/${currentSchueler.klasse.name}`}</Typography>
       <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
