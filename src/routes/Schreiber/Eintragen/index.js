@@ -8,20 +8,19 @@ import {
   List,
   ListItem,
   InputAdornment,
-  IconButton,
   OutlinedInput,
   Grid,
 } from '@material-ui/core';
-import { Close as CloseIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
 import {
-  decCounter, incCounter, resetSchreiber, setErgebnis,
+  decCounter, incCounter, setErgebnis,
 } from '../../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
 import Finished from '../Finished';
 import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
+import CloseButton from './CloseButton';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,11 +39,6 @@ const useStyles = makeStyles((theme) => ({
   list: {
     width: '100%',
     textAlign: 'center',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: theme.spacing(2),
-    left: theme.spacing(2),
   },
 }));
 
@@ -67,12 +61,7 @@ export default () => {
 
   return (
     <>
-      <IconButton
-        className={classes.closeButton}
-        onClick={() => dispatch(resetSchreiber())}
-      >
-        <CloseIcon />
-      </IconButton>
+      <CloseButton />
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
       <Typography>{`Klasse: ${currentSchueler.klasse.stufe}/${currentSchueler.klasse.name}`}</Typography>
       <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
