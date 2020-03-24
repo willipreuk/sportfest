@@ -14,13 +14,13 @@ import {
 } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import useSchueler from './useSchueler';
 import {
   decCounter, incCounter, resetSchreiber, setErgebnis,
-} from '../../actions/schreiber';
+} from '../../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
-import Finished from './Finished';
+import Finished from '../Finished';
 import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
 
 const useStyles = makeStyles((theme) => ({

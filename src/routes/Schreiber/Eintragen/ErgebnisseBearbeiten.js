@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
-import { setErgebnisse as dispatchErgebisse } from '../../actions/schreiber';
+import { setErgebnisse as dispatchErgebisse } from '../../../actions/schreiber';
 
 const useStyles = makeStyles((theme) => ({
   bold: {
