@@ -3,7 +3,7 @@ import {
   SCHREIBER_DEC_COUNTER,
   SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN, SCHREIBER_SET_ERGEBNISSE,
-  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
+  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_SET_VERLETZT, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
 
 const initialState = {
@@ -110,6 +110,11 @@ export default (s = initialState, action) => {
     case SCHREIBER_SET_ERGEBNISSE: {
       const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
       state.schueler[i].ergebnisseSchueler = action.payload.ergebnisse;
+      break;
+    }
+    case SCHREIBER_SET_VERLETZT: {
+      const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
+      state.schueler[i].stationsStatus = action.payload.verletzt ? 'V' : null;
       break;
     }
     default: return s;

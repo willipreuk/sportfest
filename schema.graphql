@@ -75,6 +75,7 @@ type Ergebnis {
     disziplin: Disziplin!
     id: Int!
     schueler: Schueler!
+    status: String
     wert: Float
 }
 
@@ -112,7 +113,7 @@ type Mutation {
     deleteUser(id: Int!): DeleteUserPayload!
     login(password: String!, username: String!): LoginPayload
     updateDisziplin(best: Best, einheit: String, id: Int!, name: String): Disziplin!
-    updateErgebnis(allWerte: String, iddisziplin: Int, idschueler: Int, wert: Float): Ergebnis!
+    updateErgebnis(allWerte: String, iddisziplin: Int, idschueler: Int, status: String, wert: Float): Ergebnis!
     updateKlasse(id: Int!, name: Int, stufe: Int): Klasse!
     updateMassstab(geschlecht: Geschlecht, id: Int!, iddisziplin: Int, klassenStufe: Int, punkte: Int, werte: Float): Massstab!
     updateSchueler(geschlecht: Geschlecht, id: Int!, idklasse: Int, nachname: String, status: String, vorname: String): Schueler!

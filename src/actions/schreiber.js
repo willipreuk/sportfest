@@ -2,7 +2,7 @@ import {
   SCHREIBER_DEC_COUNTER,
   SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN, SCHREIBER_SET_ERGEBNISSE,
-  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
+  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_SET_VERLETZT, SCHREIBER_UPDATE_ERGEBNIS,
 } from './types';
 
 export const setKlasse = (klasse) => ({ type: SCHREIBER_SET_KLASSE, payload: klasse });
@@ -19,4 +19,7 @@ export const setCurrentSchueler = (idschueler) => (
 export const resetSchreiber = () => ({ type: SCHREIBER_RESET });
 export const setErgebnisse = (idschueler, ergebnisse) => (
   { type: SCHREIBER_SET_ERGEBNISSE, payload: { idschueler, ergebnisse } }
+);
+export const setVerletzt = (idschueler, verletzt) => (
+  { type: SCHREIBER_SET_VERLETZT, payload: { verletzt, idschueler } }
 );

@@ -21,6 +21,7 @@ const GET_SCHUELER = gql`
     allErgebnisByKlasse(iddisziplin: $disziplin, idklasse: $klasse) {
       id
       wert
+      status  
       schueler {
         id
       }
@@ -49,6 +50,7 @@ export default () => {
 
       tmp.ergebnisseSchueler = ergebnisseSchueler;
       tmp.versuch = ergebnisseSchueler.length;
+      tmp.stationsStatus = ergebnisseSchueler.status || null;
 
       return tmp;
     });
