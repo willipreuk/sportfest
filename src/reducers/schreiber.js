@@ -39,7 +39,7 @@ const checkSchueler = (s, count) => {
   while (check) {
     if (i > state.schueler.length) return counter;
     const newSchueler = state.schueler[counter];
-    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E') {
+    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E' && newSchueler.stationsStatus === null) {
       check = false;
     } else {
       i += 1;
@@ -52,7 +52,7 @@ const checkSchueler = (s, count) => {
 const checkFinished = (schueler) => !schueler.find((s) => {
   if (s.status === 'E') return false;
   if (s.versuch === 3) return false;
-  return true;
+  return s.stationsStatus === null;
 });
 
 export default (s = initialState, action) => {

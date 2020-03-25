@@ -137,7 +137,9 @@ export default () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  dispatch(setErgebnis(currentSchueler.id, value));
+                  if (currentSchueler.stationsStatus === null) {
+                    dispatch(setErgebnis(currentSchueler.id, value));
+                  }
                   dispatch(incCounter());
                   setValue('0');
                 }}

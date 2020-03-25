@@ -15,7 +15,6 @@ import {
 import { useSelector } from 'react-redux';
 import { CSVLink } from 'react-csv';
 import useSubmit from './useSubmit';
-import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -34,13 +33,26 @@ const createData = (schueler) => schueler.map((s) => {
   return sData;
 });
 
+const verletztSchuelerDisplay = (schueler) => {
+  const displayedCells = schueler.ergebnisseSchueler.map((e, i) => (
+    // eslint-disable-next-line react/no-array-index-key
+    <TableCell key={`${schueler.id}+${e}+${i}`}>{e}</TableCell>
+  ));
+
+  for (let i = displayedCells.length; i < 3; i += 1) {
+    displayedCells.push(<TableCell key={`${schueler.id}+-+${i}`}>-</TableCell>);
+  }
+  return displayedCells;
+};
+
 export default () => {
   const classes = useStyles();
+  const loading = useSelector((state) => state.uiState.loading);
   const [submitDisabled, setSubmitDisabled] = useState(true);
   const { schueler, disziplin } = useSelector((state) => state.schreiber);
-  const { submit, loading } = useSubmit();
+  const { submit } = useSubmit();
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return null;
 
   return (
     <Dialog open>
@@ -65,12 +77,14 @@ export default () => {
                 <TableCell>{`${s.vorname} ${s.nachname}`}</TableCell>
                 {s.status === 'E' ? ['-', '-', '-'].map((e, i) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <TableCell key={i}>{e}</TableCell>
+                  <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
                 )) : null}
-                {s.ergebnisseSchueler.map((e, i) => (
+                {s.stationsStatus !== null
+                  ? verletztSchuelerDisplay(s)
+                  : s.ergebnisseSchueler.map((e, i) => (
                   // eslint-disable-next-line react/no-array-index-key
-                  <TableCell key={e * i}>{e}</TableCell>
-                ))}
+                    <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
+                  ))}
               </TableRow>
             ))}
           </TableBody>
