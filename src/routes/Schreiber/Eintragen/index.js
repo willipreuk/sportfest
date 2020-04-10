@@ -9,14 +9,19 @@ import {
   ListItem,
   InputAdornment,
   OutlinedInput,
-  Grid,
+  Grid, IconButton, Tooltip,
 } from '@material-ui/core';
+import { LocalHospital as LocalHospitalIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import clsx from 'clsx';
 import useSchueler from './useSchueler';
-import { decCounter, incCounter, setErgebnis } from '../../actions/schreiber';
+import {
+  decCounter, incCounter, setErgebnis, setVerletzt,
+} from '../../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
-import Finished from './Finished';
+import Finished from '../Finished';
+import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
+import CloseButton from './CloseButton';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,6 +41,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  verletzt: {
+    position: 'absolute',
+    marginTop: '4px',
+  },
+  verletztTrue: {
+    color: 'red',
+  },
 }));
 
 export default () => {
@@ -49,14 +61,14 @@ export default () => {
     loading,
   } = useSchueler();
 
-  if (loading || schueler.length === 0) return <LoadingSpinner />;
+  if (loading || schueler.length === 0) return null;
   const currentSchueler = schueler[counter];
-  // TODO: falls erster Schüler krank, ausblenden
 
   if (finished) return <Finished />;
 
   return (
     <>
+      <CloseButton />
       <Typography>{`Disziplin: ${disziplin.name}`}</Typography>
       <Typography>{`Klasse: ${currentSchueler.klasse.stufe}/${currentSchueler.klasse.name}`}</Typography>
       <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
@@ -72,17 +84,32 @@ export default () => {
               </span>
             ) : null}
           </Typography>
-          <OutlinedInput
-            className={classes.input}
-            value={value}
-            type="number"
-            onChange={(e) => setValue(e.target.value)}
-            endAdornment={<InputAdornment position="end">{disziplin.einheit}</InputAdornment>}
-            inputProps={{
-              'aria-label': disziplin.einheit,
-            }}
-            labelWidth={0}
-          />
+          <div>
+            <OutlinedInput
+              className={classes.input}
+              value={value}
+              type="number"
+              onChange={(e) => setValue(e.target.value)}
+              endAdornment={<InputAdornment position="end">{disziplin.einheit}</InputAdornment>}
+              inputProps={{
+                'aria-label': disziplin.einheit,
+              }}
+              disabled={currentSchueler.status !== null || currentSchueler.stationsStatus !== null}
+            />
+            <Tooltip title="Schüler verletzt">
+              <IconButton
+                className={clsx(
+                  classes.verletzt,
+                  currentSchueler.stationsStatus !== null && classes.verletztTrue,
+                )}
+                onClick={() => {
+                  dispatch(setVerletzt(currentSchueler.id, !currentSchueler.stationsStatus));
+                }}
+              >
+                <LocalHospitalIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
               <SchuelerSelect />
@@ -110,7 +137,9 @@ export default () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  dispatch(setErgebnis(currentSchueler.id, value));
+                  if (currentSchueler.stationsStatus === null) {
+                    dispatch(setErgebnis(currentSchueler.id, value));
+                  }
                   dispatch(incCounter());
                   setValue('0');
                 }}
@@ -122,14 +151,15 @@ export default () => {
         </Paper>
         <Paper className={classes.paper}>
           <Typography variant="h6">Bisherige Versuche</Typography>
+          <ErgebnisseBearbeiten currentSchueler={currentSchueler} einheit={disziplin.einheit} />
           <List>
-            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography> : null}
-            {currentSchueler.ergebnisseSchueler.map((e, i) => (
+            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography>
+              : currentSchueler.ergebnisseSchueler.map((e, i) => (
               // eslint-disable-next-line react/no-array-index-key
-              <ListItem key={`${e}+${i}`}>
-                <Typography>{`${i + 1}. Versuch ${e} ${disziplin.einheit}`}</Typography>
-              </ListItem>
-            ))}
+                <ListItem key={`${e}+${i}`}>
+                  <Typography>{`${i + 1}. Versuch ${e}${disziplin.einheit}`}</Typography>
+                </ListItem>
+              ))}
           </List>
         </Paper>
       </Container>

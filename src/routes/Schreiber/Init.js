@@ -56,7 +56,7 @@ export default () => {
   return (
     <Container maxWidth="xs" className={classes.container}>
       <Typography>
-        Wähle zuerst deine Station aus.
+        Stationsauswahl
       </Typography>
       <Select
         className={classes.select}
@@ -68,7 +68,7 @@ export default () => {
         ))}
       </Select>
       <Typography>
-        Wähle jetzt deine erste Klasse aus.
+        Klassenauswahl
       </Typography>
       <Select
         className={classes.select}

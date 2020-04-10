@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSchueler } from '../../actions/schreiber';
+import { setSchueler } from '../../../actions/schreiber';
 
 const GET_SCHUELER = gql`
   query($klasse: Int!, $disziplin: Int!) {
@@ -21,6 +21,7 @@ const GET_SCHUELER = gql`
     allErgebnisByKlasse(iddisziplin: $disziplin, idklasse: $klasse) {
       id
       wert
+      status  
       schueler {
         id
       }
@@ -49,6 +50,7 @@ export default () => {
 
       tmp.ergebnisseSchueler = ergebnisseSchueler;
       tmp.versuch = ergebnisseSchueler.length;
+      tmp.stationsStatus = ergebnisseSchueler.status || null;
 
       return tmp;
     });

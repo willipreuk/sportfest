@@ -2,8 +2,8 @@ import { cloneDeep } from 'lodash';
 import {
   SCHREIBER_DEC_COUNTER,
   SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
-  SCHREIBER_SET_DISZIPLIN,
-  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
+  SCHREIBER_SET_DISZIPLIN, SCHREIBER_SET_ERGEBNISSE,
+  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_SET_VERLETZT, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
 
 const initialState = {
@@ -39,7 +39,7 @@ const checkSchueler = (s, count) => {
   while (check) {
     if (i > state.schueler.length) return counter;
     const newSchueler = state.schueler[counter];
-    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E') {
+    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E' && newSchueler.stationsStatus === null) {
       check = false;
     } else {
       i += 1;
@@ -52,7 +52,7 @@ const checkSchueler = (s, count) => {
 const checkFinished = (schueler) => !schueler.find((s) => {
   if (s.status === 'E') return false;
   if (s.versuch === 3) return false;
-  return true;
+  return s.stationsStatus === null;
 });
 
 export default (s = initialState, action) => {
@@ -106,6 +106,16 @@ export default (s = initialState, action) => {
     }
     case SCHREIBER_RESET: {
       return initialState;
+    }
+    case SCHREIBER_SET_ERGEBNISSE: {
+      const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
+      state.schueler[i].ergebnisseSchueler = action.payload.ergebnisse;
+      break;
+    }
+    case SCHREIBER_SET_VERLETZT: {
+      const i = s.schueler.findIndex((p) => p.id === action.payload.idschueler);
+      state.schueler[i].stationsStatus = action.payload.verletzt ? 'V' : null;
+      break;
     }
     default: return s;
   }

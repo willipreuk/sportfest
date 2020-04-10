@@ -5,7 +5,7 @@ import {
   SCHREIBER_DEC_COUNTER,
   SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
   SCHREIBER_SET_DISZIPLIN,
-  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_UPDATE_ERGEBNIS,
+  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_SET_VERLETZT, SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
 
 describe('schreiber resolver', () => {
@@ -164,9 +164,9 @@ describe('schreiber resolver', () => {
   });
 
   const schueler = [{
-    status: null, versuch: 0, id: 1, ergebnisseSchueler: [],
+    status: null, versuch: 0, id: 1, ergebnisseSchueler: [], stationsStatus: null,
   }, {
-    status: null, versuch: 0, id: 2, ergebnisseSchueler: [],
+    status: null, versuch: 0, id: 2, ergebnisseSchueler: [], stationsStatus: null,
   }];
   describe('action SCHREIBER_SET_SCHUELER', () => {
     it('should set schueler', () => {
@@ -285,6 +285,29 @@ describe('schreiber resolver', () => {
         counter: 0,
         finished: false,
       });
+    });
+  });
+  describe('action SCHREIBER_SET_VERLETZT', () => {
+    const newSchueler = [{
+      status: null, versuch: 0, id: 1, ergebnisseSchueler: [], stationsStatus: 'V',
+    }, {
+      status: null, versuch: 0, id: 2, ergebnisseSchueler: [], stationsStatus: null,
+    }];
+    it('should set stationsStatus V for truthy values', () => {
+      expect.assertions(1);
+      expect(schreiber(
+        { schueler },
+        { type: SCHREIBER_SET_VERLETZT, payload: { idschueler: 1, verletzt: true } },
+      )).toStrictEqual({
+        schueler: newSchueler,
+      });
+    });
+    it('should set stationsStatus null for falsy values', () => {
+      expect.assertions(1);
+      expect(schreiber(
+        { schueler: newSchueler },
+        { type: SCHREIBER_SET_VERLETZT, payload: { idschueler: 1, verletzt: false } },
+      )).toStrictEqual({ schueler });
     });
   });
 });

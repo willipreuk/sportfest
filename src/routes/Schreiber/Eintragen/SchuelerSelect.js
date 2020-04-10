@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import gql from 'graphql-tag';
-import { setCurrentSchueler } from '../../actions/schreiber';
-import useLoadingQuery from '../../hooks/useLoadingQuery';
+import { setCurrentSchueler } from '../../../actions/schreiber';
+import useLoadingQuery from '../../../hooks/useLoadingQuery';
 
 const GET_SCHUELER = gql`
   query($klasse: Int) {
