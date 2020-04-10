@@ -24,7 +24,7 @@ export default () => {
     (async () => {
       const promises = allSchueler.map(async (schueler) => {
         if (schueler.status === 'E') return;
-        const wert = parseFloat(disziplin.best === 'low' ? min(schueler.ergebnisseSchueler) : max(schueler.ergebnisseSchueler));
+        const wert = parseFloat(disziplin.best === 'low' ? min(schueler.ergebnisseSchueler.map((ergebniss) => parseFloat(ergebniss))) : max(schueler.ergebnisseSchueler.map((ergebniss) => parseFloat(ergebniss))));
         await updateErgebnis({
           variables: {
             wert,
