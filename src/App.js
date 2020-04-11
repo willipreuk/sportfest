@@ -34,7 +34,12 @@ function App() {
       <PrivateRoute Component={User} path="/user" exact />
       <PrivateRoute Component={UserCreate} path="/user/create" />
       <PrivateRoute Component={UserEdit} path="/user/:username" />
-      <PrivateRoute Component={Schreiber} path="/ergebnisse/schreiber" layout={false} reqRole="none" />
+      <PrivateRoute
+        Component={Schreiber}
+        path="/ergebnisse/schreiber"
+        layout={false}
+        reqRole="none"
+      />
     </Switch>
   );
 }

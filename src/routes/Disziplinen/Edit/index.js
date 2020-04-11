@@ -16,7 +16,7 @@ const GET_DISZIPLIN = gql`
       einheit
       id
     }
-  } 
+  }
 `;
 
 const UPDATE_DISZIPLIN = gql`
@@ -31,19 +31,23 @@ export default () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [updateDisziplin] = useMutation(UPDATE_DISZIPLIN, { refetchQueries: ['Disziplinen'] });
-  const { data, loading: queryLoading } = useQuery(
-    GET_DISZIPLIN,
-    { variables: { id: parseInt(id, 10) } },
-  );
+  const { data, loading: queryLoading } = useQuery(GET_DISZIPLIN, {
+    variables: { id: parseInt(id, 10) },
+  });
   const { loading, setLoading } = useLoading();
-  useEffect(() => { setLoading(queryLoading); }, [setLoading, queryLoading]);
+  useEffect(() => {
+    setLoading(queryLoading);
+  }, [setLoading, queryLoading]);
 
-  const onSubmit = useCallback(async (values) => {
-    setLoading(true);
-    await updateDisziplin({ variables: { id: parseInt(id, 10), ...values } });
-    setLoading(false);
-    dispatch(push('/disziplinen'));
-  }, [dispatch, setLoading, updateDisziplin, id]);
+  const onSubmit = useCallback(
+    async (values) => {
+      setLoading(true);
+      await updateDisziplin({ variables: { id: parseInt(id, 10), ...values } });
+      setLoading(false);
+      dispatch(push('/disziplinen'));
+    },
+    [dispatch, setLoading, updateDisziplin, id],
+  );
 
   if (loading) return <LoadingSpinner />;
 

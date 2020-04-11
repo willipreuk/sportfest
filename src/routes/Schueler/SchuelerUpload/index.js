@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  Button, makeStyles, Typography,
-} from '@material-ui/core';
+import { Button, makeStyles, Typography } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import LoadingSpinner from '../../../components/LoadingSpinner';
@@ -54,7 +52,9 @@ export default () => {
 
   return (
     <>
-      <Typography variant="h6" className={classes.title}>Schülerupload</Typography>
+      <Typography variant="h6" className={classes.title}>
+        Schülerupload
+      </Typography>
       <Typography color="error">Achtung: Dabei gehen alle Schülerdaten verloren!</Typography>
       <Button
         className={classes.uploadButton}
@@ -63,7 +63,13 @@ export default () => {
         color="primary"
       >
         Schülerdaten hochladen
-        <input type="file" onChange={onChange} accept="text/csv" className={classes.input} ref={fileInput} />
+        <input
+          type="file"
+          onChange={onChange}
+          accept="text/csv"
+          className={classes.input}
+          ref={fileInput}
+        />
       </Button>
       <AlertDialog setOpen={setOpen} submit={submit} open={open} />
     </>

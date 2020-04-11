@@ -1,9 +1,15 @@
 import { cloneDeep } from 'lodash';
 import {
   SCHREIBER_DEC_COUNTER,
-  SCHREIBER_INC_COUNTER, SCHREIBER_RESET, SCHREIBER_SET_CURRENT_SCHUELER,
-  SCHREIBER_SET_DISZIPLIN, SCHREIBER_SET_ERGEBNISSE,
-  SCHREIBER_SET_KLASSE, SCHREIBER_SET_SCHUELER, SCHREIBER_SET_VERLETZT, SCHREIBER_UPDATE_ERGEBNIS,
+  SCHREIBER_INC_COUNTER,
+  SCHREIBER_RESET,
+  SCHREIBER_SET_CURRENT_SCHUELER,
+  SCHREIBER_SET_DISZIPLIN,
+  SCHREIBER_SET_ERGEBNISSE,
+  SCHREIBER_SET_KLASSE,
+  SCHREIBER_SET_SCHUELER,
+  SCHREIBER_SET_VERLETZT,
+  SCHREIBER_UPDATE_ERGEBNIS,
 } from '../actions/types';
 
 const initialState = {
@@ -15,14 +21,14 @@ const initialState = {
 };
 
 const increment = (length) => (counter) => {
-  if ((counter + 1) >= length) {
+  if (counter + 1 >= length) {
     return 0;
   }
   return counter + 1;
 };
 
 const decrement = (length) => (counter) => {
-  if ((counter - 1) < 0) {
+  if (counter - 1 < 0) {
     return length - 1;
   }
   return counter - 1;
@@ -39,7 +45,11 @@ const checkSchueler = (s, count) => {
   while (check) {
     if (i > state.schueler.length) return counter;
     const newSchueler = state.schueler[counter];
-    if (newSchueler.versuch !== 3 && newSchueler.status !== 'E' && newSchueler.stationsStatus === null) {
+    if (
+      newSchueler.versuch !== 3 &&
+      newSchueler.status !== 'E' &&
+      newSchueler.stationsStatus === null
+    ) {
       check = false;
     } else {
       i += 1;
@@ -49,18 +59,23 @@ const checkSchueler = (s, count) => {
   return counter;
 };
 
-const checkFinished = (schueler) => !schueler.find((s) => {
-  if (s.status === 'E') return false;
-  if (s.versuch === 3) return false;
-  return s.stationsStatus === null;
-});
+const checkFinished = (schueler) =>
+  !schueler.find((s) => {
+    if (s.status === 'E') return false;
+    if (s.versuch === 3) return false;
+    return s.stationsStatus === null;
+  });
 
 export default (s = initialState, action) => {
   const state = cloneDeep(s);
 
   switch (action.type) {
-    case SCHREIBER_SET_KLASSE: state.klasse = action.payload; break;
-    case SCHREIBER_SET_DISZIPLIN: state.disziplin = action.payload; break;
+    case SCHREIBER_SET_KLASSE:
+      state.klasse = action.payload;
+      break;
+    case SCHREIBER_SET_DISZIPLIN:
+      state.disziplin = action.payload;
+      break;
     case SCHREIBER_INC_COUNTER: {
       if (checkFinished(state.schueler)) {
         state.finished = true;
@@ -117,7 +132,8 @@ export default (s = initialState, action) => {
       state.schueler[i].stationsStatus = action.payload.verletzt ? 'V' : null;
       break;
     }
-    default: return s;
+    default:
+      return s;
   }
   return state;
 };

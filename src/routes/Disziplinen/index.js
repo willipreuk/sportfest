@@ -40,15 +40,17 @@ const columns = [
 
 export default () => {
   const loading = useSelector((state) => state.uiState.loading);
-  const [deleteDisziplinMutation] = useMutation(DELETE_DISZIPLIN, { refetchQueries: ['Disziplinen'] });
+  const [deleteDisziplinMutation] = useMutation(DELETE_DISZIPLIN, {
+    refetchQueries: ['Disziplinen'],
+  });
   const { data } = useLoadingQuery(ALL_DISZIPLINEN);
 
-  const {
-    onChangePage, onChangeRows, page, rowsPerPage,
-  } = usePagination();
+  const { onChangePage, onChangeRows, page, rowsPerPage } = usePagination();
 
-  const deleteDisziplin = useCallback((id) => () => deleteDisziplinMutation({ variables: { id } }),
-    [deleteDisziplinMutation]);
+  const deleteDisziplin = useCallback(
+    (id) => () => deleteDisziplinMutation({ variables: { id } }),
+    [deleteDisziplinMutation],
+  );
 
   if (loading || !data) return null;
 

@@ -8,8 +8,14 @@ import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const ALL_MASSSTAEBE = gql`
   query Massstaebe($klassenStufe: Int, $disziplin: Int, $offset: Int, $limit: Int) {
-    allMassstaebe(klassenStufe: $klassenStufe, iddisziplin: $disziplin, offset: $offset, limit: $limit) {
+    allMassstaebe(
+      klassenStufe: $klassenStufe
+      iddisziplin: $disziplin
+      offset: $offset
+      limit: $limit
+    ) {
       total
+
       massstaebe {
         id
         disziplin {
@@ -52,9 +58,10 @@ export default () => {
   const [disziplin, setDisziplin] = useState(0);
   const [klassenStufe, setKlassenStufe] = useState(0);
   const loading = useSelector((state) => state.uiState.loading);
-  const {
-    onChangeRows, rowsPerPage, page, onChangePage,
-  } = usePagination([disziplin, klassenStufe]);
+  const { onChangeRows, rowsPerPage, page, onChangePage } = usePagination([
+    disziplin,
+    klassenStufe,
+  ]);
   const { data } = useLoadingQuery(ALL_MASSSTAEBE, {
     variables: {
       offset: page * rowsPerPage,
@@ -78,12 +85,22 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allMassstaebe.total}
-      filter={(
+      filter={
         <>
-          <Filter label="Disziplin" setValue={setDisziplin} values={data.allDisziplin.disziplinen} value={disziplin} />
-          <Filter label="Klasenstufe" setValue={setKlassenStufe} values={klassenStufen} value={klassenStufe} />
+          <Filter
+            label="Disziplin"
+            setValue={setDisziplin}
+            values={data.allDisziplin.disziplinen}
+            value={disziplin}
+          />
+          <Filter
+            label="Klasenstufe"
+            setValue={setKlassenStufe}
+            values={klassenStufen}
+            value={klassenStufe}
+          />
         </>
-)}
+      }
     />
   );
 };

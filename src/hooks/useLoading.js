@@ -5,7 +5,8 @@ export default () => {
   const [loading, setRealLoading] = useState(true);
   const [tmpLoading, setLoading] = useState(false);
 
-  useEffect(() => { // eslint-disable-line consistent-return
+  useEffect(() => {
+    // eslint-disable-line consistent-return
     if (tmpLoading) setRealLoading(true);
 
     if (!tmpLoading && loading) {

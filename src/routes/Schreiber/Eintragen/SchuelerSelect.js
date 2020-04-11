@@ -24,10 +24,13 @@ export default () => {
   const { data } = useLoadingQuery(GET_SCHUELER, { variables: { klasse } });
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = useCallback((id) => () => {
-    dispatch(setCurrentSchueler(id));
-    setAnchorEl(null);
-  }, [dispatch, setAnchorEl]);
+  const handleClick = useCallback(
+    (id) => () => {
+      dispatch(setCurrentSchueler(id));
+      setAnchorEl(null);
+    },
+    [dispatch, setAnchorEl],
+  );
 
   if (loading || !data) return null;
 

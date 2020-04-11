@@ -32,10 +32,7 @@ export default () => {
 
   return (
     <>
-      <IconButton
-        className={classes.closeButton}
-        onClick={handleOpen}
-      >
+      <IconButton className={classes.closeButton} onClick={handleOpen}>
         <CloseIcon />
       </IconButton>
       <ActionDialog open={open} actions={actions} handleClose={handleClose} title="Achtung">

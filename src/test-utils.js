@@ -11,9 +11,7 @@ const store = configureStore();
 // eslint-disable-next-line react/prop-types
 const AllProviders = ({ children }) => (
   <Provider store={store.store}>
-    <ApolloProvider client={ApolloClient}>
-      {children}
-    </ApolloProvider>
+    <ApolloProvider client={ApolloClient}>{children}</ApolloProvider>
   </Provider>
 );
 

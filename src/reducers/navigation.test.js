@@ -14,19 +14,19 @@ describe('navigation reducer', () => {
     it('should set Location', () => {
       expect.assertions(1);
       expect(
-        navigation(
-          undefined,
-          { type: LOCATION_CHANGE, payload: { location: { pathname: '/disziplinen' } } },
-        ),
+        navigation(undefined, {
+          type: LOCATION_CHANGE,
+          payload: { location: { pathname: '/disziplinen' } },
+        }),
       ).toStrictEqual({ name: 'Disziplinen', history: ['/disziplinen'] });
     });
     it('should return default', () => {
       expect.assertions(1);
       expect(
-        navigation(
-          undefined,
-          { type: LOCATION_CHANGE, payload: { location: { pathname: '/1234' } } },
-        ),
+        navigation(undefined, {
+          type: LOCATION_CHANGE,
+          payload: { location: { pathname: '/1234' } },
+        }),
       ).toStrictEqual({ name: 'Dashboard', history: ['/1234'] });
     });
     it('should trim history', () => {
@@ -43,10 +43,7 @@ describe('navigation reducer', () => {
     it('should set name', () => {
       expect.assertions(1);
       expect(
-        navigation(
-          undefined,
-          { type: NAVIGATION_SET_PAGE_NAME, payload: 'test' },
-        ),
+        navigation(undefined, { type: NAVIGATION_SET_PAGE_NAME, payload: 'test' }),
       ).toStrictEqual({
         name: 'test',
         history: [],

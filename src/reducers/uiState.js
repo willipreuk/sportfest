@@ -12,7 +12,8 @@ export default (s = initialState, action) => {
       state.loading = action.payload;
       break;
     }
-    default: return s;
+    default:
+      return s;
   }
   return state;
 };

@@ -6,8 +6,11 @@ import {
   FormHelperText,
   Grid,
   Input,
-  InputLabel, makeStyles, MenuItem,
-  Paper, Select,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Paper,
+  Select,
   Typography,
 } from '@material-ui/core';
 import clsx from 'clsx';
@@ -32,29 +35,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserForm = ({
-  onSubmit, initialValues,
-}) => {
+const UserForm = ({ onSubmit, initialValues }) => {
   const classes = useStyles();
 
-  const {
-    handleSubmit, getFieldProps, errors, isValid,
-  } = useFormik({
+  const { handleSubmit, getFieldProps, errors, isValid } = useFormik({
     initialValues,
     validationSchema: Yup.object({
       username: Yup.string()
         .max(32, 'Nutzername muss maximal 32 Zeichen lang sein.')
         .min(4, 'Nutzername muss mindestens 4 Zeichen lang sein.')
         .required('Nutzername muss angegeben sein'),
-      password: Yup.string()
-        .min(8, 'Passwort muss aus mind. 8 Zeichen bestehen.'),
-      passwordConfirmation: Yup.string()
-        .when('password', {
-          is: (val) => (!!(val && val.length > 0)),
-          then: Yup.string()
-            .required('Bitte wiederholen Sie das Passwort')
-            .oneOf([Yup.ref('password')], 'Passwörter stimmen nicht überein'),
-        }),
+      password: Yup.string().min(8, 'Passwort muss aus mind. 8 Zeichen bestehen.'),
+      passwordConfirmation: Yup.string().when('password', {
+        is: (val) => !!(val && val.length > 0),
+        then: Yup.string()
+          .required('Bitte wiederholen Sie das Passwort')
+          .oneOf([Yup.ref('password')], 'Passwörter stimmen nicht überein'),
+      }),
     }),
     onSubmit,
   });
@@ -78,11 +75,7 @@ const UserForm = ({
             <br />
             <FormControl className={classes.input}>
               <InputLabel htmlFor="role">Rolle</InputLabel>
-              <Select
-                id="role"
-                name="role"
-                {...getFieldProps('role')}
-              >
+              <Select id="role" name="role" {...getFieldProps('role')}>
                 <MenuItem value="admin">Administrator</MenuItem>
                 <MenuItem value="leiter">Leiter</MenuItem>
                 <MenuItem value="schreiber">Schreiber</MenuItem>
@@ -95,11 +88,7 @@ const UserForm = ({
             <Typography variant="h6">Passwort ändern</Typography>
             <FormControl className={classes.input} error={!!errors.password}>
               <InputLabel htmlFor="password">Passwort</InputLabel>
-              <Input
-                id="password"
-                type="password"
-                {...getFieldProps('password')}
-              />
+              <Input id="password" type="password" {...getFieldProps('password')} />
               <FormHelperText id="password-helper-text">{errors.password}</FormHelperText>
             </FormControl>
             <FormControl className={classes.input} error={!!errors.passwordConfirmation}>
@@ -110,18 +99,15 @@ const UserForm = ({
                 aria-describedby="passwordConfirmation-helper-text"
                 {...getFieldProps('passwordConfirmation')}
               />
-              <FormHelperText id="passwordConfirmation-helper-text">{errors.passwordConfirmation}</FormHelperText>
+              <FormHelperText id="passwordConfirmation-helper-text">
+                {errors.passwordConfirmation}
+              </FormHelperText>
             </FormControl>
           </Paper>
         </Grid>
         <Grid item xs={12}>
           <Paper className={clsx(classes.root, classes.submitBox)}>
-            <Button
-              color="primary"
-              type="submit"
-              variant="contained"
-              disabled={!isValid}
-            >
+            <Button color="primary" type="submit" variant="contained" disabled={!isValid}>
               Abschicken
             </Button>
           </Paper>

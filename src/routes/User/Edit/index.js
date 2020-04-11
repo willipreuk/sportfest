@@ -33,21 +33,25 @@ const UPDATE_USER = gql`
 export default () => {
   const { username: queryUser } = useParams();
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(setPageName(`Nutzer ${queryUser} bearbeiten`)); }, [dispatch, queryUser]);
+  useEffect(() => {
+    dispatch(setPageName(`Nutzer ${queryUser} bearbeiten`));
+  }, [dispatch, queryUser]);
 
   const { data, loading: tmpLoading } = useQuery(USER, { variables: { username: queryUser } });
   const [updateUser] = useMutation(UPDATE_USER);
   const { loading, setLoading } = useLoading();
   useEffect(() => setLoading(tmpLoading), [setLoading, tmpLoading]);
 
-  const onSubmit = useCallback(async (values) => {
-    setLoading(true);
-    updateUser({ variables: { id: data.user.id, ...values } })
-      .then(() => {
+  const onSubmit = useCallback(
+    async (values) => {
+      setLoading(true);
+      updateUser({ variables: { id: data.user.id, ...values } }).then(() => {
         setLoading(false);
         dispatch(push('/user'));
       });
-  }, [setLoading, updateUser, data, dispatch]);
+    },
+    [setLoading, updateUser, data, dispatch],
+  );
 
   if (loading) return <LoadingSpinner />;
 

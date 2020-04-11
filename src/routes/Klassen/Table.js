@@ -36,31 +36,28 @@ const columns = [
 
 export default () => {
   const loading = useSelector((state) => state.uiState.loading);
-  const {
-    onChangeRows, page, onChangePage, rowsPerPage,
-  } = usePagination();
-  const { data } = useLoadingQuery(
-    GET_KLASSEN,
-    {
-      variables:
-        {
-          limit: rowsPerPage,
-          offset: rowsPerPage * page,
-        },
+  const { onChangeRows, page, onChangePage, rowsPerPage } = usePagination();
+  const { data } = useLoadingQuery(GET_KLASSEN, {
+    variables: {
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
     },
-  );
+  });
 
   const [deleteKlasse] = useMutation(DELETE_KLASSE);
-  const makeData = useCallback((klasse) => ({
-    ...klasse,
-    klasse: `${klasse.stufe}/${klasse.name}`,
-    actions: (
-      <>
-        <EditButton path={`/klassen/${klasse.id}`} />
-        <DeleteButton action={() => deleteKlasse({ variables: { id: klasse.id } })} />
-      </>
-    ),
-  }), [deleteKlasse]);
+  const makeData = useCallback(
+    (klasse) => ({
+      ...klasse,
+      klasse: `${klasse.stufe}/${klasse.name}`,
+      actions: (
+        <>
+          <EditButton path={`/klassen/${klasse.id}`} />
+          <DeleteButton action={() => deleteKlasse({ variables: { id: klasse.id } })} />
+        </>
+      ),
+    }),
+    [deleteKlasse],
+  );
 
   if (loading || !data) return null;
 

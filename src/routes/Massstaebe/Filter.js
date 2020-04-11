@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormControl, InputLabel, makeStyles, MenuItem, Select,
-} from '@material-ui/core';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -11,14 +9,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Filter = ({
-  label, value, values, setValue,
-}) => {
+const Filter = ({ label, value, values, setValue }) => {
   const classes = useStyles();
 
-  const setValueCallback = useCallback((e) => {
-    setValue(e.target.value);
-  }, [setValue]);
+  const setValueCallback = useCallback(
+    (e) => {
+      setValue(e.target.value);
+    },
+    [setValue],
+  );
 
   return (
     <FormControl className={classes.formControl}>
@@ -42,10 +41,12 @@ const Filter = ({
 Filter.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
-  values: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    id: PropTypes.number.isRequired,
-  })).isRequired,
+  values: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      id: PropTypes.number.isRequired,
+    }),
+  ).isRequired,
   setValue: PropTypes.func.isRequired,
 };
 

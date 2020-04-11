@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Dialog, DialogActions,
+  Dialog,
+  DialogActions,
   DialogContent,
-  DialogTitle, InputAdornment,
+  DialogTitle,
+  InputAdornment,
   List,
   ListItem,
   TextField,
@@ -21,18 +23,17 @@ const useStyles = makeStyles((theme) => ({
   input: {
     paddingLeft: theme.spacing(3),
   },
-}
-));
+}));
 
 const ErgebnisseBearbeiten = ({ currentSchueler, einheit }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [ergebisse, setErgebnisse] = useState([]);
-  useEffect(
-    () => setErgebnisse([...currentSchueler.ergebnisseSchueler]),
-    [setErgebnisse, currentSchueler],
-  );
+  useEffect(() => setErgebnisse([...currentSchueler.ergebnisseSchueler]), [
+    setErgebnisse,
+    currentSchueler,
+  ]);
 
   const onClose = useCallback(() => {
     setOpen(false);
@@ -54,10 +55,7 @@ const ErgebnisseBearbeiten = ({ currentSchueler, einheit }) => {
             {ergebisse.map((ergebiss, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={i} className={classes.bold}>
-                <Typography>
-                  {i + 1}
-                    . Versuch
-                </Typography>
+                <Typography>{i + 1}. Versuch</Typography>
                 <TextField
                   className={classes.input}
                   value={ergebisse[i]}
@@ -80,7 +78,9 @@ const ErgebnisseBearbeiten = ({ currentSchueler, einheit }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Abbrechen</Button>
-          <Button color="primary" variant="contained" onClick={onSubmit}>Okay</Button>
+          <Button color="primary" variant="contained" onClick={onSubmit}>
+            Okay
+          </Button>
         </DialogActions>
       </Dialog>
     </>

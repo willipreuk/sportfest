@@ -7,7 +7,8 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead, TablePagination,
+  TableHead,
+  TablePagination,
   TableRow,
 } from '@material-ui/core';
 import EnhancedToolbar from './EnhancedToolbar';
@@ -85,13 +86,11 @@ const DataTable = ({
 };
 DataTable.propTypes = {
   columns: PropTypes.arrayOf(
-    PropTypes.shape(
-      {
-        id: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
-        minWidth: PropTypes.number.isRequired,
-      },
-    ),
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      minWidth: PropTypes.number.isRequired,
+    }),
   ).isRequired,
   rows: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,

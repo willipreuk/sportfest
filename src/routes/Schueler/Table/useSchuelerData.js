@@ -13,7 +13,6 @@ export default () => {
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
 
-
   useEffect(() => {
     if (data) {
       setRows(data.allSchueler.schueler.map((d) => createData(d)));
@@ -22,6 +21,8 @@ export default () => {
   }, [data]);
 
   return {
-    rows, setData, total,
+    rows,
+    setData,
+    total,
   };
 };
