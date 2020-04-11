@@ -40,7 +40,9 @@
     "build": "react-scripts build",
     "test": "jest",
     "test:watch": "npm run test -- --watchAll --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write .",
+    "eslint": "eslint -c ./.eslintrc.js ./src"
   },
   "eslintConfig": {
     "extends": "react-app"
