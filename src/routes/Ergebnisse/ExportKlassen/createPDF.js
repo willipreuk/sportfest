@@ -37,7 +37,7 @@ export default (data, von, bis) => {
   doc.setFontSize(18);
   doc.text(`Klassenstufen: ${von} - ${bis}`, 210 / 2, 70, { align: 'center' });
 
-  data.besteKlassen.forEach((klasse) => {
+  data.forEach((klasse) => {
     // prüfen ob ergebnisse vorliegen
     if (klasse.durchschnitt) {
       renderKlasse(klasse, doc);
