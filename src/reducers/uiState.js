@@ -14,7 +14,7 @@ export default (s = initialState, action) => {
       break;
     }
     case UI_STATE_SET_ERROR: {
-      state.errror = action.payload ? action.payload : null;
+      state.error = action.payload ? action.payload : null;
       break;
     }
     default:
