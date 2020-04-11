@@ -17,7 +17,7 @@ const showMedal = [0, 1, 2];
 const images = [first, second, third];
 
 const RankingItem = ({
-  vorname, nachname, ranking, punkte, klasse,
+  name, punkte, ranking,
 }) => {
   const classes = useStyles();
   const src = showMedal.includes(ranking) ? images[ranking] : null;
@@ -26,20 +26,15 @@ const RankingItem = ({
       <ListItemIcon>
         {src ? <img src={src} alt="medal" /> : <span className={classes.span}>{`${ranking + 1}.`}</span>}
       </ListItemIcon>
-      <ListItemText primary={`${vorname} ${nachname} - ${klasse.stufe}/${klasse.name}`} secondary={punkte} />
+      <ListItemText primary={name} secondary={punkte} />
     </ListItem>
   );
 };
 
 RankingItem.propTypes = {
-  nachname: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   ranking: PropTypes.number.isRequired,
-  vorname: PropTypes.string.isRequired,
   punkte: PropTypes.number.isRequired,
-  klasse: PropTypes.shape({
-    stufe: PropTypes.number.isRequired,
-    name: PropTypes.number.isRequired,
-  }).isRequired,
 };
 
 export default RankingItem;
