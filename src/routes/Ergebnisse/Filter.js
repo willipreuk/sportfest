@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  Grid, InputLabel, Select, MenuItem, makeStyles, Typography,
-} from '@material-ui/core';
+import { Grid, InputLabel, Select, MenuItem, makeStyles, Typography } from '@material-ui/core';
 import { setRange } from '../../actions/ergebnis';
 
-const klassen = [
-  5, 6, 7, 8, 9, 10,
-];
+const klassen = [5, 6, 7, 8, 9, 10];
 
 const useStyles = makeStyles(() => ({
   select: {
@@ -28,9 +24,7 @@ export default () => {
 
   return (
     <>
-      <Typography variant="h6">
-        Filter
-      </Typography>
+      <Typography variant="h6">Filter</Typography>
       <Grid container spacing={4}>
         <Grid item xs={2}>
           <InputLabel id="filter-von">Von</InputLabel>
@@ -40,7 +34,11 @@ export default () => {
             value={von}
             onChange={(e) => setVon(e.target.value)}
           >
-            {klassen.map((k) => (<MenuItem value={k} key={k}>{k}</MenuItem>))}
+            {klassen.map((k) => (
+              <MenuItem value={k} key={k}>
+                {k}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
         <Grid item xs={2}>
@@ -51,7 +49,11 @@ export default () => {
             value={bis}
             onChange={(e) => setBis(e.target.value)}
           >
-            {klassen.map((k) => (<MenuItem value={k} key={k}>{k}</MenuItem>))}
+            {klassen.map((k) => (
+              <MenuItem value={k} key={k}>
+                {k}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
       </Grid>

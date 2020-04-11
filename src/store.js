@@ -28,11 +28,7 @@ const exportedValues = {
 (() => {
   exportedValues.store = createStore(
     persistedReducer,
-    composeEnhancers(
-      applyMiddleware(
-        routerMiddleware(browserHistory),
-      ),
-    ),
+    composeEnhancers(applyMiddleware(routerMiddleware(browserHistory))),
   );
 
   if (process.env.NODE_ENV !== 'production') {

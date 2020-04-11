@@ -30,9 +30,9 @@ export default () => {
   const { username, rolle } = useSelector((state) => state.user);
 
   const [anchorElement, setAnchorElement] = useState(null);
-  const handleClick = useCallback(
-    (event) => setAnchorElement(event.currentTarget), [setAnchorElement],
-  );
+  const handleClick = useCallback((event) => setAnchorElement(event.currentTarget), [
+    setAnchorElement,
+  ]);
   const handleClose = useCallback(() => setAnchorElement(null), [setAnchorElement]);
 
   const logout = useCallback(() => {
@@ -62,8 +62,12 @@ export default () => {
           <ListItemText primary={username} secondary={rolle} />
         </MenuItem>
         <Divider className={classes.divider} component="li" />
-        <MenuItem className={classes.listItem} onClick={editUser}>Nutzerdaten ändern</MenuItem>
-        <MenuItem className={classes.listItem} onClick={logout}>Abmelden</MenuItem>
+        <MenuItem className={classes.listItem} onClick={editUser}>
+          Nutzerdaten ändern
+        </MenuItem>
+        <MenuItem className={classes.listItem} onClick={logout}>
+          Abmelden
+        </MenuItem>
       </Menu>
     </>
   );

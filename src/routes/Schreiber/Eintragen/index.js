@@ -9,15 +9,15 @@ import {
   ListItem,
   InputAdornment,
   OutlinedInput,
-  Grid, IconButton, Tooltip,
+  Grid,
+  IconButton,
+  Tooltip,
 } from '@material-ui/core';
 import { LocalHospital as LocalHospitalIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import useSchueler from './useSchueler';
-import {
-  decCounter, incCounter, setErgebnis, setVerletzt,
-} from '../../../actions/schreiber';
+import { decCounter, incCounter, setErgebnis, setVerletzt } from '../../../actions/schreiber';
 import SchuelerSelect from './SchuelerSelect';
 import Finished from '../Finished';
 import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
@@ -52,14 +52,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const {
-    schueler, counter, finished, disziplin,
-  } = useSelector((state) => state.schreiber);
+  const { schueler, counter, finished, disziplin } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
   const [value, setValue] = useState('0');
-  const {
-    loading,
-  } = useSchueler();
+  const { loading } = useSchueler();
 
   if (loading || schueler.length === 0) return null;
   const currentSchueler = schueler[counter];
@@ -74,7 +70,9 @@ export default () => {
       <Typography>{`Aktueller Versuch: ${currentSchueler.versuch + 1}`}</Typography>
       <Container>
         <Paper className={classes.paper}>
-          <Typography className={classes.heading} variant="h6">Wert eintragen</Typography>
+          <Typography className={classes.heading} variant="h6">
+            Wert eintragen
+          </Typography>
           <Typography>
             {`${currentSchueler.vorname} ${currentSchueler.nachname}`}
             {currentSchueler.status !== null ? (
@@ -125,10 +123,7 @@ export default () => {
               </Button>
             </Grid>
             <Grid item xs={12} md={3}>
-              <Button
-                variant="outlined"
-                onClick={() => dispatch(incCounter())}
-              >
+              <Button variant="outlined" onClick={() => dispatch(incCounter())}>
                 Überspringen
               </Button>
             </Grid>
@@ -153,13 +148,16 @@ export default () => {
           <Typography variant="h6">Bisherige Versuche</Typography>
           <ErgebnisseBearbeiten currentSchueler={currentSchueler} einheit={disziplin.einheit} />
           <List>
-            {currentSchueler.ergebnisseSchueler.length === 0 ? <Typography>-</Typography>
-              : currentSchueler.ergebnisseSchueler.map((e, i) => (
-              // eslint-disable-next-line react/no-array-index-key
+            {currentSchueler.ergebnisseSchueler.length === 0 ? (
+              <Typography>-</Typography>
+            ) : (
+              currentSchueler.ergebnisseSchueler.map((e, i) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <ListItem key={`${e}+${i}`}>
                   <Typography>{`${i + 1}. Versuch ${e}${disziplin.einheit}`}</Typography>
                 </ListItem>
-              ))}
+              ))
+            )}
           </List>
         </Paper>
       </Container>

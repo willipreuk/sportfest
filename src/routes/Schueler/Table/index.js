@@ -8,21 +8,21 @@ import useSchuelerData from './useSchuelerData';
 import useLoadingQuery from '../../../hooks/useLoadingQuery';
 
 const ALL_SCHUELER = gql`
-    query Schueler($klasse: Int, $offset: Int, $limit: Int) { 
-        allSchueler(idklasse: $klasse, offset: $offset, limit: $limit) {
-            total
-            schueler {
-              id
-              vorname
-              nachname
-              status
-              klasse {
-                  stufe
-                  name
-              }
-            }
+  query Schueler($klasse: Int, $offset: Int, $limit: Int) {
+    allSchueler(idklasse: $klasse, offset: $offset, limit: $limit) {
+      total
+      schueler {
+        id
+        vorname
+        nachname
+        status
+        klasse {
+          stufe
+          name
         }
+      }
     }
+  }
 `;
 
 const columns = [
@@ -35,25 +35,17 @@ const columns = [
 export default () => {
   const [klasse, setKlasse] = useState(0);
   const loading = useSelector((state) => state.uiState.loading);
-  const {
-    page, rowsPerPage, onChangeRows, onChangePage,
-  } = usePagination([klasse]);
-  const {
-    rows, total, setData,
-  } = useSchuelerData();
+  const { page, rowsPerPage, onChangeRows, onChangePage } = usePagination([klasse]);
+  const { rows, total, setData } = useSchuelerData();
 
-  useLoadingQuery(
-    ALL_SCHUELER,
-    {
-      variables: {
-        klasse: klasse !== 0 ? klasse : undefined,
-        offset: page * rowsPerPage,
-        limit: rowsPerPage,
-      },
-      onCompleted: (res) => setData(res),
+  useLoadingQuery(ALL_SCHUELER, {
+    variables: {
+      klasse: klasse !== 0 ? klasse : undefined,
+      offset: page * rowsPerPage,
+      limit: rowsPerPage,
     },
-  );
-
+    onCompleted: (res) => setData(res),
+  });
 
   if (loading) return null;
 

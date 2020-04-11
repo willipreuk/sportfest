@@ -21,22 +21,23 @@ export default () => {
   const dispatch = useDispatch();
   const { loading, setLoading } = useLoading();
 
-  const onSubmit = useCallback(async (values) => {
-    setLoading(true);
-    await addUser({
-      variables: {
-        username: values.username,
-        password: values.password,
-        rolle: values.role,
-      },
-    });
-    setLoading(false);
-    dispatch(push('/user'));
-  }, [setLoading, addUser, dispatch]);
+  const onSubmit = useCallback(
+    async (values) => {
+      setLoading(true);
+      await addUser({
+        variables: {
+          username: values.username,
+          password: values.password,
+          rolle: values.role,
+        },
+      });
+      setLoading(false);
+      dispatch(push('/user'));
+    },
+    [setLoading, addUser, dispatch],
+  );
 
   if (loading) return <LoadingSpinner />;
 
-  return (
-    <UserForm onSubmit={onSubmit} />
-  );
+  return <UserForm onSubmit={onSubmit} />;
 };

@@ -21,68 +21,69 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AUSWERTUNG_SCHUELER = gql`
-    query($von: Int!, $bis: Int!) {
-        auswertungStufen(von: $von, bis: $bis) {
-            bestM {
-                schueler {
-                    id
-                    vorname
-                    nachname
-                    klasse {
-                        stufe
-                        name
-                    }
-                }
-                punkte
-            }
-            bestW {
-                schueler {
-                    id
-                    vorname
-                    nachname
-                    klasse {
-                        stufe
-                        name
-                    }
-                }
-                punkte
-            }
-            besteKlassen {
-                durchschnitt
-                klasse {
-                    name
-                    id
-                    stufe
-                }
-                schuelerAuswertung {
-                    schueler {
-                        vorname
-                        nachname
-                    }
-                    note
-                    punkte
-                }
-            }
+  query($von: Int!, $bis: Int!) {
+    auswertungStufen(von: $von, bis: $bis) {
+      bestM {
+        schueler {
+          id
+          vorname
+          nachname
+          klasse {
+            stufe
+            name
+          }
         }
+        punkte
+      }
+      bestW {
+        schueler {
+          id
+          vorname
+          nachname
+          klasse {
+            stufe
+            name
+          }
+        }
+        punkte
+      }
+      besteKlassen {
+        durchschnitt
+        klasse {
+          name
+          id
+          stufe
+        }
+        schuelerAuswertung {
+          schueler {
+            vorname
+            nachname
+          }
+          note
+          punkte
+        }
+      }
     }
+  }
 `;
 
-const createSchuelerData = (data) => data.slice(0, 5).map((item) => ({
-  punkte: item.punkte,
-  name: `${item.schueler.vorname} ${item.schueler.nachname} - ${item.schueler.klasse.stufe}/${item.schueler.klasse.name}`,
-  id: item.schueler.id,
-}));
-const createKlassenData = (data) => data.slice(0, 5).map((item) => ({
-  punkte: item.durchschnitt ? item.durchschnitt : 0,
-  name: `${item.klasse.stufe}/${item.klasse.name}`,
-  id: item.klasse.id,
-}));
+const createSchuelerData = (data) =>
+  data.slice(0, 5).map((item) => ({
+    punkte: item.punkte,
+    name: `${item.schueler.vorname} ${item.schueler.nachname} - ${item.schueler.klasse.stufe}/${item.schueler.klasse.name}`,
+    id: item.schueler.id,
+  }));
+const createKlassenData = (data) =>
+  data.slice(0, 5).map((item) => ({
+    punkte: item.durchschnitt ? item.durchschnitt : 0,
+    name: `${item.klasse.stufe}/${item.klasse.name}`,
+    id: item.klasse.id,
+  }));
 
 export default () => {
   const classes = useStyles();
   const { von, bis } = useSelector((state) => state.ergebnis.filter);
-  const { data } = useLoadingQuery(AUSWERTUNG_SCHUELER,
-    { variables: { von, bis } });
+  const { data } = useLoadingQuery(AUSWERTUNG_SCHUELER, { variables: { von, bis } });
 
   if (!data) return null;
   return (
@@ -109,7 +110,10 @@ export default () => {
       </Grid>
       <Grid item xs={4}>
         <Paper className={classes.paper}>
-          <Best title="Beste Klassen" data={createKlassenData(data.auswertungStufen.besteKlassen)} />
+          <Best
+            title="Beste Klassen"
+            data={createKlassenData(data.auswertungStufen.besteKlassen)}
+          />
         </Paper>
       </Grid>
     </Grid>

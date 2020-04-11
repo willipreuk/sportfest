@@ -15,6 +15,9 @@ export default (deps) => {
   }, []);
 
   return {
-    page, rowsPerPage, onChangePage, onChangeRows,
+    page,
+    rowsPerPage,
+    onChangePage,
+    onChangeRows,
   };
 };

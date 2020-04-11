@@ -14,12 +14,12 @@ const renderKlasse = (klasse, doc) => {
   doc.text(`Klasse ${klasse.klasse.stufe}/${klasse.klasse.name}`, 210 / 2, 40, { align: 'center' });
   doc.autoTable({
     head: [['Vorname', 'Nachname', 'Punkte', 'Note']],
-    body: klasse.schuelerAuswertung.map((schueler) => ([
+    body: klasse.schuelerAuswertung.map((schueler) => [
       schueler.schueler.vorname,
       schueler.schueler.nachname,
       schueler.punkte,
       schueler.note,
-    ])),
+    ]),
     startY: 55,
   });
 };

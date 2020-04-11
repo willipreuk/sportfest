@@ -16,7 +16,8 @@ export default (s = initialState, action) => {
       if (action.payload.bis) state.filter.bis = action.payload.bis;
       break;
     }
-    default: return s;
+    default:
+      return s;
   }
   return state;
 };

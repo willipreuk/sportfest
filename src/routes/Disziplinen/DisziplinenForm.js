@@ -9,7 +9,9 @@ import {
   Paper,
   FormControl,
   InputLabel,
-  Input, FormHelperText, Select,
+  Input,
+  FormHelperText,
+  Select,
   MenuItem,
 } from '@material-ui/core';
 import * as Yup from 'yup';
@@ -29,9 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DisziplinenForm = ({ initialValues, onSubmit }) => {
   const classes = useStyles();
-  const {
-    handleSubmit, errors, getFieldProps, isValid,
-  } = useFormik({
+  const { handleSubmit, errors, getFieldProps, isValid } = useFormik({
     initialValues,
     onSubmit,
     validationSchema: Yup.object({
@@ -40,9 +40,7 @@ const DisziplinenForm = ({ initialValues, onSubmit }) => {
         .max(255, 'Name darf nicht länger als 255 Zeichen sein.')
         .required(),
       best: Yup.string().required(),
-      einheit: Yup.string()
-        .max(2, 'Einheit darf nicht länger als 2 Zeichen sein.')
-        .required(),
+      einheit: Yup.string().max(2, 'Einheit darf nicht länger als 2 Zeichen sein.').required(),
     }),
   });
 
@@ -91,12 +89,7 @@ const DisziplinenForm = ({ initialValues, onSubmit }) => {
         <Grid item md={6} xs={12} />
         <Grid item md={6} xs={12} className={classes.submitBox}>
           <Paper className={classes.root}>
-            <Button
-              color="primary"
-              variant="contained"
-              type="submit"
-              disabled={!isValid}
-            >
+            <Button color="primary" variant="contained" type="submit" disabled={!isValid}>
               Submit
             </Button>
           </Paper>

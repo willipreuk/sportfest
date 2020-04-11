@@ -14,13 +14,26 @@ export default (s = initialState, action) => {
       const { pathname } = action.payload.location;
       let name;
       switch (pathname) {
-        case '/disziplinen': name = 'Disziplinen'; break;
-        case '/ergebnisse': name = 'Ergebnisse'; break;
-        case '/klassen': name = 'Klassen'; break;
-        case '/massstaebe': name = 'Maßstäbe'; break;
-        case '/schueler': name = 'Schueler'; break;
-        case '/user': name = 'User'; break;
-        default: name = 'Dashboard';
+        case '/disziplinen':
+          name = 'Disziplinen';
+          break;
+        case '/ergebnisse':
+          name = 'Ergebnisse';
+          break;
+        case '/klassen':
+          name = 'Klassen';
+          break;
+        case '/massstaebe':
+          name = 'Maßstäbe';
+          break;
+        case '/schueler':
+          name = 'Schueler';
+          break;
+        case '/user':
+          name = 'User';
+          break;
+        default:
+          name = 'Dashboard';
       }
       state.name = name;
 
@@ -34,7 +47,8 @@ export default (s = initialState, action) => {
       state.name = action.payload;
       break;
     }
-    default: return s;
+    default:
+      return s;
   }
   return state;
 };

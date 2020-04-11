@@ -14,20 +14,21 @@ describe('user reducer', () => {
   describe('action USER_LOGIN', () => {
     it('should set JWT', () => {
       expect.assertions(1);
-      expect(user(undefined, { type: USER_LOGIN, payload: { jwt: '1234' } }))
-        .toStrictEqual({
-          jwt: '1234',
-          username: '',
-          id: null,
-          rolle: '',
-        });
+      expect(user(undefined, { type: USER_LOGIN, payload: { jwt: '1234' } })).toStrictEqual({
+        jwt: '1234',
+        username: '',
+        id: null,
+        rolle: '',
+      });
     });
     it('should spread user object', () => {
       expect.assertions(1);
-      expect(user(
-        undefined,
-        { type: USER_LOGIN, payload: { user: { username: 'test', id: 1, rolle: 'admin' } } },
-      )).toStrictEqual({
+      expect(
+        user(undefined, {
+          type: USER_LOGIN,
+          payload: { user: { username: 'test', id: 1, rolle: 'admin' } },
+        }),
+      ).toStrictEqual({
         username: 'test',
         id: 1,
         rolle: 'admin',
@@ -36,22 +37,27 @@ describe('user reducer', () => {
     });
     it('should omit __typename', () => {
       expect.assertions(1);
-      const { __typename } = user(
-        undefined,
-        { type: USER_LOGIN, payload: { user: { __typename: 'User' } } },
-      );
+      const { __typename } = user(undefined, {
+        type: USER_LOGIN,
+        payload: { user: { __typename: 'User' } },
+      });
       expect(__typename).toBeUndefined();
     });
   });
   describe('action USER_LOGOUT', () => {
     it('should reset state', () => {
       expect.assertions(1);
-      expect(user(
-        {
-          jwt: '1234', username: 'test', id: 1, rolle: 'admin',
-        },
-        { type: USER_LOGOUT },
-      )).toStrictEqual({
+      expect(
+        user(
+          {
+            jwt: '1234',
+            username: 'test',
+            id: 1,
+            rolle: 'admin',
+          },
+          { type: USER_LOGOUT },
+        ),
+      ).toStrictEqual({
         jwt: '',
         username: '',
         id: null,

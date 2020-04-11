@@ -21,20 +21,23 @@ const ADD_DISZIPLIN = gql`
 
 export default () => {
   const dispatch = useDispatch();
-  useEffect(() => { dispatch(setPageName('Disziplin erstellen')); }, [dispatch]);
+  useEffect(() => {
+    dispatch(setPageName('Disziplin erstellen'));
+  }, [dispatch]);
   const { loading, setLoading } = useLoading();
   const [addDisziplin] = useMutation(ADD_DISZIPLIN, { refetchQueries: ['Disziplinen'] });
 
-  const onSubmit = useCallback(async (values) => {
-    setLoading(true);
-    await addDisziplin({ variables: { ...values } });
-    setLoading(false);
-    dispatch(push('/disziplinen'));
-  }, [setLoading, addDisziplin, dispatch]);
+  const onSubmit = useCallback(
+    async (values) => {
+      setLoading(true);
+      await addDisziplin({ variables: { ...values } });
+      setLoading(false);
+      dispatch(push('/disziplinen'));
+    },
+    [setLoading, addDisziplin, dispatch],
+  );
 
   if (loading) return <LoadingSpinner />;
 
-  return (
-    <DisziplinenForm onSubmit={onSubmit} />
-  );
+  return <DisziplinenForm onSubmit={onSubmit} />;
 };

@@ -10,7 +10,9 @@ import {
   TableRow,
   Table,
   TableHead,
-  TableBody, DialogActions, makeStyles,
+  TableBody,
+  DialogActions,
+  makeStyles,
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { CSVLink } from 'react-csv';
@@ -25,13 +27,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const createData = (schueler) => schueler.map((s) => {
-  const sData = cloneDeep(s);
-  // eslint-disable-next-line no-underscore-dangle
-  delete sData.__typename;
-  delete sData.klasse;
-  return sData;
-});
+const createData = (schueler) =>
+  schueler.map((s) => {
+    const sData = cloneDeep(s);
+    // eslint-disable-next-line no-underscore-dangle
+    delete sData.__typename;
+    delete sData.klasse;
+    return sData;
+  });
 
 const verletztSchuelerDisplay = (schueler) => {
   const displayedCells = schueler.ergebnisseSchueler.map((e, i) => (
@@ -59,8 +62,8 @@ export default () => {
       <DialogTitle>Station abgeschlossen</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Alle Schüler, welche nicht krank sind haben jetzt 3 Versuche absolviert.
-          Unten werden die einzelnen Werte noch einmal angezeigt.
+          Alle Schüler, welche nicht krank sind haben jetzt 3 Versuche absolviert. Unten werden die
+          einzelnen Werte noch einmal angezeigt.
         </DialogContentText>
         <Table className={classes.table}>
           <TableHead>
@@ -75,16 +78,18 @@ export default () => {
             {schueler.map((s) => (
               <TableRow key={s.id}>
                 <TableCell>{`${s.vorname} ${s.nachname}`}</TableCell>
-                {s.status === 'E' ? ['-', '-', '-'].map((e, i) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                  <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
-                )) : null}
+                {s.status === 'E'
+                  ? ['-', '-', '-'].map((e, i) => (
+                      // eslint-disable-next-line react/no-array-index-key
+                      <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
+                    ))
+                  : null}
                 {s.stationsStatus !== null
                   ? verletztSchuelerDisplay(s)
                   : s.ergebnisseSchueler.map((e, i) => (
-                  // eslint-disable-next-line react/no-array-index-key
-                    <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
-                  ))}
+                      // eslint-disable-next-line react/no-array-index-key
+                      <TableCell key={`${s.id}+${e}+${i}`}>{e}</TableCell>
+                    ))}
               </TableRow>
             ))}
           </TableBody>

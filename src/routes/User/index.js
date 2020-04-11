@@ -9,7 +9,6 @@ import EditButton from '../../components/EditButton';
 import DeleteButton from '../../components/DeleteButton';
 import useLoadingQuery from '../../hooks/useLoadingQuery';
 
-
 const ALL_USER = gql`
   query User {
     allUser {
@@ -25,7 +24,7 @@ const DELETE_USER = gql`
     deleteUser(id: $id) {
       id
     }
-  } 
+  }
 `;
 
 const columns = [
@@ -39,12 +38,11 @@ export default () => {
   const loading = useSelector((state) => state.uiState.loading);
   const { data } = useLoadingQuery(ALL_USER);
   const [deleteUserMutation] = useMutation(DELETE_USER, { refetchQueries: ['User'] });
-  const {
-    page, rowsPerPage, onChangeRows, onChangePage,
-  } = usePagination([]);
+  const { page, rowsPerPage, onChangeRows, onChangePage } = usePagination([]);
 
-  const deleteUser = useCallback((id) => () => deleteUserMutation({ variables: { id } }),
-    [deleteUserMutation]);
+  const deleteUser = useCallback((id) => () => deleteUserMutation({ variables: { id } }), [
+    deleteUserMutation,
+  ]);
 
   if (loading || !data) return null;
 

@@ -1,7 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
 } from '@material-ui/core';
 
 const AlertDialog = ({ open, setOpen, submit }) => (
@@ -14,9 +19,7 @@ const AlertDialog = ({ open, setOpen, submit }) => (
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={submit}>
-        Fortfahren
-      </Button>
+      <Button onClick={submit}>Fortfahren</Button>
       <Button onClick={() => setOpen(false)} color="primary" autoFocus>
         Abbrechen
       </Button>

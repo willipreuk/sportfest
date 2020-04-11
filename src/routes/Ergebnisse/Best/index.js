@@ -5,28 +5,23 @@ import RankingItem from './RankingItem';
 
 const Best = ({ title, data }) => (
   <>
-    <Typography variant="h6">
-      {title}
-    </Typography>
+    <Typography variant="h6">{title}</Typography>
     <List>
       {data.map((item, i) => (
-        <RankingItem
-          key={item.id}
-          punkte={item.punkte}
-          ranking={i}
-          name={item.name}
-        />
+        <RankingItem key={item.id} punkte={item.punkte} ranking={i} name={item.name} />
       ))}
     </List>
   </>
 );
 Best.propTypes = {
   title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    punkte: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-  })).isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      punkte: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default Best;

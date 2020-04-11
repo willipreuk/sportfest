@@ -20,8 +20,10 @@ export default (s = initialState, action) => {
       });
       break;
     }
-    case USER_LOGOUT: return initialState;
-    default: return s;
+    case USER_LOGOUT:
+      return initialState;
+    default:
+      return s;
   }
   return state;
 };

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import {
-  Button, Container, makeStyles, MenuItem, Select, Typography,
-} from '@material-ui/core';
+import { Button, Container, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDisziplin as dispatchDisziplin, setKlasse as dispatchKlasse } from '../../actions/schreiber';
+import {
+  setDisziplin as dispatchDisziplin,
+  setKlasse as dispatchKlasse,
+} from '../../actions/schreiber';
 import useLoadingQuery from '../../hooks/useLoadingQuery';
 
 const GET_KLASSEN_DISZIPLINEN = gql`
@@ -17,7 +18,7 @@ const GET_KLASSEN_DISZIPLINEN = gql`
       }
     }
     allDisziplin {
-      disziplinen { 
+      disziplinen {
         name
         einheit
         id
@@ -55,26 +56,20 @@ export default () => {
 
   return (
     <Container maxWidth="xs" className={classes.container}>
-      <Typography>
-        Stationsauswahl
-      </Typography>
+      <Typography>Stationsauswahl</Typography>
       <Select
         className={classes.select}
         value={disziplin}
         onChange={(e) => setDisziplin(e.target.value)}
       >
         {data.allDisziplin.disziplinen.map((d) => (
-          <MenuItem key={d.id} value={d.id}>{d.name}</MenuItem>
+          <MenuItem key={d.id} value={d.id}>
+            {d.name}
+          </MenuItem>
         ))}
       </Select>
-      <Typography>
-        Klassenauswahl
-      </Typography>
-      <Select
-        className={classes.select}
-        value={klasse}
-        onChange={(e) => setKlasse(e.target.value)}
-      >
+      <Typography>Klassenauswahl</Typography>
+      <Select className={classes.select} value={klasse} onChange={(e) => setKlasse(e.target.value)}>
         {data.allKlassen.klassen.map((k) => (
           <MenuItem key={k.id} value={k.id}>{`${k.stufe}/${k.name}`}</MenuItem>
         ))}
@@ -83,9 +78,9 @@ export default () => {
         variant="contained"
         color="primary"
         onClick={() => {
-          dispatch(dispatchDisziplin(
-            data.allDisziplin.disziplinen.find((d) => d.id === disziplin),
-          ));
+          dispatch(
+            dispatchDisziplin(data.allDisziplin.disziplinen.find((d) => d.id === disziplin)),
+          );
           dispatch(dispatchKlasse(klasse));
         }}
       >

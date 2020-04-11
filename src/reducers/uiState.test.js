@@ -19,17 +19,15 @@ describe('app-state reducer', () => {
     });
     it('should set to true', () => {
       expect.assertions(1);
-      expect(appState(
-        undefined,
-        { type: APP_STATE_SET_LOADING, payload: true },
-      )).toStrictEqual({ loading: true });
+      expect(appState(undefined, { type: APP_STATE_SET_LOADING, payload: true })).toStrictEqual({
+        loading: true,
+      });
     });
     it('should set to false', () => {
       expect.assertions(1);
-      expect(appState(
-        undefined,
-        { type: APP_STATE_SET_LOADING, payload: false },
-      )).toStrictEqual({ loading: false });
+      expect(appState(undefined, { type: APP_STATE_SET_LOADING, payload: false })).toStrictEqual({
+        loading: false,
+      });
     });
   });
 });

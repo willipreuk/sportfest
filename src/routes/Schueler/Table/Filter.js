@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
-import {
-  FormControl, InputLabel, makeStyles, MenuItem, Select,
-} from '@material-ui/core';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -20,8 +18,8 @@ const ALL_KLASSEN = gql`
         id
         stufe
         name
-       }
-     }
+      }
+    }
   }
 `;
 
@@ -45,9 +43,7 @@ const Filter = ({ klasse, setKlasse }) => {
         <MenuItem value={0}>*</MenuItem>
         {klassen.map((s) => (
           <MenuItem value={s.id} key={s.id}>
-            {s.stufe}
-          /
-            {s.name}
+            {s.stufe}/{s.name}
           </MenuItem>
         ))}
       </Select>

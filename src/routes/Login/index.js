@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import {
-  makeStyles, Avatar, Button, Container, TextField, Typography,
-} from '@material-ui/core';
+import { makeStyles, Avatar, Button, Container, TextField, Typography } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
@@ -31,16 +29,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LOGIN = gql`
-    mutation login($user: String!, $password: String!){
-        login(username: $user, password: $password) {
-            jwt
-            user {
-              username
-              rolle
-              id
-            }
-        }
+  mutation login($user: String!, $password: String!) {
+    login(username: $user, password: $password) {
+      jwt
+      user {
+        username
+        rolle
+        id
+      }
     }
+  }
 `;
 
 export default function SignIn() {
@@ -48,12 +46,11 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   // get referer, exclude all redirects to /login - if no history use home (/)
-  const referer = useSelector(
-    (state) => {
+  const referer =
+    useSelector((state) => {
       const tmp = state.navigation.history.filter((l) => l !== '/login');
       return last(tmp);
-    },
-  ) || '/';
+    }) || '/';
 
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -61,19 +58,18 @@ export default function SignIn() {
   const [login, { error }] = useMutation(LOGIN, { onError: () => null });
 
   const submit = useCallback(() => {
-    login({ variables: { user, password } })
-      .then((res) => {
-        if (res) {
-          dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
+    login({ variables: { user, password } }).then((res) => {
+      if (res) {
+        dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
 
-          // schreiber direkt auf ihre Seite weiterleiten
-          if (res.data.login.user.rolle === 'schreiber') {
-            dispatch(push('/ergebnisse/schreiber'));
-          } else {
-            dispatch(push(referer));
-          }
+        // schreiber direkt auf ihre Seite weiterleiten
+        if (res.data.login.user.rolle === 'schreiber') {
+          dispatch(push('/ergebnisse/schreiber'));
+        } else {
+          dispatch(push(referer));
         }
-      });
+      }
+    });
   }, [login, dispatch, user, password, referer]);
 
   return (

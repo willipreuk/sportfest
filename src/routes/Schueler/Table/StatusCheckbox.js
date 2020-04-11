@@ -27,8 +27,11 @@ const StatusCheckbox = ({ status, id }) => {
   return (
     <Checkbox
       className={classes.checkbox}
-      onChange={() => updateSchueler({ variables: { status: checked ? null : 'E', id } })
-        .then((res) => setChecked(res.data.updateSchueler.status === 'E'))}
+      onChange={() =>
+        updateSchueler({ variables: { status: checked ? null : 'E', id } }).then((res) =>
+          setChecked(res.data.updateSchueler.status === 'E'),
+        )
+      }
       checked={checked}
     />
   );

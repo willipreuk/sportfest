@@ -21,7 +21,7 @@ const GET_SCHUELER = gql`
     allErgebnisByKlasse(iddisziplin: $disziplin, idklasse: $klasse) {
       id
       wert
-      status  
+      status
       schueler {
         id
       }
@@ -32,10 +32,9 @@ const GET_SCHUELER = gql`
 export default () => {
   const { klasse, disziplin, schueler } = useSelector((state) => state.schreiber);
   const dispatch = useDispatch();
-  const { data, loading } = useQuery(
-    GET_SCHUELER,
-    { variables: { klasse, disziplin: disziplin.id } },
-  );
+  const { data, loading } = useQuery(GET_SCHUELER, {
+    variables: { klasse, disziplin: disziplin.id },
+  });
 
   useEffect(() => {
     if (!data) return;
@@ -44,9 +43,8 @@ export default () => {
     const res = data.allSchueler.schueler.map((s) => {
       const tmp = { ...s };
 
-      const ergebnisseSchueler = data.allErgebnisByKlasse.find(
-        (e) => e.schueler.idschueler === tmp.id,
-      ) || [];
+      const ergebnisseSchueler =
+        data.allErgebnisByKlasse.find((e) => e.schueler.idschueler === tmp.id) || [];
 
       tmp.ergebnisseSchueler = ergebnisseSchueler;
       tmp.versuch = ergebnisseSchueler.length;

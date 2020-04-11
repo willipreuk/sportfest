@@ -21,9 +21,11 @@ export default new ApolloClient({
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         // eslint-disable-next-line
-        graphQLErrors.forEach(({ message, locations, path }) => console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-        ));
+        graphQLErrors.forEach(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+          ),
+        );
       }
       // eslint-disable-next-line
       if (networkError) console.error(`[Network error]: ${networkError}`);

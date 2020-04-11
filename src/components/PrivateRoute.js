@@ -7,9 +7,7 @@ import Layout from './Layout';
 import { logout } from '../actions/user';
 import LoadingSpinner from './LoadingSpinner';
 
-const PrivateRoute = ({
-  path, Component, exact, reqRole, layout,
-}) => {
+const PrivateRoute = ({ path, Component, exact, reqRole, layout }) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.uiState.loading);
   const { jwt, rolle } = useSelector((state) => state.user);
@@ -31,7 +29,9 @@ const PrivateRoute = ({
               <Layout>
                 <Component />
               </Layout>
-            ) : <Component />}
+            ) : (
+              <Component />
+            )}
           </>
         );
       }}

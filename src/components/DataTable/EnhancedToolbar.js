@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  makeStyles, Toolbar, Typography,
-} from '@material-ui/core';
+import { makeStyles, Toolbar, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   title: {

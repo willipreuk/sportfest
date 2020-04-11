@@ -29,11 +29,13 @@ export default () => {
         {!disziplin || !klasse ? (
           <>
             <Typography variant="h5" className={classes.heading}>
-            Giebichenstein-Gymnasium &quot;Thomas Müntzer&quot;
+              Giebichenstein-Gymnasium &quot;Thomas Müntzer&quot;
             </Typography>
             <Init />
           </>
-        ) : <Eintragen />}
+        ) : (
+          <Eintragen />
+        )}
       </div>
     </Container>
   );
