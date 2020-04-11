@@ -1,5 +1,5 @@
 import appState from './uiState';
-import { UI_SATE_SET_LOADING, UI_STATE_SET_ERROR } from '../actions/types';
+import { UI_SATE_SET_LOADING, UI_STATE_SET_NOTIFICATION } from '../actions/types';
 import { setError, setLoading } from '../actions/uiState';
 
 describe('app-state reducer', () => {
@@ -33,21 +33,29 @@ describe('app-state reducer', () => {
   describe('action setError', () => {
     it('should, return action object', () => {
       expect.assertions(1);
-      expect(setError('error')).toStrictEqual({
-        type: UI_STATE_SET_ERROR,
-        payload: 'error',
+      expect(setError('error', 'test')).toStrictEqual({
+        type: UI_STATE_SET_NOTIFICATION,
+        payload: { level: 'error', message: 'test' },
       });
     });
     it('should set error', () => {
       expect.assertions(1);
-      expect(appState(undefined, { type: UI_STATE_SET_ERROR, payload: 'error' })).toStrictEqual({
+      expect(
+        appState(undefined, {
+          type: UI_STATE_SET_NOTIFICATION,
+          payload: { level: 'info', message: 'test' },
+        }),
+      ).toStrictEqual({
         loading: false,
-        error: false,
+        error: {
+          level: 'info',
+          message: 'test',
+        },
       });
     });
     it('should set error null', () => {
       expect.assertions(1);
-      expect(appState(undefined, { type: UI_STATE_SET_ERROR })).toStrictEqual({
+      expect(appState(undefined, { type: UI_STATE_SET_NOTIFICATION })).toStrictEqual({
         loading: false,
         error: null,
       });

@@ -1,9 +1,9 @@
 import { cloneDeep } from 'lodash';
-import { UI_SATE_SET_LOADING, UI_STATE_SET_ERROR } from '../actions/types';
+import { UI_SATE_SET_LOADING, UI_STATE_SET_NOTIFICATION } from '../actions/types';
 
 const initialState = {
   loading: false,
-  error: null,
+  notfication: null,
 };
 
 export default (s = initialState, action) => {
@@ -13,8 +13,14 @@ export default (s = initialState, action) => {
       state.loading = action.payload;
       break;
     }
-    case UI_STATE_SET_ERROR: {
-      state.error = action.payload ? action.payload : null;
+    case UI_STATE_SET_NOTIFICATION: {
+      if (action.payload.message) {
+        state.error = {};
+        state.error.level = action.payload.level;
+        state.error.message = action.payload.message;
+      } else {
+        state.error = null;
+      }
       break;
     }
     default:
