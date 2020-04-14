@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, Container, Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
+import {
+  makeStyles,
+  Container,
+  Snackbar,
+  SnackbarContent,
+  IconButton,
+  Backdrop,
+  CircularProgress,
+} from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
@@ -24,12 +32,16 @@ const useStyles = makeStyles((theme) => ({
   sucess: {
     backgroundColor: theme.palette.success.main,
   },
+  loading: {
+    zIndex: theme.zIndex.tooltip + 1,
+    color: '#fff',
+  },
 }));
 
 const Layout = ({ children }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.uiState.error);
+  const { error, loading } = useSelector((state) => state.uiState);
 
   const handleClose = () => {
     dispatch(setError());
@@ -37,6 +49,9 @@ const Layout = ({ children }) => {
 
   return (
     <>
+      <Backdrop open={loading} timeout={10} className={classes.loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Navigation />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
