@@ -9,12 +9,13 @@ import useLoading from '../../../hooks/useLoading';
 import LoadingSpinner from '../../../components/LoadingSpinner';
 
 const ADD_DISZIPLIN = gql`
-  mutation AddDisziplin($name: String!, $best: Best!, $einheit: String!) {
-    addDisziplin(name: $name, best: $best, einheit: $einheit) {
+  mutation AddDisziplin($name: String!, $best: Best!, $einheit: String!, $klasse: Boolean!) {
+    addDisziplin(name: $name, best: $best, einheit: $einheit, klasse: $klasse) {
       id
       name
       best
       einheit
+      klasse
     }
   }
 `;

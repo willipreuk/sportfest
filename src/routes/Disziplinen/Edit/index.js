@@ -15,13 +15,20 @@ const GET_DISZIPLIN = gql`
       best
       einheit
       id
+      klasse
     }
   }
 `;
 
 const UPDATE_DISZIPLIN = gql`
-  mutation UpdateDisziplin($id: Int!, $best: Best, $einheit: String, $name: String!) {
-    updateDisziplin(id: $id, best: $best, einheit: $einheit, name: $name) {
+  mutation UpdateDisziplin(
+    $id: Int!
+    $best: Best
+    $einheit: String
+    $name: String!
+    $klasse: Boolean!
+  ) {
+    updateDisziplin(id: $id, best: $best, einheit: $einheit, name: $name, klasse: $klasse) {
       id
     }
   }
@@ -58,6 +65,7 @@ export default () => {
         name: data.disziplin.name,
         best: data.disziplin.best,
         einheit: data.disziplin.einheit,
+        klasse: data.disziplin.klasse,
       }}
     />
   );
