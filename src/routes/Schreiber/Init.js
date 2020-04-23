@@ -23,6 +23,7 @@ const GET_KLASSEN_DISZIPLINEN = gql`
         einheit
         id
         best
+        klasse
       }
     }
   }
@@ -47,12 +48,16 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const loading = useSelector((state) => state.uiState.loading);
-  const { data } = useLoadingQuery(GET_KLASSEN_DISZIPLINEN);
+  const { data: rawData } = useLoadingQuery(GET_KLASSEN_DISZIPLINEN);
   const dispatch = useDispatch();
   const [klasse, setKlasse] = useState(1);
   const [disziplin, setDisziplin] = useState(1);
 
-  if (loading || !data) return null;
+  if (loading || !rawData) return null;
+  const data = { ...rawData };
+  data.allDisziplin.disziplinen = data.allDisziplin.disziplinen.filter(
+    (item) => item.klasse === false,
+  );
 
   return (
     <Container maxWidth="xs" className={classes.container}>

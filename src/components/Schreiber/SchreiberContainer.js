@@ -10,9 +10,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  heading: {
+    textAlign: 'center',
+  },
 }));
 
-const SchreiberContainer = ({ children }) => {
+const SchreiberContainer = ({ children, heading }) => {
   const classes = useStyles();
 
   return (
@@ -21,6 +24,11 @@ const SchreiberContainer = ({ children }) => {
         <Typography component="h1" variant="h4">
           {`Sportfest ${new Date().getFullYear()}`}
         </Typography>
+        {heading ? (
+          <Typography variant="h5" className={classes.heading}>
+            Giebichenstein-Gymnasium &quot;Thomas Müntzer&quot;
+          </Typography>
+        ) : null}
         {children}
       </div>
     </Container>
@@ -28,6 +36,10 @@ const SchreiberContainer = ({ children }) => {
 };
 SchreiberContainer.propTypes = {
   children: PropTypes.element.isRequired,
+  heading: PropTypes.bool,
+};
+SchreiberContainer.defaultProps = {
+  heading: false,
 };
 
 export default SchreiberContainer;

@@ -1,20 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { Close as CloseIcon } from '@material-ui/icons';
-import { IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { resetSchreiber } from '../../../actions/schreiber';
 import ActionDialog from '../../../components/ActionDialog';
-
-const useStyles = makeStyles((theme) => ({
-  closeButton: {
-    position: 'absolute',
-    top: theme.spacing(2),
-    left: theme.spacing(2),
-  },
-}));
+import CloseButton from '../../../components/Schreiber/CloseButton';
 
 export default () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -32,9 +23,7 @@ export default () => {
 
   return (
     <>
-      <IconButton className={classes.closeButton} onClick={handleOpen}>
-        <CloseIcon />
-      </IconButton>
+      <CloseButton handleClick={handleOpen} />
       <ActionDialog open={open} actions={actions} handleClose={handleClose} title="Achtung">
         <Typography>
           Wirklich alle aktuellen Daten verwerfen und eine neue Klasse auswählen?
