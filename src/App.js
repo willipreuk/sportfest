@@ -15,6 +15,7 @@ import User from './routes/User';
 import UserEdit from './routes/User/Edit';
 import UserCreate from './routes/User/Create';
 import Schreiber from './routes/Schreiber';
+import ErgebnisseKlasse from './routes/Ergebnisse/klasse';
 
 function App() {
   return (
@@ -39,7 +40,9 @@ function App() {
         path="/ergebnisse/schreiber"
         layout={false}
         reqRole="none"
+        exact
       />
+      <PrivateRoute Component={ErgebnisseKlasse} path="/ergebnisse/klassen" layout={false} exact />
     </Switch>
   );
 }
