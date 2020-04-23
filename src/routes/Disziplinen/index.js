@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import CreateButton from '../../components/CreateButton';
@@ -39,7 +38,6 @@ const columns = [
 ];
 
 export default () => {
-  const loading = useSelector((state) => state.uiState.loading);
   const [deleteDisziplinMutation] = useMutation(DELETE_DISZIPLIN, {
     refetchQueries: ['Disziplinen'],
   });
@@ -52,7 +50,7 @@ export default () => {
     [deleteDisziplinMutation],
   );
 
-  if (loading || !data) return null;
+  if (!data) return null;
 
   return (
     <DataTable

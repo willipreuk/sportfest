@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import EditButton from '../../components/EditButton';
@@ -35,7 +34,6 @@ const columns = [
 ];
 
 export default () => {
-  const loading = useSelector((state) => state.uiState.loading);
   const { onChangeRows, page, onChangePage, rowsPerPage } = usePagination();
   const { data } = useLoadingQuery(GET_KLASSEN, {
     variables: {
@@ -59,7 +57,7 @@ export default () => {
     [deleteKlasse],
   );
 
-  if (loading || !data) return null;
+  if (!data) return null;
 
   return (
     <DataTable
