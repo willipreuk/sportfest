@@ -7,6 +7,10 @@ export default (graphqlQuery, options) => {
   const dispatch = useDispatch();
   const { loading, error, ...rest } = useQuery(graphqlQuery, options);
   useEffect(() => void dispatch(setLoading(loading)), [loading, dispatch]);
-  useEffect(() => void dispatch(setNotification('error', 'Netzwerkfehler')), [error, dispatch]);
+  useEffect(() => {
+    if (error) {
+      dispatch(setNotification('error', 'Netzwerkfehler'));
+    }
+  }, [error, dispatch]);
   return rest;
 };
