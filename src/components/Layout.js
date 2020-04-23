@@ -13,7 +13,7 @@ import { Close as CloseIcon } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import Navigation from './Navigation';
-import { setError } from '../actions/uiState';
+import { setNotification } from '../actions/uiState';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
   const { error, loading } = useSelector((state) => state.uiState);
 
   const handleClose = () => {
-    dispatch(setError());
+    dispatch(setNotification());
   };
 
   return (

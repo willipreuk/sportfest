@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { useSelector } from 'react-redux';
 import DataTable from '../../../components/DataTable';
 import usePagination from '../../../hooks/usePagination';
 import Filter from './Filter';
@@ -34,11 +33,10 @@ const columns = [
 
 export default () => {
   const [klasse, setKlasse] = useState(0);
-  const loading = useSelector((state) => state.uiState.loading);
   const { page, rowsPerPage, onChangeRows, onChangePage } = usePagination([klasse]);
   const { rows, total, setData } = useSchuelerData();
 
-  useLoadingQuery(ALL_SCHUELER, {
+  const { data } = useLoadingQuery(ALL_SCHUELER, {
     variables: {
       klasse: klasse !== 0 ? klasse : undefined,
       offset: page * rowsPerPage,
@@ -47,7 +45,7 @@ export default () => {
     onCompleted: (res) => setData(res),
   });
 
-  if (loading) return null;
+  if (!data) return null;
 
   return (
     <DataTable

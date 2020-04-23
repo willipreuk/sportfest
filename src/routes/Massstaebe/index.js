@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { useSelector } from 'react-redux';
 import DataTable from '../../components/DataTable';
 import usePagination from '../../hooks/usePagination';
 import Filter from './Filter';
@@ -57,7 +56,6 @@ const klassenStufen = [
 export default () => {
   const [disziplin, setDisziplin] = useState(0);
   const [klassenStufe, setKlassenStufe] = useState(0);
-  const loading = useSelector((state) => state.uiState.loading);
   const { onChangeRows, rowsPerPage, page, onChangePage } = usePagination([
     disziplin,
     klassenStufe,
@@ -71,7 +69,7 @@ export default () => {
     },
   });
 
-  if (loading || !data) return null;
+  if (!data) return null;
 
   return (
     <DataTable
