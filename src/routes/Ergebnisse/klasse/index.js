@@ -7,6 +7,8 @@ import { push } from 'connected-react-router';
 import SchreiberContainer from '../../../components/Schreiber/SchreiberContainer';
 import useLoadingQuery from '../../../hooks/useLoadingQuery';
 import CloseButton from '../../../components/Schreiber/CloseButton';
+import Staffel from './Staffel';
+import TabPanel from './TabPanel';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,13 @@ const GET_DISZIPLIN = gql`
   }
 `;
 
+const a11yProps = (index) => {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+};
+
 export default () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -65,10 +74,14 @@ export default () => {
           onChange={(e, newValue) => setTab(newValue)}
         >
           {data.allDisziplin.disziplinen.map((disziplin) => (
-            <Tab label={disziplin.name} id={disziplin.id} key={disziplin.id} />
+            // eslint-disable-next-line react/jsx-props-no-spreading
+            <Tab label={disziplin.name} {...a11yProps(disziplin.id)} key={disziplin.id} />
           ))}
         </Tabs>
       </AppBar>
+      <TabPanel index={0} value={tab}>
+        <Staffel data={data} />
+      </TabPanel>
     </SchreiberContainer>
   );
 };
