@@ -38,6 +38,15 @@ const GET_DISZIPLIN = gql`
         klasse
       }
     }
+    allKlassenErgebnis {
+      wert
+      disziplin {
+        name
+      }
+      klasse {
+        id
+      }
+    }
   }
 `;
 

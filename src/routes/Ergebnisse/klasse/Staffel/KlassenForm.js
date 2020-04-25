@@ -30,13 +30,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const KlassenForm = ({ klassen, onSubmit, disziplin }) => {
+const KlassenForm = ({ klassen, onSubmit, disziplin, ergebnisse }) => {
   const classes = useStyles();
   const objKlassen = keyBy(klassen, 'id');
 
   const initialValues = {};
+  // map klassen id as obj key and find ergebnis as value
   Object.keys(objKlassen).forEach((key) => {
-    initialValues[key] = 0;
+    const ergebnis = ergebnisse.find((ergebniss) => ergebniss.klasse.id === parseInt(key, 10));
+    initialValues[key] = ergebnis ? ergebnis.wert : 0;
   });
 
   const { handleSubmit, getFieldProps } = useFormik({
@@ -75,6 +77,7 @@ KlassenForm.propTypes = {
   klassen: PropTypes.array.isRequired,
   onSubmit: PropTypes.func.isRequired,
   disziplin: PropTypes.object.isRequired,
+  ergebnisse: PropTypes.array.isRequired,
 };
 
 export default KlassenForm;
