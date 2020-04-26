@@ -1,19 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  makeStyles,
-  Container,
-  Snackbar,
-  SnackbarContent,
-  IconButton,
-  Backdrop,
-  CircularProgress,
-} from '@material-ui/core';
-import { Close as CloseIcon } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import clsx from 'clsx';
+import { makeStyles, Container, Backdrop, CircularProgress } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 import Navigation from './Navigation';
-import { setNotification } from '../actions/uiState';
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -26,12 +15,6 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(4),
     paddingBottom: theme.spacing(4),
   },
-  error: {
-    backgroundColor: theme.palette.error.main,
-  },
-  sucess: {
-    backgroundColor: theme.palette.success.main,
-  },
   loading: {
     zIndex: theme.zIndex.tooltip + 1,
     color: '#fff',
@@ -40,12 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ children }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.uiState);
-
-  const handleClose = () => {
-    dispatch(setNotification());
-  };
+  const loading = useSelector((state) => state.uiState.loading);
 
   return (
     <>
@@ -56,22 +34,6 @@ const Layout = ({ children }) => {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose}>
-            {error ? (
-              <SnackbarContent
-                message={error.message}
-                className={clsx(
-                  error.level === 'success' && classes.sucess,
-                  error.level === 'error' && classes.error,
-                )}
-                action={
-                  <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
-                  </IconButton>
-                }
-              />
-            ) : null}
-          </Snackbar>
           {children}
         </Container>
       </main>
