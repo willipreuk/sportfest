@@ -17,6 +17,7 @@ const ALL_DISZIPLINEN = gql`
         name
         best
         einheit
+        klasse
       }
     }
   }
@@ -35,6 +36,7 @@ const columns = [
   { id: 'name', label: 'Name', minWidth: 50 },
   { id: 'best', label: 'Bestes', minWidth: 50 },
   { id: 'einheit', label: 'Einheit', minWidth: 50 },
+  { id: 'klasse', label: 'Klassenweise Auswertung', minWidth: 50 },
 ];
 
 export default () => {
@@ -59,6 +61,7 @@ export default () => {
       rowsPerPageOptions={[5, 10, 20]}
       rows={data.allDisziplin.disziplinen.map((disziplin) => ({
         ...disziplin,
+        klasse: <span>{disziplin.klasse ? 'Ja' : 'Nein'}</span>,
         actions: (
           <>
             <EditButton path={`/disziplinen/${disziplin.id}`} />

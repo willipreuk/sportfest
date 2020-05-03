@@ -58,6 +58,10 @@ type DeleteKlassePayload {
   id: Int!
 }
 
+type DeleteKlassenErgebnisPayload {
+  id: Int!
+}
+
 type DeleteMassstabPayload {
   id: Int!
 }
@@ -74,6 +78,7 @@ type Disziplin {
   best: String!
   einheit: String!
   id: Int!
+  klasse: Boolean!
   name: String!
 }
 
@@ -92,6 +97,13 @@ type Klasse {
   stufe: Int!
 }
 
+type KlassenErgebnis {
+  disziplin: Disziplin!
+  id: Int!
+  klasse: Klasse!
+  wert: Float
+}
+
 type LoginPayload {
   jwt: String!
   user: User!
@@ -107,54 +119,25 @@ type Massstab {
 }
 
 type Mutation {
-  addDisziplin(best: Best!, einheit: String!, name: String!): Disziplin!
+  addDisziplin(best: Best!, einheit: String!, klasse: Boolean!, name: String!): Disziplin!
   addKlasse(name: Int!, stufe: Int!): Klasse!
-  addMassstab(
-    geschlecht: Geschlecht!
-    iddisziplin: Int!
-    klassenStufe: Int!
-    punkte: Int!
-    werte: Float!
-  ): Massstab!
-  addSchueler(
-    geschlecht: Geschlecht
-    idklasse: Int!
-    nachname: String!
-    vorname: String!
-  ): Schueler!
+  addMassstab(geschlecht: Geschlecht!, iddisziplin: Int!, klassenStufe: Int!, punkte: Int!, werte: Float!): Massstab!
+  addSchueler(geschlecht: Geschlecht, idklasse: Int!, nachname: String!, vorname: String!): Schueler!
   addUser(password: String!, rolle: Rolle!, username: String!): CreateUserPayload!
   deleteDisziplin(id: Int!): DeleteDisziplinPayload!
   deleteErgebnis(id: Int!): DeleteErgebnisPayload!
   deleteKlasse(id: Int!): DeleteKlassePayload!
+  deleteKlassenErgebnis(id: Int!): DeleteKlassenErgebnisPayload
   deleteMassstab(id: Int!): DeleteMassstabPayload!
   deleteSchueler(id: Int!): DeleteSchuelerPayload!
   deleteUser(id: Int!): DeleteUserPayload!
   login(password: String!, username: String!): LoginPayload
-  updateDisziplin(best: Best, einheit: String, id: Int!, name: String): Disziplin!
-  updateErgebnis(
-    allWerte: String
-    iddisziplin: Int
-    idschueler: Int
-    status: String
-    wert: Float
-  ): Ergebnis!
+  updateDisziplin(best: Best, einheit: String, id: Int!, klasse: Boolean, name: String): Disziplin!
+  updateErgebnis(allWerte: String, iddisziplin: Int, idschueler: Int, status: String, wert: Float): Ergebnis!
   updateKlasse(id: Int!, name: Int, stufe: Int): Klasse!
-  updateMassstab(
-    geschlecht: Geschlecht
-    id: Int!
-    iddisziplin: Int
-    klassenStufe: Int
-    punkte: Int
-    werte: Float
-  ): Massstab!
-  updateSchueler(
-    geschlecht: Geschlecht
-    id: Int!
-    idklasse: Int
-    nachname: String
-    status: String
-    vorname: String
-  ): Schueler!
+  updateKlassenErgebnis(iddisziplin: Int, idklasse: Int, wert: Float): KlassenErgebnis
+  updateMassstab(geschlecht: Geschlecht, id: Int!, iddisziplin: Int, klassenStufe: Int, punkte: Int, werte: Float): Massstab!
+  updateSchueler(geschlecht: Geschlecht, id: Int!, idklasse: Int, nachname: String, status: String, vorname: String): Schueler!
   updateUser(id: Int!, password: String, rolle: Rolle, username: String): UpdateUserPayload!
   uploadSchueler(file: Upload!): UploadSchuelerPayload!
 }
@@ -164,6 +147,7 @@ type Query {
   allErgebnis(iddisziplin: Int, idschueler: Int): [Ergebnis!]
   allErgebnisByKlasse(iddisziplin: Int!, idklasse: Int!): [Ergebnis!]
   allKlassen(limit: Int, offset: Int, stufe: Int): allKlassenPayload!
+  allKlassenErgebnis: [KlassenErgebnis!]
   allMassstaebe(iddisziplin: Int, klassenStufe: Int, limit: Int, offset: Int): AllMassstaebePayload
   allSchueler(idklasse: Int, limit: Int, offset: Int): allSchuelerPayload
   allUser: [User!]
@@ -174,6 +158,7 @@ type Query {
   disziplin(id: Int!): Disziplin
   ergebnis(id: Int!): Ergebnis
   klasse(id: Int!): Klasse
+  klassenErgebnis(id: Int!): KlassenErgebnis
   massstab(geschlecht: Geschlecht!, iddisziplin: Int!, klassenStufe: Int!): [Massstab!]
   schueler(id: Int!): Schueler
   user(id: Int, username: String): User
@@ -240,6 +225,7 @@ enum Rolle {
   leiter
   schreiber
 }
+
 
 "The `Upload` scalar type represents a file upload."
 scalar Upload

@@ -26,7 +26,7 @@ export default () => {
     <>
       <Typography variant="h6">Filter</Typography>
       <Grid container spacing={4}>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <InputLabel id="filter-von">Von</InputLabel>
           <Select
             className={classes.select}
@@ -41,7 +41,7 @@ export default () => {
             ))}
           </Select>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <InputLabel id="filter-bis">Bis</InputLabel>
           <Select
             className={classes.select}

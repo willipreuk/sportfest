@@ -1,8 +1,10 @@
 import React from 'react';
-import { Grid, makeStyles, Paper } from '@material-ui/core';
+import { Grid, makeStyles, Paper, Typography, Button } from '@material-ui/core';
+import { Edit as EditIcon } from '@material-ui/icons';
 import gql from 'graphql-tag';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
+import { push } from 'connected-react-router';
 import Filter from './Filter';
 import Best from './Best';
 import ExportKlassen from './ExportKlassen';
@@ -17,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   top: {
     minHeight: theme.spacing(15),
+  },
+  eintragenButton: {
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -82,15 +87,30 @@ const createKlassenData = (data) =>
 
 export default () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { von, bis } = useSelector((state) => state.ergebnis.filter);
   const { data } = useLoadingQuery(AUSWERTUNG_SCHUELER, { variables: { von, bis } });
 
   if (!data) return null;
   return (
     <Grid container spacing={3}>
-      <Grid item xs={8}>
+      <Grid item xs={4}>
         <Paper className={clsx(classes.paper, classes.top)}>
           <Filter />
+        </Paper>
+      </Grid>
+      <Grid item xs={4}>
+        <Paper className={clsx(classes.paper, classes.top)}>
+          <Typography variant="h6">Klassenweise Ergebnisse</Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.eintragenButton}
+            startIcon={<EditIcon />}
+            onClick={() => dispatch(push('/ergebnisse/klassen'))}
+          >
+            Eintragen
+          </Button>
         </Paper>
       </Grid>
       <Grid item xs={4}>

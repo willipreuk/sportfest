@@ -12,7 +12,9 @@ import {
   Input,
   FormHelperText,
   Select,
+  Switch,
   MenuItem,
+  FormControlLabel,
 } from '@material-ui/core';
 import * as Yup from 'yup';
 
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DisziplinenForm = ({ initialValues, onSubmit }) => {
   const classes = useStyles();
-  const { handleSubmit, errors, getFieldProps, isValid } = useFormik({
+  const { handleSubmit, errors, getFieldProps, isValid, values } = useFormik({
     initialValues,
     onSubmit,
     validationSchema: Yup.object({
@@ -41,6 +43,7 @@ const DisziplinenForm = ({ initialValues, onSubmit }) => {
         .required(),
       best: Yup.string().required(),
       einheit: Yup.string().max(2, 'Einheit darf nicht länger als 2 Zeichen sein.').required(),
+      klasse: Yup.bool().required(),
     }),
   });
 
@@ -84,6 +87,18 @@ const DisziplinenForm = ({ initialValues, onSubmit }) => {
               />
               <FormHelperText id="einheit-helper-text">{errors.einheit}</FormHelperText>
             </FormControl>
+            <br />
+            <FormControlLabel
+              control={
+                <Switch
+                  name="klasse"
+                  id="klasse"
+                  {...getFieldProps('klasse')}
+                  checked={values.klasse}
+                />
+              }
+              label="Klassenweise Auswertung"
+            />
           </Paper>
         </Grid>
         <Grid item md={6} xs={12} />
@@ -103,7 +118,7 @@ DisziplinenForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 DisziplinenForm.defaultProps = {
-  initialValues: { name: '', best: '', einheit: '' },
+  initialValues: { name: '', best: '', einheit: '', klasse: false },
 };
 
 export default DisziplinenForm;
