@@ -7,6 +7,7 @@ import usePagination from '../../hooks/usePagination';
 import EditButton from '../../components/EditButton';
 import DeleteButton from '../../components/DeleteButton';
 import useLoadingQuery from '../../hooks/useLoadingQuery';
+import CreateButton from '../../components/CreateButton';
 
 const GET_KLASSEN = gql`
   query GetKlassen($offset: Int, $limit: Int, $stufe: Int) {
@@ -43,7 +44,7 @@ const columns = [
 ];
 
 export default () => {
-  const { onChangeRows, page, onChangePage, rowsPerPage } = usePagination();
+  const { onChangeRows, page, onChangePage, rowsPerPage } = usePagination([]);
   const { data } = useLoadingQuery(GET_KLASSEN, {
     variables: {
       limit: rowsPerPage,
@@ -60,7 +61,7 @@ export default () => {
         data.allKlassen.klassen.map((klasse) => ({
           ...klasse,
           klasse: `${klasse.stufe}/${klasse.name}`,
-          totalSchueler: schuelerByKlasse[klasse.id].length,
+          totalSchueler: schuelerByKlasse[klasse.id] ? schuelerByKlasse[klasse.id].length : 0,
           actions: (
             <>
               <EditButton path={`/klassen/${klasse.id}`} />
@@ -70,7 +71,7 @@ export default () => {
         })),
       );
     }
-  }, [data]);
+  }, [data, deleteKlasse]);
 
   if (klassenRows.length === 0) return null;
 
@@ -86,6 +87,7 @@ export default () => {
       page={page}
       onChangePage={onChangePage}
       total={data.allKlassen.total}
+      filter={<CreateButton path="/klassen/create" />}
     />
   );
 };
