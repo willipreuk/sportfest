@@ -13,6 +13,8 @@ import DisziplinenCreate from './routes/Disziplinen/Create';
 import DisziplinenEdit from './routes/Disziplinen/Edit';
 import Ergebnisse from './routes/Ergebnisse';
 import Klassen from './routes/Klassen';
+import KlassenEdit from './routes/Klassen/Edit';
+import KlassenCreate from './routes/Klassen/Create';
 import Massstaebe from './routes/Massstaebe';
 import Profil from './routes/Profil';
 import Schueler from './routes/Schueler';
@@ -68,7 +70,9 @@ function App() {
         <PrivateRoute Component={DisziplinenCreate} path="/disziplinen/create" />
         <PrivateRoute Component={DisziplinenEdit} path="/disziplinen/:id" />
         <PrivateRoute Component={Ergebnisse} path="/ergebnisse" exact />
-        <PrivateRoute Component={Klassen} path="/klassen" />
+        <PrivateRoute Component={Klassen} path="/klassen" exact />
+        <PrivateRoute Component={KlassenCreate} path="/klassen/create" exact />
+        <PrivateRoute Component={KlassenEdit} path="/klassen/:id" />
         <PrivateRoute Component={Massstaebe} path="/massstaebe" />
         <PrivateRoute Component={Profil} path="/profil" />
         <PrivateRoute Component={Schueler} path="/schueler" />
