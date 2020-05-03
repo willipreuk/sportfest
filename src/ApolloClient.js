@@ -20,19 +20,18 @@ export default new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
-        // eslint-disable-next-line
-        graphQLErrors.forEach(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
+        // graphQLErrors.forEach(({ message, locations, path }) =>
+        //   console.log(
+        //     `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        //   ),
+        // );
       }
       // eslint-disable-next-line
       if (networkError) console.error(`[Network error]: ${networkError}`);
     }),
     authLink,
     createUploadLink({
-      uri: 'http://localhost:4000',
+      uri: process.env.REACT_APP_API_URL,
     }),
   ]),
   cache: new InMemoryCache(),
