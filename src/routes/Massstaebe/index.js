@@ -41,7 +41,7 @@ const columns = [
   { id: 'klassenStufe', label: 'Klassenstufe', minWidth: 50 },
   { id: 'geschlecht', label: 'Geschlecht', minWidth: 10 },
   { id: 'punkte', label: 'Punkte', minWidth: 10 },
-  { id: 'wert', label: 'Wert', minWidth: 10 },
+  { id: 'werte', label: 'Wert', minWidth: 10 },
 ];
 
 const klassenStufen = [
