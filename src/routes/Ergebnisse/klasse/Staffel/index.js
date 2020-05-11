@@ -51,8 +51,17 @@ const Staffel = ({ data }) => {
     dispatch(setLoading(true));
     await Promise.all(
       Object.keys(values).map((key) => {
+        const klasse = values[key];
+        const minuten = parseInt(klasse.minuten, 10);
+        const sekunden = parseInt(klasse.sekunden, 10);
+        const millis = parseInt(klasse.millis, 10);
+
         return updateErgebnis({
-          variables: { iddiziplin: staffel.id, idklasse: parseInt(key, 10), wert: values[key] },
+          variables: {
+            iddiziplin: staffel.id,
+            idklasse: parseInt(key, 10),
+            wert: 60 * minuten + sekunden + millis / 100,
+          },
         });
       }),
     ).catch(() => setNotification('error', 'Error'));
@@ -81,7 +90,6 @@ const Staffel = ({ data }) => {
       <Grid item xs={12} className={classes.innerGrid}>
         <KlassenForm
           klassen={klassenGrouped[klassenStufe]}
-          disziplin={staffel}
           onSubmit={onSubmit}
           ergebnisse={staffelErgebnisse}
         />

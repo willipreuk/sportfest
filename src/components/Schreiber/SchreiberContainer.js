@@ -35,7 +35,8 @@ const SchreiberContainer = ({ children, heading }) => {
   );
 };
 SchreiberContainer.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)])
+    .isRequired,
   heading: PropTypes.bool,
 };
 SchreiberContainer.defaultProps = {
