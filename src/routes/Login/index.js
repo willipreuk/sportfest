@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import { last } from 'lodash';
 import { setJWT } from '../../actions/user';
+import { setNotification } from '../../actions/uiState';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -71,6 +72,8 @@ export default function SignIn() {
           } else {
             dispatch(push(referer));
           }
+        } else {
+          dispatch(setNotification('error', 'Flasche Benutzerdaten'));
         }
       });
     },
