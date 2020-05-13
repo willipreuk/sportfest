@@ -46,7 +46,7 @@ const KlassenForm = ({ klassen, onSubmit, ergebnisse }) => {
       const minuten = Math.floor(ergebnis.wert / 60);
       const rest = ergebnis.wert % 60;
       const sekunden = Math.floor(rest);
-      const millis = (rest - Math.floor(rest)) * 100;
+      const millis = Math.round((rest - Math.floor(rest)) * 10);
 
       initialValues[key].minuten = minuten;
       initialValues[key].sekunden = sekunden;
@@ -98,7 +98,7 @@ const KlassenForm = ({ klassen, onSubmit, ergebnisse }) => {
               id={`${klasse.id}.millis`}
               name={`${klasse.id}.millis`}
               type="number"
-              endAdornment={<InputAdornment>1/100</InputAdornment>}
+              endAdornment={<InputAdornment>1/10</InputAdornment>}
             />
           </FormControl>
         </Box>

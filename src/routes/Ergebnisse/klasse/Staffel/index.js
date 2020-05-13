@@ -60,7 +60,7 @@ const Staffel = ({ data }) => {
           variables: {
             iddiziplin: staffel.id,
             idklasse: parseInt(key, 10),
-            wert: 60 * minuten + sekunden + millis / 100,
+            wert: 60 * minuten + sekunden + millis / 10,
           },
         });
       }),
