@@ -4,7 +4,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import GroupIcon from '@material-ui/icons/Group';
@@ -13,7 +12,6 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import ContactsIcon from '@material-ui/icons/Contacts';
 
 const mainItems = [
-  { to: '/', icon: <DashboardIcon />, text: 'Home' },
   { to: '/ergebnisse', icon: <PlaylistAddCheckIcon />, text: 'Ergebnisse' },
   { to: '/schueler', icon: <PersonIcon />, text: 'Schüler' },
   { to: '/klassen', icon: <GroupIcon />, text: 'Klassen' },

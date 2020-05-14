@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { IconButton, Snackbar, SnackbarContent } from '@material-ui/core';
 import clsx from 'clsx';
 import { Close as CloseIcon } from '@material-ui/icons';
@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './routes/Login';
-import Home from './routes/Home';
 import Disziplinen from './routes/Disziplinen';
 import DisziplinenCreate from './routes/Disziplinen/Create';
 import DisziplinenEdit from './routes/Disziplinen/Edit';
@@ -65,7 +64,6 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <PrivateRoute Component={Home} path="/" exact />
         <PrivateRoute Component={Disziplinen} path="/disziplinen" exact />
         <PrivateRoute Component={DisziplinenCreate} path="/disziplinen/create" />
         <PrivateRoute Component={DisziplinenEdit} path="/disziplinen/:id" />
@@ -92,6 +90,7 @@ function App() {
           layout={false}
           exact
         />
+        <Redirect from="/" to="/ergebnisse" />
       </Switch>
     </>
   );
