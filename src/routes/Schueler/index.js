@@ -1,14 +1,11 @@
 import React from 'react';
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles, Box } from '@material-ui/core';
 import Table from './Table';
 import SchuelerUpload from './SchuelerUpload';
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
+  upload: {
     marginTop: theme.spacing(4),
-    paddingLeft: theme.spacing(3),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
   },
 }));
 
@@ -18,9 +15,9 @@ export default () => {
   return (
     <>
       <Table />
-      <Paper className={classes.paper}>
+      <Box className={classes.upload}>
         <SchuelerUpload />
-      </Paper>
+      </Box>
     </>
   );
 };

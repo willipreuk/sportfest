@@ -94,12 +94,12 @@ export default () => {
   if (!data) return null;
   return (
     <Grid container spacing={3}>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={clsx(classes.paper, classes.top)}>
           <Filter />
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={clsx(classes.paper, classes.top)}>
           <Typography variant="h6">Klassenweise Ergebnisse</Typography>
           <Button
@@ -113,22 +113,22 @@ export default () => {
           </Button>
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={clsx(classes.paper, classes.top)}>
           <ExportKlassen data={data.auswertungStufen.besteKlassen} />
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={classes.paper}>
           <Best title="Beste Mädchen" data={createSchuelerData(data.auswertungStufen.bestW)} />
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={classes.paper}>
           <Best title="Beste Jugen" data={createSchuelerData(data.auswertungStufen.bestM)} />
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+      <Grid item md={4} xs={12}>
         <Paper className={classes.paper}>
           <Best
             title="Beste Klassen"
