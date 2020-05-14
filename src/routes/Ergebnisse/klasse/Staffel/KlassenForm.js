@@ -78,6 +78,8 @@ const KlassenForm = ({ klassen, onSubmit, ergebnisse }) => {
               id={`${klasse.id}.minuten`}
               name={`${klasse.id}.minuten`}
               type="number"
+              min="1"
+              max="10"
               endAdornment={<InputAdornment>min</InputAdornment>}
             />
           </FormControl>
@@ -88,6 +90,8 @@ const KlassenForm = ({ klassen, onSubmit, ergebnisse }) => {
               id={`${klasse.id}.sekunden`}
               name={`${klasse.id}.sekunden`}
               type="number"
+              min="0"
+              max="60"
               endAdornment={<InputAdornment>s</InputAdornment>}
             />
           </FormControl>
@@ -98,13 +102,15 @@ const KlassenForm = ({ klassen, onSubmit, ergebnisse }) => {
               id={`${klasse.id}.millis`}
               name={`${klasse.id}.millis`}
               type="number"
+              min="0"
+              max="10"
               endAdornment={<InputAdornment>1/10</InputAdornment>}
             />
           </FormControl>
         </Box>
       ))}
       <Box className={classes.submitBox} display="flex" justifyContent="flex-end">
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button variant="contained" color="primary" onClick={handleSubmit} type="submit">
           Bestätigen
         </Button>
       </Box>

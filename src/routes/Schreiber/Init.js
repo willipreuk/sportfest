@@ -33,6 +33,8 @@ const GET_KLASSEN_DISZIPLINEN = gql`
         id
         best
         klasse
+        highestWert
+        lowestWert
       }
     }
   }

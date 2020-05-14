@@ -22,6 +22,7 @@ import SchuelerSelect from './SchuelerSelect';
 import Finished from '../Finished';
 import ErgebnisseBearbeiten from './ErgebnisseBearbeiten';
 import CloseButton from './CloseButton';
+import { setNotification } from '../../../actions/uiState';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -87,6 +88,8 @@ export default () => {
               className={classes.input}
               value={value}
               type="number"
+              min={disziplin.lowestWert}
+              max={disziplin.highestWetr}
               onChange={(e) => setValue(e.target.value)}
               endAdornment={<InputAdornment position="end">{disziplin.einheit}</InputAdornment>}
               inputProps={{
@@ -129,11 +132,17 @@ export default () => {
             </Grid>
             <Grid item xs={12} md={2}>
               <Button
+                type="submit"
                 variant="contained"
                 color="primary"
                 onClick={() => {
                   if (currentSchueler.stationsStatus === null) {
-                    dispatch(setErgebnis(currentSchueler.id, value));
+                    if (value >= disziplin.lowestWert && value <= disziplin.highestWert) {
+                      dispatch(setErgebnis(currentSchueler.id, value));
+                    } else {
+                      dispatch(setNotification('error', 'Ungültiges Ergebnis'));
+                      return;
+                    }
                   }
                   dispatch(incCounter());
                   setValue('0');
