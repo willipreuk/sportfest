@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   IconButton,
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+const UserMenu = ({ allowEdit }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -62,9 +63,11 @@ export default () => {
           <ListItemText primary={username} secondary={rolle} />
         </MenuItem>
         <Divider className={classes.divider} component="li" />
-        <MenuItem className={classes.listItem} onClick={editUser}>
-          Nutzerdaten ändern
-        </MenuItem>
+        {allowEdit && (
+          <MenuItem className={classes.listItem} onClick={editUser}>
+            Nutzerdaten ändern
+          </MenuItem>
+        )}
         <MenuItem className={classes.listItem} onClick={logout}>
           Abmelden
         </MenuItem>
@@ -72,3 +75,11 @@ export default () => {
     </>
   );
 };
+UserMenu.propTypes = {
+  allowEdit: PropTypes.bool,
+};
+UserMenu.defaultProps = {
+  allowEdit: true,
+};
+
+export default UserMenu;

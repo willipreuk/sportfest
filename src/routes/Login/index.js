@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { push } from 'connected-react-router';
 import { last } from 'lodash';
 import { setJWT } from '../../actions/user';
+import { setNotification } from '../../actions/uiState';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -57,20 +58,27 @@ export default function SignIn() {
 
   const [login, { error }] = useMutation(LOGIN, { onError: () => null });
 
-  const submit = useCallback(() => {
-    login({ variables: { user, password } }).then((res) => {
-      if (res) {
-        dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
+  const submit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-        // schreiber direkt auf ihre Seite weiterleiten
-        if (res.data.login.user.rolle === 'schreiber') {
-          dispatch(push('/ergebnisse/schreiber'));
+      login({ variables: { user, password } }).then((res) => {
+        if (res) {
+          dispatch(setJWT({ jwt: res.data.login.jwt, user: res.data.login.user }));
+
+          // schreiber direkt auf ihre Seite weiterleiten
+          if (res.data.login.user.rolle === 'schreiber') {
+            dispatch(push('/ergebnisse/schreiber'));
+          } else {
+            dispatch(push(referer));
+          }
         } else {
-          dispatch(push(referer));
+          dispatch(setNotification('error', 'Flasche Benutzerdaten'));
         }
-      }
-    });
-  }, [login, dispatch, user, password, referer]);
+      });
+    },
+    [login, dispatch, user, password, referer],
+  );
 
   return (
     <Container component="main" maxWidth="xs">
@@ -116,6 +124,7 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
             onClick={submit}
+            type="submit"
           >
             Einloggen
           </Button>

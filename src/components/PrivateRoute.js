@@ -4,6 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from './Layout';
 import { logout } from '../actions/user';
+import { setNotification } from '../actions/uiState';
 
 const PrivateRoute = ({ path, Component, exact, reqRole, layout }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const PrivateRoute = ({ path, Component, exact, reqRole, layout }) => {
       render={() => {
         if (!jwt || (reqRole === 'none' ? false : reqRole !== rolle)) {
           dispatch(logout());
+          dispatch(setNotification('error', 'Fehlende Berechntigungen'));
           return <Redirect to="/login" />;
         }
         return (
